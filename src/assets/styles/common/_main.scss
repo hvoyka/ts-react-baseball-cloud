@@ -1,6 +1,7 @@
 body {
-  color: var(--black1);
-  font-family: sans-serif;
+  background-color: var(--gray3);
+  color: var(--gray1);
+  font-family: "Lato", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -13,4 +14,14 @@ body {
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
+}
+
+a {
+  color: #337ab7;
+}
+
+a:focus,
+a:hover {
+  color: #23527c;
+  text-decoration: underline;
 }
