@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import StorageService from "./storageService";
+import StorageService from "./StorageService";
 
 class ApiService {
   private axios: AxiosInstance;
@@ -9,7 +9,7 @@ class ApiService {
       headers: {
         "Content-Type": "application/json",
       },
-      baseURL: "https://baseballcloud-back.herokuapp.com/api/v1/auth",
+      baseURL: "https://baseballcloud-back.herokuapp.com/api/v1",
     });
 
     this.axios.interceptors.request.use(async function (config) {
