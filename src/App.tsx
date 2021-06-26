@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import ForgotPage from "./pages/ForgotPage";
 import LoginPage from "./pages/LoginPage";
+import RegistrationPage from "./pages/RegistrationPage";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route path="/forgot-password">
           <ForgotPage />
+        </Route>
+        <Route path="/registration">
+          <RegistrationPage />
         </Route>
       </Switch>
     </Router>

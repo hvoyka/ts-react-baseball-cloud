@@ -4,37 +4,39 @@ import { required } from "redux-form-validators";
 import TextInput from "../../ui/components/TextInput";
 import Button from "../../ui/components/Button";
 import AuthLayout from "../../layouts/AuthLayout";
-import FormWrapper from "../../components/FormWrapper";
+import ContentWrapper from "../../components/ContentWrapper";
 import styled from "styled-components";
 import UserIcon from "../../ui/icons/UserIcon";
 import LockIcon from "../../ui/icons/LockIcon";
+import { Link } from "react-router-dom";
 
 interface AddUserNameFromValues {
-  userName?: string;
+  email: string;
+  password: string;
 }
 
 const LoginPage: FC<{}> = () => {
-  const onSubmit = ({ userName }: AddUserNameFromValues) => {
-    console.log(userName);
+  const onSubmit = ({ email, password }: AddUserNameFromValues) => {
+    console.log(email, password);
   };
 
   return (
     <AuthLayout>
-      <FormWrapper>
+      <ContentWrapper>
         <TextWrapper>
           <Title>Welcome to BaseballCloud!</Title>
           <Text>Sign into your account here:</Text>
         </TextWrapper>
         <Form
           onSubmit={onSubmit}
-          render={({ handleSubmit, submitting, pristine }) => (
+          render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <InputWrapper>
                 <Field<string>
-                  name="userName"
+                  name="email"
                   validate={required()}
                   render={(props) => {
-                    return <TextInput placeholder="User name" {...props} />;
+                    return <TextInput placeholder="Email" {...props} />;
                   }}
                 />
                 <IconWrapper>
@@ -62,13 +64,13 @@ const LoginPage: FC<{}> = () => {
           )}
         />
         <ForgotWrapper>
-          <a href="/forgot-password">Forgotten password?</a>
+          <Link to="/forgot-password">Forgotten password?</Link>
         </ForgotWrapper>
         <SignUpWrapper>
           <div>Don’t have an account?</div>
-          <a href="/registration">Sign Up</a>
+          <Link to="/registration">Sign Up</Link>
         </SignUpWrapper>
-      </FormWrapper>
+      </ContentWrapper>
     </AuthLayout>
   );
 };
@@ -118,6 +120,11 @@ const SignUpWrapper = styled.div`
   justify-content: center;
   a {
     padding-left: 3px;
+    text-decoration: underline;
+    color: #48bbff;
+    &:hover {
+      text-decoration: none;
+    }
   }
 `;
 
