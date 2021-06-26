@@ -19,7 +19,7 @@ function App() {
         <Route path="/login">
           <LoginPage />
         </Route>
-        <Route path="/forgotpassword">
+        <Route path="/forgot-password">
           <ForgotPage />
         </Route>
       </Switch>
