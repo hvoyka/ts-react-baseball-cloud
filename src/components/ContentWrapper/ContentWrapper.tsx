@@ -1,10 +1,13 @@
 import React, { FC, ReactNode } from "react";
 import styled from "styled-components";
 
-const FormWrapper: FC<{ children: ReactNode }> = ({ children }) => {
+const ContentWrapper: FC<{ children: ReactNode; maxWidth?: number }> = ({
+  children,
+  maxWidth = 450,
+}) => {
   return (
     <Root>
-      <Wrapper>{children}</Wrapper>
+      <Wrapper maxWidth={maxWidth}>{children}</Wrapper>
     </Root>
   );
 };
@@ -20,12 +23,12 @@ const Root = styled.div`
   padding: 16px;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ maxWidth: number }>`
   display: flex;
   flex-direction: column;
 
   width: 100%;
-  max-width: 450px;
+  max-width: ${({ maxWidth }) => `${maxWidth}px`};
   padding: 16px;
 
   border-radius: 8px;
@@ -34,4 +37,4 @@ const Wrapper = styled.div`
   backdrop-filter: blur(5px);
 `;
 
-export default FormWrapper;
+export default ContentWrapper;
