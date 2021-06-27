@@ -13,7 +13,6 @@ import LockIcon from "../../ui/icons/LockIcon";
 
 import { signInRequest } from "../../services/api";
 import StorageService from "../../services/StorageService";
-
 import TokenContext from "../../context/tokenContext";
 
 interface AddUserNameFromValues {
@@ -34,7 +33,7 @@ const LoginPage: FC<{}> = () => {
         context.setToken(token);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { Form, Field } from "react-final-form";
-import { required } from "redux-form-validators";
+import {
+  combine,
+  required,
+  email as emailValidator,
+} from "redux-form-validators";
 import TextInput from "../../ui/components/TextInput";
 import Button from "../../ui/components/Button";
 import AuthLayout from "../../layouts/AuthLayout";
@@ -8,14 +12,23 @@ import ContentWrapper from "../../components/ContentWrapper";
 import styled from "styled-components";
 import UserIcon from "../../ui/icons/UserIcon";
 import { Link } from "react-router-dom";
+import { forgotPasswordRequest } from "../../services/api";
 
 interface AddUserNameFromValues {
-  email?: string;
+  email: string;
 }
 
 const LoginPage: FC<{}> = () => {
   const onSubmit = ({ email }: AddUserNameFromValues) => {
-    console.log(email);
+    const redirect_url =
+      "https://baseballcloud-front.herokuapp.com/resetpassword";
+    forgotPasswordRequest({ email, redirect_url })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -35,7 +48,7 @@ const LoginPage: FC<{}> = () => {
               <InputWrapper>
                 <Field<string>
                   name="email"
-                  validate={required()}
+                  validate={combine(required(), emailValidator())}
                   render={(props) => {
                     return <TextInput placeholder="Email" {...props} />;
                   }}

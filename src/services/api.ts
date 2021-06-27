@@ -23,8 +23,8 @@ export const signOutRequest = () => {
   return ApiService.delete("/auth/sign_out");
 };
 
-export const forgotPasswordRequest = ({ email }: AuthData) => {
-  return ApiService.post("/auth/password", { email });
+export const forgotPasswordRequest = ({ email, redirect_url }: AuthData) => {
+  return ApiService.post("/auth/password", { email, redirect_url });
 };
 
 export const resetPasswordRequest = ({ email, password }: AuthData) => {
