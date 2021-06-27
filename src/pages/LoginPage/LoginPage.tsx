@@ -23,7 +23,7 @@ interface AddUserNameFromValues {
 
 const LoginPage: FC<{}> = () => {
   const context = useContext(TokenContext);
-  console.log("context", context);
+
   const onSubmit = ({ email, password }: AddUserNameFromValues) => {
     signInRequest({ email, password })
       .then((data) => {
