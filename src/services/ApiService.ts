@@ -5,10 +5,6 @@ class ApiService {
   private axios: AxiosInstance;
   constructor() {
     this.axios = axios.create({
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
       baseURL: "https://baseballcloud-back.herokuapp.com/api/v1",
     });
 

@@ -1,14 +1,20 @@
-import { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
 import TextInput from "../../ui/components/TextInput";
 import Button from "../../ui/components/Button";
 import AuthLayout from "../../layouts/AuthLayout";
 import ContentWrapper from "../../components/ContentWrapper";
-import styled from "styled-components";
 import UserIcon from "../../ui/icons/UserIcon";
 import LockIcon from "../../ui/icons/LockIcon";
-import { Link } from "react-router-dom";
+
+import { signInRequest } from "../../services/api";
+import StorageService from "../../services/StorageService";
+
+import TokenContext from "../../context/tokenContext";
 
 interface AddUserNameFromValues {
   email: string;
@@ -16,8 +22,20 @@ interface AddUserNameFromValues {
 }
 
 const LoginPage: FC<{}> = () => {
+  const context = useContext(TokenContext);
+  console.log("context", context);
   const onSubmit = ({ email, password }: AddUserNameFromValues) => {
-    console.log(email, password);
+    signInRequest({ email, password })
+      .then((data) => {
+        const token = data.headers["access-token"];
+        const client = data.headers.client;
+        const uid = data.headers.uid;
+        StorageService.setData({ token, client, uid });
+        context.setToken(token);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
