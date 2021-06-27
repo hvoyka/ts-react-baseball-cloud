@@ -1,6 +1,12 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Form, Field } from "react-final-form";
-import { required } from "redux-form-validators";
+import {
+  combine,
+  confirmation,
+  required,
+  email as emailValidator,
+  length as lengthValidator,
+} from "redux-form-validators";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -14,21 +20,42 @@ import UserIcon from "../../ui/icons/UserIcon";
 import LockIcon from "../../ui/icons/LockIcon";
 
 import CheckIcon from "../../ui/icons/CheckIcon";
+import { signUpRequest } from "../../services/api";
 
 interface AddUserNameFromValues {
   email: string;
   password: string;
+  password_confirmation: string;
 }
 
 const RegistrationPage: FC<{}> = () => {
-  const onSubmit = ({ email, password }: AddUserNameFromValues) => {
-    console.log(email, password);
+  const [role, setRole] = useState("player");
+  const [registrationStatus, setRegistrationStatus] = useState("idle");
+
+  const handleTabChange = (index: number) => {
+    index === 1 ? setRole("scout") : setRole("player");
+  };
+
+  const onSubmit = ({
+    email,
+    password,
+    password_confirmation,
+  }: AddUserNameFromValues) => {
+    setRegistrationStatus("pending");
+    signUpRequest({ email, password, password_confirmation, role })
+      .then((data) => {
+        setRegistrationStatus("fulfilled");
+      })
+      .catch((error) => {
+        console.log(error);
+        setRegistrationStatus("rejected");
+      });
   };
 
   return (
     <AuthLayout>
       <ContentWrapper>
-        <StyledTabs>
+        <StyledTabs onSelect={(index: number) => handleTabChange(index)}>
           <StyledTabList>
             <StyledTab>
               <TabIconWrapper>
@@ -66,7 +93,7 @@ const RegistrationPage: FC<{}> = () => {
               <InputWrapper>
                 <Field<string>
                   name="email"
-                  validate={required()}
+                  validate={combine(required(), emailValidator())}
                   render={(props) => {
                     return <TextInput placeholder="Email" {...props} />;
                   }}
@@ -79,7 +106,10 @@ const RegistrationPage: FC<{}> = () => {
               <InputWrapper>
                 <Field<string>
                   name="password"
-                  validate={required()}
+                  validate={combine(
+                    required(),
+                    lengthValidator({ minimum: 6 })
+                  )}
                   render={(props) => {
                     return <TextInput placeholder="Password" {...props} />;
                   }}
@@ -91,8 +121,11 @@ const RegistrationPage: FC<{}> = () => {
 
               <InputWrapper>
                 <Field<string>
-                  name="confirm_password"
-                  validate={required()}
+                  name="password_confirmation"
+                  validate={combine(
+                    required(),
+                    confirmation({ field: "password", fieldLabel: "password" })
+                  )}
                   render={(props) => {
                     return (
                       <TextInput placeholder="Confirm password" {...props} />
@@ -105,11 +138,16 @@ const RegistrationPage: FC<{}> = () => {
               </InputWrapper>
 
               <div className="buttons">
-                <Button>Sign In</Button>
+                <Button>Sign Up</Button>
               </div>
             </form>
           )}
         />
+        <RegistrationStatus>
+          {registrationStatus === "rejected" && <p>Error, try again</p>}
+          {registrationStatus === "fulfilled" && <p>You are registered!</p>}
+          {registrationStatus === "pending" && <p>Loading...</p>}
+        </RegistrationStatus>
         <TermsWrapper>
           By clicking Sign Up, you agree to our&nbsp;
           <Link to="/">Terms of Service</Link>&nbsp;and&nbsp;
@@ -213,6 +251,10 @@ const SignInWrapper = styled.div`
       text-decoration: none;
     }
   }
+`;
+
+const RegistrationStatus = styled.div`
+  margin-bottom: 15px;
 `;
 
 export default RegistrationPage;

@@ -5,8 +5,15 @@ import styled from "styled-components";
 type Props = FieldRenderProps<string, any>;
 
 const TextInput: React.FC<Props> = ({ input, meta, ...rest }: Props) => (
-  <StyledInput type="text" {...input} {...rest} />
+  <Root>
+    <StyledInput type="text" {...input} {...rest} />
+    {meta && meta.touched && meta.error && <ErrorText>{meta.error}</ErrorText>}
+  </Root>
 );
+
+const Root = styled.div`
+  position: relative;
+`;
 
 const StyledInput = styled.input`
   display: block;
@@ -41,6 +48,13 @@ const StyledInput = styled.input`
       transition: all 0.3s ease;
     }
   }
+`;
+
+const ErrorText = styled.p`
+  position: absolute;
+  bottom: -17px;
+  left: 15px;
+  color: #750000;
 `;
 
 export default TextInput;
