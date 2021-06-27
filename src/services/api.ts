@@ -5,8 +5,18 @@ export const signInRequest = ({ email, password }: AuthData) => {
   return ApiService.post("/auth/sign_in", { email, password });
 };
 
-export const signUpRequest = ({ email, password }: AuthData) => {
-  return ApiService.post("/auth", { email, password });
+export const signUpRequest = ({
+  email,
+  password,
+  password_confirmation,
+  role,
+}: AuthData) => {
+  return ApiService.post("/auth", {
+    email,
+    password,
+    password_confirmation,
+    role,
+  });
 };
 
 export const signOutRequest = () => {
