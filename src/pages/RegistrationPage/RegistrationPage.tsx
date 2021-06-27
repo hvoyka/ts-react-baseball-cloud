@@ -47,7 +47,7 @@ const RegistrationPage: FC<{}> = () => {
         setRegistrationStatus("fulfilled");
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         setRegistrationStatus("rejected");
       });
   };
