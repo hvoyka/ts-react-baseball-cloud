@@ -5,3 +5,5 @@ export interface AuthData {
   role?: string;
   redirect_url?: string;
 }
+
+export type FetchStatus = "idle" | "pending" | "fulfilled" | "rejected";

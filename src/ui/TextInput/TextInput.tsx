@@ -2,9 +2,9 @@ import React from "react";
 import { FieldRenderProps } from "react-final-form";
 import styled from "styled-components";
 
-type Props = FieldRenderProps<string, any>;
+type TextInputProps = FieldRenderProps<string, any>;
 
-const TextInput: React.FC<Props> = ({ input, meta, ...rest }: Props) => (
+const TextInput: React.FC<TextInputProps> = ({ input, meta, ...rest }) => (
   <Root>
     <StyledInput type="text" {...input} {...rest} />
     {meta && meta.touched && meta.error && <ErrorText>{meta.error}</ErrorText>}
@@ -20,18 +20,18 @@ const StyledInput = styled.input`
   width: 100%;
   height: 50px;
   border-radius: 4px;
-  background-color: #eff1f3;
+  background-color: var(--gray5);
   padding: 7px 12px 10px 37px;
   font-size: 16px;
   line-height: 1.13;
   font-weight: 400;
-  color: #667784;
+  color: var(--gray4);
   border: 1px solid transparent;
 
   &::placeholder {
     opacity: 1;
     font-weight: 400;
-    color: #667784;
+    color: var(--gray4);
     font-size: 16px;
     transition: all 0.4s ease;
   }
@@ -39,8 +39,8 @@ const StyledInput = styled.input`
   &:focus,
   &:active {
     outline: none;
-    background-color: #fff;
-    border: solid 1px #48bbff;
+    background-color: var(--white);
+    border: solid 1px var(--blue1);
 
     &::placeholder {
       opacity: 0;
@@ -54,7 +54,7 @@ const ErrorText = styled.p`
   position: absolute;
   bottom: -17px;
   left: 15px;
-  color: #750000;
+  color: var(--red1);
 `;
 
 export default TextInput;

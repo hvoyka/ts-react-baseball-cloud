@@ -1,15 +1,8 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import { Footer, Header } from "components";
 
-import authBackground from "../../assets/images/auth-bg.jpg";
-
-type AutLayoutProps = {
-  children?: ReactNode;
-};
-
-const AuthLayout: FC<AutLayoutProps> = ({ children }) => {
+const AuthLayout: FC = ({ children }) => {
   return (
     <MainLayoutWrapper>
       <Header />
@@ -30,7 +23,7 @@ const MainLayoutWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  background-image: url(${authBackground});
+  background-image: url("/images/auth-bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

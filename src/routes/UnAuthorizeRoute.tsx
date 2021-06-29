@@ -1,22 +1,15 @@
 import React, { FC } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import ForgotPage from "../pages/ForgotPage";
-import LoginPage from "../pages/LoginPage";
-import RegistrationPage from "../pages/RegistrationPage";
+import { Switch, Route } from "react-router-dom";
+import { ForgotPage, LoginPage, RegistrationPage } from "pages";
+import { ROUTES } from "utils/routes";
 
-const UnAuthorizeRoute: FC<{}> = () => {
+const UnAuthorizeRoute: FC = () => {
   return (
     <Switch>
-      <Route path="/login">
-        <LoginPage />
-      </Route>
-      <Route path="/forgot-password">
-        <ForgotPage />
-      </Route>
-      <Route path="/registration">
-        <RegistrationPage />
-      </Route>
-      <Redirect to="/login" />;
+      <Route path={ROUTES.LOGIN} component={LoginPage} />
+      <Route path={ROUTES.FORGOT_PASSWORD} component={ForgotPage} />
+      <Route path={ROUTES.REGISTRATION} component={RegistrationPage} />
+      <Route path="*" component={LoginPage} />
     </Switch>
   );
 };
