@@ -9,7 +9,7 @@ class ApiService {
     });
 
     this.axios.interceptors.request.use(async function (config) {
-      const storageData = await StorageService.getData();
+      const storageData = await StorageService.getStorageData();
       if (storageData) {
         config.headers["access-token"] = storageData.client;
         config.headers.client = storageData.client;

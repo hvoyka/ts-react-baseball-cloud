@@ -1,5 +1,5 @@
 import ApiService from "./ApiService";
-import { AuthData } from "../types";
+import { AuthData } from "types";
 
 export const signInRequest = ({ email, password }: AuthData) => {
   return ApiService.post("/auth/sign_in", { email, password });
