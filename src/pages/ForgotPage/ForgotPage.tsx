@@ -3,9 +3,25 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import { AuthLayout } from "layouts";
-import { ForgotForm, ContentWrapper } from "components";
+import ContentWrapper from "components/ContentWrapper/ContentWrapper";
+import { ForgotForm } from "./components/ForgotForm";
+import { forgotPasswordRequest } from "services/api";
+
+interface ForgotFormValues {
+  email: string;
+}
 
 const LoginPage: FC = () => {
+  const onSubmit = ({ email }: ForgotFormValues) => {
+    const redirect_url =
+      "https://baseballcloud-front.herokuapp.com/resetpassword";
+    forgotPasswordRequest({ email, redirect_url })
+      .then((data) => {})
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <AuthLayout>
       <ContentWrapper>
@@ -17,7 +33,7 @@ const LoginPage: FC = () => {
           </Text>
         </TextWrapper>
 
-        <ForgotForm />
+        <ForgotForm onSubmit={onSubmit} />
 
         <SignInWrapper>
           <div>Remember password?</div>

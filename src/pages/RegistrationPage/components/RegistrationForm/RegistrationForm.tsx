@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import styled from "styled-components";
+import React, { FC } from "react";
+import styled, { css } from "styled-components";
 import { Form, Field } from "react-final-form";
 import {
   combine,
@@ -10,40 +10,32 @@ import {
 } from "redux-form-validators";
 
 import { UserIcon, LockIcon, CheckIcon, Button, TextInput } from "ui";
-import { signUpRequest } from "services/api";
 import { FetchStatus } from "types";
-import { ROLES } from "utils/roles";
 
-interface RegistrationFormValues {
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
+const errors = {
+  idle: "",
+  rejected: "Error, try again",
+  fulfilled: "You are registered!",
+  pending: "Loading...",
+};
 
 interface RegistrationFormProps {
-  role: ROLES;
-}
-
-const RegistrationForm: FC<RegistrationFormProps> = ({ role }) => {
-  const [registrationStatus, setRegistrationStatus] =
-    useState<FetchStatus>("idle");
-
-  const onSubmit = ({
+  registrationStatus: FetchStatus;
+  onSubmit: ({
     email,
     password,
     password_confirmation,
-  }: RegistrationFormValues) => {
-    setRegistrationStatus("pending");
-    signUpRequest({ email, password, password_confirmation, role })
-      .then((data) => {
-        setRegistrationStatus("fulfilled");
-      })
-      .catch((error) => {
-        console.error(error);
-        setRegistrationStatus("rejected");
-      });
-  };
+  }: {
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }) => void;
+}
 
+const RegistrationForm: FC<RegistrationFormProps> = ({
+  onSubmit,
+  registrationStatus,
+}) => {
   return (
     <>
       <Form
@@ -58,9 +50,8 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ role }) => {
                   return <TextInput placeholder="Email" {...props} />;
                 }}
               />
-              <IconWrapper>
-                <UserIcon />
-              </IconWrapper>
+
+              <StyledUserIcon />
             </InputWrapper>
 
             <InputWrapper>
@@ -71,9 +62,8 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ role }) => {
                   return <TextInput placeholder="Password" {...props} />;
                 }}
               />
-              <IconWrapper>
-                <LockIcon />
-              </IconWrapper>
+
+              <StyledLockIcon />
             </InputWrapper>
 
             <InputWrapper>
@@ -89,9 +79,8 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ role }) => {
                   );
                 }}
               />
-              <IconWrapper>
-                <CheckIcon />
-              </IconWrapper>
+
+              <StyledCheckIcon />
             </InputWrapper>
 
             <div className="buttons">
@@ -100,11 +89,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ role }) => {
           </form>
         )}
       />
-      <RegistrationStatus>
-        {registrationStatus === "rejected" && <p>Error, try again</p>}
-        {registrationStatus === "fulfilled" && <p>You are registered!</p>}
-        {registrationStatus === "pending" && <p>Loading...</p>}
-      </RegistrationStatus>
+      <p>{errors[registrationStatus]}</p>
     </>
   );
 };
@@ -114,14 +99,20 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const IconWrapper = styled.div`
+const StyledIcon = css`
   position: absolute;
   left: 15px;
   top: 14px;
 `;
 
-const RegistrationStatus = styled.div`
-  margin-bottom: 15px;
+const StyledCheckIcon = styled(CheckIcon)`
+  ${StyledIcon}
+`;
+const StyledUserIcon = styled(UserIcon)`
+  ${StyledIcon}
+`;
+const StyledLockIcon = styled(LockIcon)`
+  ${StyledIcon}
 `;
 
 export default RegistrationForm;

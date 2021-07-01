@@ -5,23 +5,22 @@ interface StorageData {
 }
 
 class StorageService {
-  setStorageData({ token, client, uid }: StorageData) {
+  setUserData({ token, client, uid }: StorageData) {
     localStorage.setItem("access-token", token);
     localStorage.setItem("client", client);
     localStorage.setItem("uid", uid);
   }
 
-  getStorageData() {
+  getUserData() {
     const token = localStorage.getItem("access-token");
     const client = localStorage.getItem("client");
     const uid = localStorage.getItem("uid");
     if (token && client && uid) {
       return { token, client, uid };
     }
-    return undefined;
   }
 
-  removeStorageData() {
+  removeUserData() {
     localStorage.removeItem("access-token");
     localStorage.removeItem("client");
     localStorage.removeItem("uid");

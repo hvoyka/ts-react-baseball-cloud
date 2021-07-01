@@ -7,3 +7,8 @@ export interface AuthData {
 }
 
 export type FetchStatus = "idle" | "pending" | "fulfilled" | "rejected";
+
+export enum ROLES {
+  PLAYER = "player",
+  SCOUT = "scout",
+}
