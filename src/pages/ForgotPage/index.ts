@@ -1,1 +1,1 @@
-export { default } from "./ForgotPage";
+export { default as ForgotPage } from "./ForgotPage";

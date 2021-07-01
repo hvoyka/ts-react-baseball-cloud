@@ -17,11 +17,11 @@ body {
 }
 
 a {
-  color: #337ab7;
+  color: var(--blue3);
 }
 
 a:focus,
 a:hover {
-  color: #23527c;
+  color: var(--blue4);
   text-decoration: underline;
 }

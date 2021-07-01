@@ -1,5 +1,5 @@
 import React from "react";
-import "./assets/styles/core.scss";
+import "./styles/core.scss";
 import RootRoute from "./routes/RootRoute";
 
 function App() {

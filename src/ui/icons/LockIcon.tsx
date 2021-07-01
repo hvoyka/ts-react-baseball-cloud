@@ -1,12 +1,12 @@
 import React from "react";
 
-function LockIcon(props: React.SVGProps<SVGSVGElement>) {
+export function LockIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={16}
       height={16}
-      fill="#667784"
+      fill="var(--gray4)"
       viewBox="0 0 372.826 372.826"
       {...props}
     >
@@ -14,5 +14,3 @@ function LockIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
-export default LockIcon;
