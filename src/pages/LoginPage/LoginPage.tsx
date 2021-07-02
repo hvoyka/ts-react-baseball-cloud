@@ -8,12 +8,7 @@ import TokenContext from "context/tokenContext";
 
 import { AuthLayout } from "layouts";
 import { ContentWrapper } from "components";
-import { LoginForm } from "./components/LoginForm";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import { LoginForm, LoginFormValues } from "./components/LoginForm";
 
 const LoginPage: FC = () => {
   const context = useContext(TokenContext);

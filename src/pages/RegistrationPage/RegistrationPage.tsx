@@ -5,15 +5,10 @@ import { Link } from "react-router-dom";
 import { AuthLayout } from "layouts";
 import { ContentWrapper } from "components";
 import { RegistrationForm, RegistrationTabs } from "./components/";
+import { RegistrationFormValues } from "./components/RegistrationForm";
 import { ROLES } from "types";
 import { signUpRequest } from "services/api";
 import { FetchStatus } from "types";
-
-interface RegistrationFormValues {
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
 
 const RegistrationPage: FC = () => {
   const [role, setRole] = useState(ROLES.PLAYER);

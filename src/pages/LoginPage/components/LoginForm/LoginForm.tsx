@@ -5,8 +5,13 @@ import styled, { css } from "styled-components";
 import { UserIcon, LockIcon, TextInput, Button } from "ui";
 import { required } from "redux-form-validators";
 
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
 interface LoginFormProps {
-  onSubmit: ({ email, password }: { email: string; password: string }) => void;
+  onSubmit: ({ email, password }: LoginFormValues) => void;
 }
 
 const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {

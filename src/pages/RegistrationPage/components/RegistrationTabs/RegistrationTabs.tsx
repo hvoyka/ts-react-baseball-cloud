@@ -6,18 +6,25 @@ import { CheckIcon } from "ui";
 
 interface RegistrationTabsProps {
   onTabChange: (index: number) => void;
+  className?: string;
 }
 
-const RegistrationTabs: FC<RegistrationTabsProps> = ({ onTabChange }) => {
+const RegistrationTabs: FC<RegistrationTabsProps> = ({
+  onTabChange,
+  className,
+}) => {
   return (
-    <Tabs onSelect={(index: number) => onTabChange(index)}>
+    <Tabs
+      onSelect={(index: number) => onTabChange(index)}
+      className={className}
+    >
       <StyledTabList>
         <StyledTab>
-          <StyledCheckIcon fill="#fff" />
+          <StyledCheckIcon />
           Sign Up as Player
         </StyledTab>
         <StyledTab>
-          <StyledCheckIcon fill="#fff" />
+          <StyledCheckIcon />
           Sign Up as Scout
         </StyledTab>
       </StyledTabList>
@@ -72,6 +79,7 @@ const StyledCheckIcon = styled(CheckIcon)`
   margin-right: 6px;
   width: 14px;
   height: 14px;
+  fill: var(--white);
 `;
 
 const StyledTabPanel = styled(TabPanel)`

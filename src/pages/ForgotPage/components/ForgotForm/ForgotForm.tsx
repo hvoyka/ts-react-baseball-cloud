@@ -9,8 +9,12 @@ import styled from "styled-components";
 
 import { UserIcon, TextInput, Button } from "ui";
 
+export interface ForgotFormValues {
+  email: string;
+}
+
 interface ForgotFormProps {
-  onSubmit: ({ email }: { email: string }) => void;
+  onSubmit: ({ email }: ForgotFormValues) => void;
 }
 
 const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {

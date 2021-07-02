@@ -4,12 +4,8 @@ import { Link } from "react-router-dom";
 
 import { AuthLayout } from "layouts";
 import ContentWrapper from "components/ContentWrapper/ContentWrapper";
-import { ForgotForm } from "./components/ForgotForm";
+import { ForgotForm, ForgotFormValues } from "./components/ForgotForm";
 import { forgotPasswordRequest } from "services/api";
-
-interface ForgotFormValues {
-  email: string;
-}
 
 const LoginPage: FC = () => {
   const onSubmit = ({ email }: ForgotFormValues) => {

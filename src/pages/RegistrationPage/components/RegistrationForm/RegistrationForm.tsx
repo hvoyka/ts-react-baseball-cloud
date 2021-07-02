@@ -19,17 +19,19 @@ const errors = {
   pending: "Loading...",
 };
 
+export interface RegistrationFormValues {
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
 interface RegistrationFormProps {
   registrationStatus: FetchStatus;
   onSubmit: ({
     email,
     password,
     password_confirmation,
-  }: {
-    email: string;
-    password: string;
-    password_confirmation: string;
-  }) => void;
+  }: RegistrationFormValues) => void;
 }
 
 const RegistrationForm: FC<RegistrationFormProps> = ({
