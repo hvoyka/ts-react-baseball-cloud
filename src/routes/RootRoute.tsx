@@ -4,6 +4,8 @@ import AuthorizeRoute from "./AuthorizeRoute";
 import UnAuthorizeRoute from "./UnAuthorizeRoute";
 import StorageService from "services/StorageService";
 import TokenContext from "context/tokenContext";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "services/MainApi";
 
 const RootRoute = () => {
   const [token, setToken] = useState("");
@@ -16,9 +18,11 @@ const RootRoute = () => {
   }, []);
 
   return (
-    <TokenContext.Provider value={{ token, setToken }}>
-      {token ? <AuthorizeRoute /> : <UnAuthorizeRoute />}
-    </TokenContext.Provider>
+    <ApolloProvider client={client}>
+      <TokenContext.Provider value={{ token, setToken }}>
+        {token ? <AuthorizeRoute /> : <UnAuthorizeRoute />}
+      </TokenContext.Provider>
+    </ApolloProvider>
   );
 };
 

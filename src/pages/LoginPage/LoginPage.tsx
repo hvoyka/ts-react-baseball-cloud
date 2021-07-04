@@ -2,7 +2,7 @@ import React, { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { signInRequest } from "services/api";
+import { signInRequest } from "services/AuthApi";
 import StorageService from "services/StorageService";
 import TokenContext from "context/tokenContext";
 
