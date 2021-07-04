@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import ApiService from "services/ApiService";
 import styled, { css } from "styled-components";
 
 const AvatarForm = () => {
   const [imageName, setImageName] = useState<string>("");
   const [photoUrl, setPhotoUrl] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
 
   const handleFileChange = (event: any) => {
-    const file = event.target.files[0];
-    const fileName = file.name.slice(0, 50);
-    const fileUrl = URL.createObjectURL(file);
+    const loadedFile = event.target.files[0];
+    const fileName = loadedFile.name.slice(0, 50);
+    const fileUrl = URL.createObjectURL(loadedFile);
+    setFile(loadedFile);
     setImageName(fileName);
     setPhotoUrl(fileUrl);
   };
@@ -19,8 +22,23 @@ const AvatarForm = () => {
     setPhotoUrl("");
   };
 
-  const handleLoadForm = () => {
-    setIsLoading(true);
+  const handleLoadForm = async () => {
+    if (file !== null) {
+      setIsLoading(true);
+      const response = await ApiService.post("/s3/signed_url", {
+        name: imageName,
+      });
+
+      let signedUrl = await response.data.signedUrl;
+
+      await ApiService.put(signedUrl, file, {
+        headers: {
+          "Content-type": "image/png",
+        },
+      });
+      await setIsLoading(false);
+      console.log(signedUrl);
+    }
   };
 
   return (

@@ -11,10 +11,11 @@ class ApiService {
     this.axios.interceptors.request.use(async function (config) {
       const storageData = await StorageService.getUserData();
       if (storageData) {
-        config.headers["access-token"] = storageData.client;
+        config.headers["access-token"] = storageData.token;
         config.headers.client = storageData.client;
         config.headers.uid = storageData.uid;
       }
+      console.log(storageData);
       return config;
     });
   }
@@ -23,8 +24,8 @@ class ApiService {
     return this.axios.post(uri, data);
   };
 
-  put = async (uri: string, data?: any) => {
-    return this.axios.put(uri, data);
+  put = async (uri: string, data?: any, config?: any) => {
+    return this.axios.put(uri, data, config);
   };
 
   get = async (uri: string) => {
