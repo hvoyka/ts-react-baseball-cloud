@@ -14,7 +14,7 @@ export interface ForgotFormValues {
 }
 
 interface ForgotFormProps {
-  onSubmit: ({ email }: ForgotFormValues) => void;
+  onSubmit: (values: ForgotFormValues) => void;
 }
 
 const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {

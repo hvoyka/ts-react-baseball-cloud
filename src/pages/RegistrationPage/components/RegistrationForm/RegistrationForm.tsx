@@ -27,72 +27,66 @@ export interface RegistrationFormValues {
 
 interface RegistrationFormProps {
   registrationStatus: FetchStatus;
-  onSubmit: ({
-    email,
-    password,
-    password_confirmation,
-  }: RegistrationFormValues) => void;
+  onSubmit: (values: RegistrationFormValues) => void;
+  className?: string;
 }
 
 const RegistrationForm: FC<RegistrationFormProps> = ({
   onSubmit,
   registrationStatus,
+  className,
 }) => {
   return (
-    <>
-      <Form
-        onSubmit={onSubmit}
-        render={({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <InputWrapper>
-              <Field<string>
-                name="email"
-                validate={combine(required(), emailValidator())}
-                render={(props) => {
-                  return <TextInput placeholder="Email" {...props} />;
-                }}
-              />
+    <Form
+      onSubmit={onSubmit}
+      render={({ handleSubmit }) => (
+        <form onSubmit={handleSubmit} className={className}>
+          <InputWrapper>
+            <Field<string>
+              name="email"
+              validate={combine(required(), emailValidator())}
+              render={(props) => {
+                return <TextInput placeholder="Email" {...props} />;
+              }}
+            />
 
-              <StyledUserIcon />
-            </InputWrapper>
+            <StyledUserIcon />
+          </InputWrapper>
 
-            <InputWrapper>
-              <Field<string>
-                name="password"
-                validate={combine(required(), lengthValidator({ minimum: 6 }))}
-                render={(props) => {
-                  return <TextInput placeholder="Password" {...props} />;
-                }}
-              />
+          <InputWrapper>
+            <Field<string>
+              name="password"
+              validate={combine(required(), lengthValidator({ minimum: 6 }))}
+              render={(props) => {
+                return <TextInput placeholder="Password" {...props} />;
+              }}
+            />
 
-              <StyledLockIcon />
-            </InputWrapper>
+            <StyledLockIcon />
+          </InputWrapper>
 
-            <InputWrapper>
-              <Field<string>
-                name="password_confirmation"
-                validate={combine(
-                  required(),
-                  confirmation({ field: "password", fieldLabel: "password" })
-                )}
-                render={(props) => {
-                  return (
-                    <TextInput placeholder="Confirm password" {...props} />
-                  );
-                }}
-              />
+          <InputWrapper>
+            <Field<string>
+              name="password_confirmation"
+              validate={combine(
+                required(),
+                confirmation({ field: "password", fieldLabel: "password" })
+              )}
+              render={(props) => {
+                return <TextInput placeholder="Confirm password" {...props} />;
+              }}
+            />
 
-              <StyledCheckIcon />
-            </InputWrapper>
+            <StyledCheckIcon />
+          </InputWrapper>
 
-            <div className="buttons">
-              <Button>Sign Up</Button>
-            </div>
-          </form>
-        )}
-      />
-      <p>{errors[registrationStatus]}</p>
-    </>
+          <div className="buttons">
+            <Button>Sign Up</Button>
+          </div>
+          <p>{errors[registrationStatus]}</p>
+        </form>
+      )}
+    />
   );
 };
 

@@ -15,14 +15,10 @@ const RegistrationPage: FC = () => {
   const [registrationStatus, setRegistrationStatus] =
     useState<FetchStatus>("idle");
 
-  const onSubmit = ({
-    email,
-    password,
-    password_confirmation,
-  }: RegistrationFormValues) => {
+  const onSubmit = (values: RegistrationFormValues) => {
     setRegistrationStatus("pending");
-    signUpRequest({ email, password, password_confirmation, role })
-      .then((data) => {
+    signUpRequest({ ...values, role })
+      .then(() => {
         setRegistrationStatus("fulfilled");
       })
       .catch((error) => {
