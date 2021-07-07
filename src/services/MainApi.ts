@@ -1,4 +1,9 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  gql,
+  InMemoryCache,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import StorageService from "./StorageService";
 
@@ -26,4 +31,21 @@ const authLink = setContext((_, { headers }) => {
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+});
+
+export const GET_USER_DATA = gql`
+  query getUserData {
+    token @client
+    client @client
+    uid @client
+  }
+`;
+
+client.writeQuery({
+  query: GET_USER_DATA,
+  data: {
+    token: userData?.token,
+    client: userData?.client,
+    uid: userData?.uid,
+  },
 });
