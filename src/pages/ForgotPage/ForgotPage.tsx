@@ -3,9 +3,18 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import { AuthLayout } from "layouts";
-import { ForgotForm, ContentWrapper } from "components";
+import ContentWrapper from "components/ContentWrapper/ContentWrapper";
+import { ForgotForm, ForgotFormValues } from "./components/ForgotForm";
+import { forgotPasswordRequest } from "services/api";
 
-const LoginPage: FC = () => {
+const ForgotPage: FC = () => {
+  const onSubmit = ({ email }: ForgotFormValues) => {
+    const redirect_url = process.env.REACT_APP_FORGOT_REDIRECT_URL;
+    forgotPasswordRequest({ email, redirect_url }).catch((error) => {
+      console.error(error);
+    });
+  };
+
   return (
     <AuthLayout>
       <ContentWrapper>
@@ -17,7 +26,7 @@ const LoginPage: FC = () => {
           </Text>
         </TextWrapper>
 
-        <ForgotForm />
+        <ForgotForm onSubmit={onSubmit} />
 
         <SignInWrapper>
           <div>Remember password?</div>
@@ -63,4 +72,4 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export default LoginPage;
+export default ForgotPage;

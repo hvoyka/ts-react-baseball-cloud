@@ -9,7 +9,7 @@ const RootRoute = () => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    const data = StorageService.getStorageData();
+    const data = StorageService.getUserData();
     if (data) {
       setToken(data.token);
     }

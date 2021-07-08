@@ -7,24 +7,17 @@ import {
 } from "redux-form-validators";
 import styled from "styled-components";
 
-import { forgotPasswordRequest } from "services/api";
 import { UserIcon, TextInput, Button } from "ui";
 
-interface ForgotFormValues {
+export interface ForgotFormValues {
   email: string;
 }
 
-const ForgotForm: FC = () => {
-  const onSubmit = ({ email }: ForgotFormValues) => {
-    const redirect_url =
-      "https://baseballcloud-front.herokuapp.com/resetpassword";
-    forgotPasswordRequest({ email, redirect_url })
-      .then((data) => {})
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+interface ForgotFormProps {
+  onSubmit: (values: ForgotFormValues) => void;
+}
 
+const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {
   return (
     <Form
       onSubmit={onSubmit}
@@ -38,9 +31,7 @@ const ForgotForm: FC = () => {
                 return <TextInput placeholder="Email" {...props} />;
               }}
             />
-            <IconWrapper>
-              <UserIcon />
-            </IconWrapper>
+            <StyledUserIcon />
           </InputWrapper>
 
           <div className="buttons">
@@ -57,7 +48,7 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const IconWrapper = styled.div`
+const StyledUserIcon = styled(UserIcon)`
   position: absolute;
   left: 15px;
   top: 14px;

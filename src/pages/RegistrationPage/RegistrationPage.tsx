@@ -3,11 +3,29 @@ import styled from "styled-components";
 
 import { Link } from "react-router-dom";
 import { AuthLayout } from "layouts";
-import { RegistrationForm, ContentWrapper, RegistrationTabs } from "components";
-import { ROLES } from "utils/roles";
+import { ContentWrapper } from "components";
+import { RegistrationForm, RegistrationTabs } from "./components/";
+import { RegistrationFormValues } from "./components/RegistrationForm";
+import { ROLES } from "types";
+import { signUpRequest } from "services/api";
+import { FetchStatus } from "types";
 
 const RegistrationPage: FC = () => {
   const [role, setRole] = useState(ROLES.PLAYER);
+  const [registrationStatus, setRegistrationStatus] =
+    useState<FetchStatus>("idle");
+
+  const onSubmit = (values: RegistrationFormValues) => {
+    setRegistrationStatus("pending");
+    signUpRequest({ ...values, role })
+      .then(() => {
+        setRegistrationStatus("fulfilled");
+      })
+      .catch((error) => {
+        console.error(error);
+        setRegistrationStatus("rejected");
+      });
+  };
 
   const onTabChange = (index: number) => {
     index === 1 ? setRole(ROLES.SCOUT) : setRole(ROLES.PLAYER);
@@ -16,8 +34,11 @@ const RegistrationPage: FC = () => {
   return (
     <AuthLayout>
       <ContentWrapper>
-        <RegistrationTabs onTabChange={onTabChange} />
-        <RegistrationForm role={role} />
+        <StyledRegistrationTabs onTabChange={onTabChange} />
+        <StyledRegistrationForm
+          onSubmit={onSubmit}
+          registrationStatus={registrationStatus}
+        />
 
         <TermsWrapper>
           By clicking Sign Up, you agree to our&nbsp;
@@ -52,6 +73,14 @@ const StyledLink = styled(Link)`
   &:hover {
     text-decoration: none;
   }
+`;
+
+const StyledRegistrationForm = styled(RegistrationForm)`
+  margin-bottom: 15px;
+`;
+
+const StyledRegistrationTabs = styled(RegistrationTabs)`
+  margin-bottom: 20px;
 `;
 
 export default RegistrationPage;

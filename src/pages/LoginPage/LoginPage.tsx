@@ -1,11 +1,31 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { signInRequest } from "services/api";
+import StorageService from "services/StorageService";
+import TokenContext from "context/tokenContext";
+
 import { AuthLayout } from "layouts";
-import { ContentWrapper, LoginForm } from "components";
+import { ContentWrapper } from "components";
+import { LoginForm, LoginFormValues } from "./components/LoginForm";
 
 const LoginPage: FC = () => {
+  const context = useContext(TokenContext);
+
+  const onSubmit = ({ email, password }: LoginFormValues) => {
+    signInRequest({ email, password })
+      .then((data) => {
+        const token = data.headers["access-token"];
+        const client = data.headers.client;
+        const uid = data.headers.uid;
+        StorageService.setUserData({ token, client, uid });
+        context.setToken(token);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
     <AuthLayout>
       <ContentWrapper>
@@ -14,7 +34,7 @@ const LoginPage: FC = () => {
           <Text>Sign into your account here:</Text>
         </TextWrapper>
 
-        <LoginForm />
+        <LoginForm onSubmit={onSubmit} />
 
         <ForgotWrapper>
           <Link to="/forgot-password">Forgotten password?</Link>

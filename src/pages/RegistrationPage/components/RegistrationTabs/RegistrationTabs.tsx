@@ -6,22 +6,25 @@ import { CheckIcon } from "ui";
 
 interface RegistrationTabsProps {
   onTabChange: (index: number) => void;
+  className?: string;
 }
 
-const RegistrationTabs: FC<RegistrationTabsProps> = ({ onTabChange }) => {
+const RegistrationTabs: FC<RegistrationTabsProps> = ({
+  onTabChange,
+  className,
+}) => {
   return (
-    <StyledTabs onSelect={(index: number) => onTabChange(index)}>
+    <Tabs
+      onSelect={(index: number) => onTabChange(index)}
+      className={className}
+    >
       <StyledTabList>
         <StyledTab>
-          <TabIconWrapper>
-            <CheckIcon fill="#fff" width={14} height={14} />
-          </TabIconWrapper>
+          <StyledCheckIcon />
           Sign Up as Player
         </StyledTab>
         <StyledTab>
-          <TabIconWrapper>
-            <CheckIcon fill="#fff" width={14} height={14} />
-          </TabIconWrapper>
+          <StyledCheckIcon />
           Sign Up as Scout
         </StyledTab>
       </StyledTabList>
@@ -40,13 +43,9 @@ const RegistrationTabs: FC<RegistrationTabsProps> = ({ onTabChange }) => {
           their own profile.
         </Text>
       </StyledTabPanel>
-    </StyledTabs>
+    </Tabs>
   );
 };
-
-const StyledTabs = styled(Tabs)`
-  margin-bottom: 20px;
-`;
 
 const StyledTabList = styled(TabList)`
   display: flex;
@@ -57,6 +56,7 @@ const StyledTab = styled(Tab)`
   padding: 15px 5px 17px;
   flex: 0 1 50%;
   display: flex;
+  align-items: center;
   cursor: pointer;
   justify-content: center;
   color: var(--green1);
@@ -64,8 +64,8 @@ const StyledTab = styled(Tab)`
   font-weight: 700;
   line-height: 1.13;
   border-radius: 0;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   border: solid 1px var(--green1);
   background-color: var(--white);
   &.react-tabs__tab--selected {
@@ -75,8 +75,11 @@ const StyledTab = styled(Tab)`
   }
 `;
 
-const TabIconWrapper = styled.div`
+const StyledCheckIcon = styled(CheckIcon)`
   margin-right: 6px;
+  width: 14px;
+  height: 14px;
+  fill: var(--white);
 `;
 
 const StyledTabPanel = styled(TabPanel)`

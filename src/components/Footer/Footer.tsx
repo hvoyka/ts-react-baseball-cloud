@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Footer: React.FC = () => {
@@ -6,20 +7,20 @@ const Footer: React.FC = () => {
     <Root>
       <div>
         <Text>© 2018 BaseballCloud</Text>
-        <Link href="/">Terms of Service</Link>
-        <Link href="/">Privacy Policy</Link>
+        <StyledLink to="/">Terms of Service</StyledLink>
+        <StyledLink to="/">Privacy Policy</StyledLink>
       </div>
       <div>
-        <Link href="/">Blog</Link>
-        <Link href="/">Twitter</Link>
-        <Link href="/">Instagram</Link>
-        <Link href="/">Facebook</Link>
+        <StyledLink to="/">Blog</StyledLink>
+        <StyledLink to="/">Twitter</StyledLink>
+        <StyledLink to="/">Instagram</StyledLink>
+        <StyledLink to="/">Facebook</StyledLink>
       </div>
     </Root>
   );
 };
 
-const Root = styled.header`
+const Root = styled.footer`
   background: var(--white);
   display: flex;
   justify-content: space-between;
@@ -35,7 +36,7 @@ const Text = styled.span`
   padding-right: 10px;
 `;
 
-const Link = styled.a`
+const StyledLink = styled(Link)`
   padding-right: 10px;
 `;
 

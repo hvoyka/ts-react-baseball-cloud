@@ -1,35 +1,20 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Form, Field } from "react-final-form";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { UserIcon, LockIcon, TextInput, Button } from "ui";
 import { required } from "redux-form-validators";
-import { signInRequest } from "services/api";
-import StorageService from "services/StorageService";
-import TokenContext from "context/tokenContext";
 
-interface LoginFormValues {
+export interface LoginFormValues {
   email: string;
   password: string;
 }
 
-const LoginForm: FC = () => {
-  const context = useContext(TokenContext);
+interface LoginFormProps {
+  onSubmit: (values: LoginFormValues) => void;
+}
 
-  const onSubmit = ({ email, password }: LoginFormValues) => {
-    signInRequest({ email, password })
-      .then((data) => {
-        const token = data.headers["access-token"];
-        const client = data.headers.client;
-        const uid = data.headers.uid;
-        StorageService.setStorageData({ token, client, uid });
-        context.setToken(token);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
+const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
   return (
     <Form
       onSubmit={onSubmit}
@@ -43,9 +28,8 @@ const LoginForm: FC = () => {
                 return <TextInput placeholder="Email" {...props} />;
               }}
             />
-            <IconWrapper>
-              <UserIcon />
-            </IconWrapper>
+
+            <StyledUserIcon />
           </InputWrapper>
 
           <InputWrapper>
@@ -56,9 +40,8 @@ const LoginForm: FC = () => {
                 return <TextInput placeholder="Password" {...props} />;
               }}
             />
-            <IconWrapper>
-              <LockIcon />
-            </IconWrapper>
+
+            <StyledLockIcon />
           </InputWrapper>
 
           <div className="buttons">
@@ -75,10 +58,18 @@ const InputWrapper = styled.div`
   position: relative;
 `;
 
-const IconWrapper = styled.div`
+const StyledIcon = css`
   position: absolute;
   left: 15px;
   top: 14px;
+`;
+
+const StyledLockIcon = styled(LockIcon)`
+  ${StyledIcon}
+`;
+
+const StyledUserIcon = styled(UserIcon)`
+  ${StyledIcon}
 `;
 
 export default LoginForm;
