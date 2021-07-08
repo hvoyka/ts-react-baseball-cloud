@@ -1,26 +1,25 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
 import { signInRequest } from "services/AuthApi";
-import StorageService from "services/StorageService";
-import TokenContext from "context/tokenContext";
 
 import { AuthLayout } from "layouts";
 import { ContentWrapper } from "components";
 import { LoginForm, LoginFormValues } from "./components/LoginForm";
+import { userDataVar } from "services/cache";
+import StorageService from "services/StorageService";
 
 const LoginPage: FC = () => {
-  const context = useContext(TokenContext);
-
   const onSubmit = ({ email, password }: LoginFormValues) => {
     signInRequest({ email, password })
       .then((data) => {
+        const id = data.data.data.id;
         const token = data.headers["access-token"];
         const client = data.headers.client;
         const uid = data.headers.uid;
-        StorageService.setUserData({ token, client, uid });
-        context.setToken(token);
+
+        StorageService.setUserData({ id, token, client, uid });
+        userDataVar({ id, token, client, uid });
       })
       .catch((error) => {
         console.error(error);

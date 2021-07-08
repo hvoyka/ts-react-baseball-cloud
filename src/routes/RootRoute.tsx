@@ -1,29 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import AuthorizeRoute from "./AuthorizeRoute";
 import UnAuthorizeRoute from "./UnAuthorizeRoute";
 import StorageService from "services/StorageService";
-import TokenContext from "context/tokenContext";
-import { ApolloProvider } from "@apollo/client";
-import { client } from "services/MainApi";
+import { userDataVar } from "services/cache";
+import { useReactiveVar } from "@apollo/client";
 
 const RootRoute = () => {
-  const [token, setToken] = useState("");
+  const userStateData = useReactiveVar(userDataVar);
+  const userStorageData = StorageService.getUserData();
 
-  useEffect(() => {
-    const data = StorageService.getUserData();
-    if (data) {
-      setToken(data.token);
-    }
-  }, []);
+  if (!userStateData.token && userStorageData) {
+    userDataVar(userStorageData);
+  }
 
-  return (
-    <ApolloProvider client={client}>
-      <TokenContext.Provider value={{ token, setToken }}>
-        {token ? <AuthorizeRoute /> : <UnAuthorizeRoute />}
-      </TokenContext.Provider>
-    </ApolloProvider>
-  );
+  return userStateData.token ? <AuthorizeRoute /> : <UnAuthorizeRoute />;
 };
 
 export default RootRoute;

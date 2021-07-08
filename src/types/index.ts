@@ -12,3 +12,10 @@ export enum ROLES {
   PLAYER = "player",
   SCOUT = "scout",
 }
+
+export interface UserData {
+  id: string;
+  token: string;
+  client: string;
+  uid: string;
+}

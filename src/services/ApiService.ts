@@ -1,21 +1,22 @@
 import axios, { AxiosInstance } from "axios";
+
 import StorageService from "./StorageService";
 
 class ApiService {
   private axios: AxiosInstance;
   constructor() {
     this.axios = axios.create({
-      baseURL: "https://baseballcloud-back.herokuapp.com/api/v1",
+      baseURL: process.env.REACT_APP_API_URL,
     });
 
     this.axios.interceptors.request.use(async function (config) {
-      const storageData = await StorageService.getUserData();
-      if (storageData) {
-        config.headers["access-token"] = storageData.token;
-        config.headers.client = storageData.client;
-        config.headers.uid = storageData.uid;
+      const userData = await StorageService.getUserData();
+
+      if (userData?.token) {
+        config.headers["access-token"] = userData.token;
+        config.headers.client = userData.client;
+        config.headers.uid = userData.uid;
       }
-      console.log(storageData);
       return config;
     });
   }

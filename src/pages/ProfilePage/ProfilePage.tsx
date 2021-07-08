@@ -2,22 +2,15 @@ import { FC } from "react";
 
 import { AuthLayout } from "layouts";
 import { useQuery } from "@apollo/client";
-import { GET_PROFILE_QUERY } from "services/queries";
+import { GET_CURRENT_PROFILE_QUERY } from "services/queries";
 import styled from "styled-components";
 import { ReturnArrow } from "ui";
 import { Loader } from "ui";
 import { AvatarForm } from "./components/AvatarForm";
-import { GET_USER_DATA } from "services/MainApi";
 
-const LoginPage: FC = () => {
-  const { loading, data } = useQuery(GET_PROFILE_QUERY, {
-    variables: { id: "881" },
-  });
-
-  const { data: currentData } = useQuery(GET_USER_DATA);
-  console.log("currentData", currentData);
-
-  console.log("data", data);
+const ProfilePage: FC = () => {
+  const { loading, data, error } = useQuery(GET_CURRENT_PROFILE_QUERY);
+  console.log(data, error);
 
   return (
     <AuthLayout>
@@ -117,4 +110,4 @@ const TextBox = styled.div`
   text-align: center;
 `;
 
-export default LoginPage;
+export default ProfilePage;
