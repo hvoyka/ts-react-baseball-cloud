@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 import AuthorizeRoute from "./AuthorizeRoute";
-import StorageService from "../services/StorageService";
 import UnAuthorizeRoute from "./UnAuthorizeRoute";
-import TokenContext from "../context/tokenContext";
+import StorageService from "services/StorageService";
+import TokenContext from "context/tokenContext";
 
 const RootRoute = () => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    const data = StorageService.getData();
+    const data = StorageService.getUserData();
     if (data) {
       setToken(data.token);
     }
   }, []);
-
-  console.log("Root ", token);
 
   return (
     <TokenContext.Provider value={{ token, setToken }}>

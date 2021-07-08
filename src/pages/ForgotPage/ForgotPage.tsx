@@ -1,34 +1,18 @@
 import { FC } from "react";
-import { Form, Field } from "react-final-form";
-import {
-  combine,
-  required,
-  email as emailValidator,
-} from "redux-form-validators";
-import TextInput from "../../ui/components/TextInput";
-import Button from "../../ui/components/Button";
-import AuthLayout from "../../layouts/AuthLayout";
-import ContentWrapper from "../../components/ContentWrapper";
 import styled from "styled-components";
-import UserIcon from "../../ui/icons/UserIcon";
 import { Link } from "react-router-dom";
-import { forgotPasswordRequest } from "../../services/api";
 
-interface AddUserNameFromValues {
-  email: string;
-}
+import { AuthLayout } from "layouts";
+import ContentWrapper from "components/ContentWrapper/ContentWrapper";
+import { ForgotForm, ForgotFormValues } from "./components/ForgotForm";
+import { forgotPasswordRequest } from "services/api";
 
-const LoginPage: FC<{}> = () => {
-  const onSubmit = ({ email }: AddUserNameFromValues) => {
-    const redirect_url =
-      "https://baseballcloud-front.herokuapp.com/resetpassword";
-    forgotPasswordRequest({ email, redirect_url })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+const ForgotPage: FC = () => {
+  const onSubmit = ({ email }: ForgotFormValues) => {
+    const redirect_url = process.env.REACT_APP_FORGOT_REDIRECT_URL;
+    forgotPasswordRequest({ email, redirect_url }).catch((error) => {
+      console.error(error);
+    });
   };
 
   return (
@@ -41,49 +25,17 @@ const LoginPage: FC<{}> = () => {
             your password via email.
           </Text>
         </TextWrapper>
-        <Form
-          onSubmit={onSubmit}
-          render={({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <InputWrapper>
-                <Field<string>
-                  name="email"
-                  validate={combine(required(), emailValidator())}
-                  render={(props) => {
-                    return <TextInput placeholder="Email" {...props} />;
-                  }}
-                />
-                <IconWrapper>
-                  <UserIcon />
-                </IconWrapper>
-              </InputWrapper>
 
-              <div className="buttons">
-                <Button>Submit</Button>
-              </div>
-            </form>
-          )}
-        />
+        <ForgotForm onSubmit={onSubmit} />
 
         <SignInWrapper>
           <div>Remember password?</div>
-          <Link to="/login">Sign In</Link>
+          <StyledLink to="/login">Sign In</StyledLink>
         </SignInWrapper>
       </ContentWrapper>
     </AuthLayout>
   );
 };
-
-const InputWrapper = styled.div`
-  margin-bottom: 15px;
-  position: relative;
-`;
-
-const IconWrapper = styled.div`
-  position: absolute;
-  left: 15px;
-  top: 14px;
-`;
 
 const TextWrapper = styled.div`
   margin-bottom: 48px;
@@ -93,32 +45,31 @@ const Title = styled.h1`
   font-size: 24px;
   line-height: 1.25;
   font-weight: 400;
-  -webkit-text-align: center;
   text-align: center;
-  color: #667784;
+  color: var(--gray4);
   margin-bottom: 8px;
 `;
 
 const Text = styled.p`
   line-height: 1.25;
   font-weight: 400;
-  -webkit-text-align: center;
   text-align: center;
-  color: #667784;
+  color: var(--gray4);
   font-size: 16px;
 `;
 
 const SignInWrapper = styled.div`
   display: flex;
   justify-content: center;
-  a {
-    padding-left: 3px;
-    text-decoration: underline;
-    color: #48bbff;
-    &:hover {
-      text-decoration: none;
-    }
+`;
+
+const StyledLink = styled(Link)`
+  padding-left: 3px;
+  text-decoration: underline;
+  color: var(--blue1);
+  &:hover {
+    text-decoration: none;
   }
 `;
 
-export default LoginPage;
+export default ForgotPage;

@@ -5,11 +5,11 @@ class ApiService {
   private axios: AxiosInstance;
   constructor() {
     this.axios = axios.create({
-      baseURL: "https://baseballcloud-back.herokuapp.com/api/v1",
+      baseURL: process.env.REACT_APP_API_URL,
     });
 
     this.axios.interceptors.request.use(async function (config) {
-      const storageData = await StorageService.getData();
+      const storageData = await StorageService.getUserData();
       if (storageData) {
         config.headers["access-token"] = storageData.client;
         config.headers.client = storageData.client;

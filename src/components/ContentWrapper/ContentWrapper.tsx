@@ -1,13 +1,14 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 
-const ContentWrapper: FC<{ children: ReactNode; maxWidth?: number }> = ({
-  children,
-  maxWidth = 450,
-}) => {
+interface ContentWrapperProps {
+  className?: string;
+}
+
+const ContentWrapper: FC<ContentWrapperProps> = ({ children, className }) => {
   return (
-    <Root>
-      <Wrapper maxWidth={maxWidth}>{children}</Wrapper>
+    <Root className={className}>
+      <Wrapper>{children}</Wrapper>
     </Root>
   );
 };
@@ -17,18 +18,16 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   flex-grow: 1;
   overflow: auto;
   padding: 16px;
 `;
 
-const Wrapper = styled.div<{ maxWidth: number }>`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-
+  max-width: 450px;
   width: 100%;
-  max-width: ${({ maxWidth }) => `${maxWidth}px`};
   padding: 16px;
 
   border-radius: 8px;

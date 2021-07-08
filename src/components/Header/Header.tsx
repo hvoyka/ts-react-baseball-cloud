@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../../assets/images/svg/header-logo.svg";
+import { LogoIcon } from "ui";
 
-const Header: FC<{}> = () => {
+const Header: FC = () => {
   return (
     <Root>
       <Link to="/">
-        <img src={Logo} alt="Baseball cloud" />
+        <LogoIcon />
       </Link>
     </Root>
   );

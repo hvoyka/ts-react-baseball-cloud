@@ -1,25 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Footer: React.FC = () => {
   return (
     <Root>
       <div>
-        <span>© 2018 BaseballCloud</span>
-        <a href="/">Terms of Service</a>
-        <a href="/">Privacy Policy</a>
+        <Text>© 2018 BaseballCloud</Text>
+        <StyledLink to="/">Terms of Service</StyledLink>
+        <StyledLink to="/">Privacy Policy</StyledLink>
       </div>
       <div>
-        <a href="/">Blog</a>
-        <a href="/">Twitter</a>
-        <a href="/">Instagram</a>
-        <a href="/">Facebook</a>
+        <StyledLink to="/">Blog</StyledLink>
+        <StyledLink to="/">Twitter</StyledLink>
+        <StyledLink to="/">Instagram</StyledLink>
+        <StyledLink to="/">Facebook</StyledLink>
       </div>
     </Root>
   );
 };
 
-const Root = styled.header`
+const Root = styled.footer`
   background: var(--white);
   display: flex;
   justify-content: space-between;
@@ -29,12 +30,14 @@ const Root = styled.header`
   line-height: 20px;
   padding: 16px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  span {
-    padding-right: 10px;
-  }
-  a {
-    padding-right: 8px;
-  }
+`;
+
+const Text = styled.span`
+  padding-right: 10px;
+`;
+
+const StyledLink = styled(Link)`
+  padding-right: 10px;
 `;
 
 export default Footer;

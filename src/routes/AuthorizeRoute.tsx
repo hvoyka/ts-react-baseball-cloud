@@ -1,14 +1,13 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import ProfilePage from "../pages/ProfilePage";
+import { Switch, Route } from "react-router-dom";
+import { ProfilePage } from "pages";
+import { ROUTES } from "utils/routes";
 
 const AuthorizeRoute = () => {
   return (
     <Switch>
-      <Route path="/profile">
-        <ProfilePage />
-      </Route>
-      <Redirect to="/profile" />;
+      <Route path={ROUTES.PROFILE} component={ProfilePage} />
+      <Route path="*" component={ProfilePage} />
     </Switch>
   );
 };
