@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROFILE_QUERY = gql`
+export const GET_PROFILE = gql`
   query Profile($id: String!) {
     profile(id: $id) {
       id
@@ -80,7 +80,7 @@ export const GET_PROFILE_QUERY = gql`
     }
   }
 `;
-export const GET_CURRENT_PROFILE_QUERY = gql`
+export const GET_CURRENT_PROFILE = gql`
   query currentProfile {
     current_profile {
       avatar

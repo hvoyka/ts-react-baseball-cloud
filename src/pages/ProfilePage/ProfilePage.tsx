@@ -2,14 +2,14 @@ import { FC } from "react";
 
 import { AuthLayout } from "layouts";
 import { useQuery } from "@apollo/client";
-import { GET_CURRENT_PROFILE_QUERY } from "services/queries";
+import { GET_CURRENT_PROFILE } from "apollo/queries";
 import styled from "styled-components";
-import { ReturnArrow } from "ui";
-import { Loader } from "ui";
+import { ReturnArrow, Loader } from "ui";
+
 import { AvatarForm } from "./components/AvatarForm";
 
 const ProfilePage: FC = () => {
-  const { loading, data, error } = useQuery(GET_CURRENT_PROFILE_QUERY);
+  const { loading, data, error } = useQuery(GET_CURRENT_PROFILE);
   console.log(data, error);
 
   return (
@@ -48,7 +48,7 @@ const FlexContainer = styled.div`
 `;
 
 const Aside = styled.aside`
-  background: #fff;
+  background: var(--white);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   overflow: auto;
   padding: 16px;
@@ -57,7 +57,7 @@ const Aside = styled.aside`
   position: relative;
   width: 298px;
   flex: 0 0 298px;
-  background: #ffffff;
+  background: var(--white);
   height: auto;
   z-index: 1;
   display: block;
@@ -66,7 +66,7 @@ const Aside = styled.aside`
 `;
 
 const PageContentWrapper = styled.div`
-  background: #788b99;
+  background: var(--gray2);
   width: calc(100vw - 220px);
   flex-grow: 1;
 `;
@@ -77,7 +77,7 @@ const PageContent = styled.div`
   justify-content: center;
   min-height: 570px;
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: var(--white);
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.1);
 `;
 const AccountInfoContainer = styled.div`
@@ -99,14 +99,14 @@ const HeadingBox = styled.div`
   line-height: 1.25;
   font-weight: 400;
   text-align: center;
-  color: #667784;
+  color: var(--gray4);
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 16px;
 `;
 const TextBox = styled.div`
   font-size: 16px;
-  color: #667784;
+  color: var(--gray4);
   text-align: center;
 `;
 

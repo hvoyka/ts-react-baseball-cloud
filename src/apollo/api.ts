@@ -1,7 +1,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-import StorageService from "./StorageService";
+import StorageService from "../services/StorageService";
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URL,

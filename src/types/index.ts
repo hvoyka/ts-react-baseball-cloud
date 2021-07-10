@@ -14,7 +14,6 @@ export enum ROLES {
 }
 
 export interface UserData {
-  id: string;
   token: string;
   client: string;
   uid: string;

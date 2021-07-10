@@ -1,25 +1,25 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { signInRequest } from "services/AuthApi";
 
 import { AuthLayout } from "layouts";
 import { ContentWrapper } from "components";
 import { LoginForm, LoginFormValues } from "./components/LoginForm";
-import { userDataVar } from "services/cache";
+
 import StorageService from "services/StorageService";
 
 const LoginPage: FC = () => {
+  const history = useHistory();
   const onSubmit = ({ email, password }: LoginFormValues) => {
     signInRequest({ email, password })
       .then((data) => {
-        const id = data.data.data.id;
         const token = data.headers["access-token"];
         const client = data.headers.client;
         const uid = data.headers.uid;
 
-        StorageService.setUserData({ id, token, client, uid });
-        userDataVar({ id, token, client, uid });
+        StorageService.setUserData({ token, client, uid });
+        history.go(0);
       })
       .catch((error) => {
         console.error(error);

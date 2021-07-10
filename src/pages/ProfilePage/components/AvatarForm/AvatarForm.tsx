@@ -144,15 +144,15 @@ const fileButtonsStyle = css`
 
 const UploadButton = styled.button`
   ${fileButtonsStyle}
-  color: #48bbff;
+  color: var(--blue1);
   margin-right: 20px;
 `;
 const CancelButton = styled.button`
   ${fileButtonsStyle}
-  color: #788b99;
+  color: var(--gray2);
   &:hover,
   &:focus {
-    color: #23527c;
+    color: var(--blue4);
   }
 `;
 
