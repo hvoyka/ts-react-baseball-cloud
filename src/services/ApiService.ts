@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import StorageService from "./StorageService";
 
@@ -9,8 +9,8 @@ class ApiService {
       baseURL: process.env.REACT_APP_API_URL,
     });
 
-    this.axios.interceptors.request.use(async function (config) {
-      const userData = await StorageService.getUserData();
+    this.axios.interceptors.request.use(function (config) {
+      const userData = StorageService.getUserData();
 
       if (userData?.token) {
         config.headers["access-token"] = userData.token;
@@ -25,7 +25,7 @@ class ApiService {
     return this.axios.post(uri, data);
   };
 
-  put = async (uri: string, data?: any, config?: any) => {
+  put = async (uri: string, data?: any, config?: AxiosRequestConfig) => {
     return this.axios.put(uri, data, config);
   };
 

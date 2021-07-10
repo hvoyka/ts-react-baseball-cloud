@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FC, useState } from "react";
 import ApiService from "services/ApiService";
 import styled, { css } from "styled-components";
 
-const AvatarForm = () => {
-  const [imageName, setImageName] = useState<string>("");
-  const [photoUrl, setPhotoUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [file, setFile] = useState(null);
+interface AvatarFormProps {
+  onAvatarUpload: (imageUrl: string) => void;
+}
 
-  const handleFileChange = (event: any) => {
+const AvatarForm: FC<AvatarFormProps> = ({ onAvatarUpload }) => {
+  const [imageName, setImageName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
     const loadedFile = event.target.files[0];
-    const fileName = loadedFile.name.slice(0, 50);
+    const fileName = loadedFile.name;
     const fileUrl = URL.createObjectURL(loadedFile);
+
     setFile(loadedFile);
     setImageName(fileName);
     setPhotoUrl(fileUrl);
@@ -23,21 +31,30 @@ const AvatarForm = () => {
   };
 
   const handleLoadForm = async () => {
-    if (file !== null) {
+    if (file) {
       setIsLoading(true);
-      const response = await ApiService.post("/s3/signed_url", {
+      ApiService.post("/s3/signed_url", {
         name: imageName,
-      });
-
-      let signedUrl = await response.data.signedUrl;
-
-      await ApiService.put(signedUrl, file, {
-        headers: {
-          "Content-type": "image/png",
-        },
-      });
-      await setIsLoading(false);
-      console.log(signedUrl);
+      })
+        .then((response) => {
+          const signedUrl = response.data.signedUrl;
+          console.log(signedUrl);
+          return ApiService.put(signedUrl, file, {
+            headers: {
+              "Content-type": "image/png",
+            },
+          });
+        })
+        .then(({ request }) => {
+          const responseUrl = request.responseURL;
+          onAvatarUpload(responseUrl.slice(0, responseUrl.indexOf("?")));
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -59,7 +76,7 @@ const AvatarForm = () => {
         ) : (
           <>
             <FileLabel htmlFor="uploadAvatar">
-              {imageName ? imageName : "Choose Photo"}
+              {imageName || "Choose Photo"}
             </FileLabel>
             {photoUrl && (
               <div>
@@ -119,12 +136,12 @@ const FileLabel = styled.label`
   font-size: 14px;
   line-height: 1;
   font-weight: 400;
-  color: #788b99;
+  color: var(--gray2);
   cursor: pointer;
   white-space: nowrap;
   margin-bottom: 10px;
   &:hover {
-    color: #48bbff;
+    color: var(--blue1);
     text-decoration: underline;
   }
 `;

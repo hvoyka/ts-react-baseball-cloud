@@ -1,13 +1,17 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-const Loader = () => {
+interface LoaderProps {
+  className?: string;
+}
+
+const Loader = ({ className }: LoaderProps) => {
   return (
     <LoaderContainer>
-      <Spinner>
-        <div></div>
-        <div></div>
-        <div></div>
+      <Spinner className={className}>
+        <Dot />
+        <Dot />
+        <Dot />
       </Spinner>
     </LoaderContainer>
   );
@@ -31,27 +35,28 @@ const animation = keyframes`
 }
 `;
 
+const Dot = styled.div`
+  width: 18px;
+  height: 18px;
+  background-color: var(--blue1);
+  border-radius: 100%;
+  display: inline-block;
+  animation: ${animation} 1.4s infinite ease-in-out both;
+  &:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+  &:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0s;
+  }
+`;
+
 const Spinner = styled.div`
   margin: 0 auto 0;
   width: 70px;
   text-align: center;
-  div:nth-child(1) {
-    animation-delay: -0.32s;
-  }
-  div:nth-child(2) {
-    animation-delay: -0.16s;
-  }
-  div:nth-child(3) {
-    animation-delay: 0s;
-  }
-  & > div {
-    width: 18px;
-    height: 18px;
-    background-color: #48bbff;
-    border-radius: 100%;
-    display: inline-block;
-    animation: ${animation} 1.4s infinite ease-in-out both;
-  }
 `;
 
 export default Loader;

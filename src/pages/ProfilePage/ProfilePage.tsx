@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { AuthLayout } from "layouts";
 import { useQuery } from "@apollo/client";
@@ -9,17 +9,26 @@ import { ReturnArrow, Loader } from "ui";
 import { AvatarForm } from "./components/AvatarForm";
 
 const ProfilePage: FC = () => {
-  const { loading, data, error } = useQuery(GET_CURRENT_PROFILE);
-  console.log(data, error);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
+  const {
+    loading: isProfileLoading,
+    data: profileData,
+    error: profileError,
+  } = useQuery(GET_CURRENT_PROFILE);
+
+  const onAvatarUpload = (imageUrl: string) => {
+    setUploadedImageUrl(imageUrl);
+  };
 
   return (
     <AuthLayout>
-      {loading ? (
+      {isProfileLoading ? (
         <Loader />
       ) : (
         <FlexContainer>
           <Aside>
-            <AvatarForm />
+            <AvatarForm onAvatarUpload={onAvatarUpload} />
           </Aside>
           <PageContentWrapper>
             <PageContent>
@@ -60,8 +69,7 @@ const Aside = styled.aside`
   background: var(--white);
   height: auto;
   z-index: 1;
-  display: block;
-  transition: all 0.1s;
+  transition: 0.1s;
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.1);
 `;
 
@@ -80,6 +88,7 @@ const PageContent = styled.div`
   background-color: var(--white);
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.1);
 `;
+
 const AccountInfoContainer = styled.div`
   display: flex;
   max-width: 420px;
@@ -88,12 +97,9 @@ const AccountInfoContainer = styled.div`
 `;
 
 const ImageBox = styled.div`
-  display: block;
   margin-bottom: 17px;
-  span {
-    display: flex;
-  }
 `;
+
 const HeadingBox = styled.div`
   font-size: 24px;
   line-height: 1.25;
@@ -104,6 +110,7 @@ const HeadingBox = styled.div`
   font-weight: 700;
   margin-bottom: 16px;
 `;
+
 const TextBox = styled.div`
   font-size: 16px;
   color: var(--gray4);

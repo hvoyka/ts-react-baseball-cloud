@@ -7,19 +7,16 @@ const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URL,
 });
 
-const userData = StorageService.getUserData();
-
 const authLink = setContext((_, { headers }) => {
-  const token = userData?.token;
-  const client = userData?.client;
-  const uid = userData?.uid;
+  const userData = StorageService.getUserData();
+  const { token, client, uid } = userData || {};
 
   return {
     headers: {
       ...headers,
-      "access-token": token ? token : "",
-      client: client,
-      uid: uid,
+      "access-token": token || "",
+      client,
+      uid,
     },
   };
 });
