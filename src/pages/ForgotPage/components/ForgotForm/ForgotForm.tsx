@@ -34,9 +34,9 @@ const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {
             <StyledUserIcon />
           </InputWrapper>
 
-          <div className="buttons">
-            <Button>Submit</Button>
-          </div>
+          <ButtonWrapper>
+            <Button rootCSS={{ width: "100%" }}>Submit</Button>
+          </ButtonWrapper>
         </form>
       )}
     />
@@ -46,6 +46,10 @@ const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {
 const InputWrapper = styled.div`
   margin-bottom: 15px;
   position: relative;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-bottom: 15px;
 `;
 
 const StyledUserIcon = styled(UserIcon)`

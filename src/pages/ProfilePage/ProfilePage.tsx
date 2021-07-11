@@ -1,15 +1,17 @@
 import { FC, useState } from "react";
+import styled from "styled-components";
 
 import { AuthLayout } from "layouts";
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_PROFILE } from "apollo/queries";
-import styled from "styled-components";
-import { ReturnArrow, Loader } from "ui";
-
-import { AvatarForm } from "./components/AvatarForm";
+import { ReturnArrow, Loader, Button } from "ui";
+import { AvatarForm } from "./components";
+import { EditForm } from "./components/EditForm";
+import { ProfileFormValues } from "types";
 
 const ProfilePage: FC = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [isFormEdit, setIsFormEdit] = useState(false);
 
   const {
     loading: isProfileLoading,
@@ -21,6 +23,13 @@ const ProfilePage: FC = () => {
     setUploadedImageUrl(imageUrl);
   };
 
+  const onEditFormSubmit = ({ first_name }: ProfileFormValues) => {
+    if (first_name) {
+      console.log(first_name);
+      setIsFormEdit(false);
+    }
+  };
+
   return (
     <AuthLayout>
       {isProfileLoading ? (
@@ -28,7 +37,14 @@ const ProfilePage: FC = () => {
       ) : (
         <FlexContainer>
           <Aside>
-            <AvatarForm onAvatarUpload={onAvatarUpload} />
+            {isFormEdit ? (
+              <>
+                <AvatarForm onAvatarUpload={onAvatarUpload} />
+                <EditForm onEditFormSubmit={onEditFormSubmit} />
+              </>
+            ) : (
+              <Button onClick={() => setIsFormEdit(true)}>Edit Form</Button>
+            )}
           </Aside>
           <PageContentWrapper>
             <PageContent>

@@ -18,3 +18,7 @@ export interface UserData {
   client: string;
   uid: string;
 }
+
+export interface ProfileFormValues {
+  first_name?: string;
+}

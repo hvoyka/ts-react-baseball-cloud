@@ -1,13 +1,50 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css, CSSProp } from "styled-components";
 
-const Button: React.FC = ({ children }) => (
-  <StyledButton>{children}</StyledButton>
+interface ButtonProps {
+  type?: "button" | "submit";
+  variant?: Variant;
+  rootCSS?: CSSProp;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}
+
+type Variant = "primary" | "secondary";
+
+const variantButtonOptions = {
+  primary: `
+  background-color:var(--blue1);
+  border-color:var(--blue1);
+  color: var(--white);
+  &:hover{
+    background-color: var(--blue2);
+  }
+  `,
+  secondary: `
+  background-color:var(--white);
+  border-color:var(--blue1);
+  color: var(--blue1);
+  &:hover{
+    background-color: var(--blue1);
+    color: var(--white);
+  }
+  `,
+};
+
+const Button: React.FC<ButtonProps> = ({
+  type = "button",
+  variant = "primary",
+  rootCSS,
+  children,
+  ...rest
+}) => (
+  <StyledButton variant={variant} $CSS={rootCSS} {...rest}>
+    {children}
+  </StyledButton>
 );
 
 export default Button;
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{ variant?: Variant; $CSS?: CSSProp }>`
   display: block;
   border-radius: 4px;
   font-size: 16px;
@@ -17,10 +54,13 @@ const StyledButton = styled.button`
   border: solid 1px transparent;
   box-shadow: 0 0 4px 0 rgba(72, 187, 255, 0);
   background-color: var(--blue1);
-  width: 100%;
   padding: 15px 19px 14px 18px;
-  margin-bottom: 15px;
   &:hover {
     background-color: var(--blue2);
   }
+  ${({ variant = "primary" }) =>
+    css`
+      ${variantButtonOptions[variant]}
+    `}
+  ${({ $CSS }) => $CSS};
 `;
