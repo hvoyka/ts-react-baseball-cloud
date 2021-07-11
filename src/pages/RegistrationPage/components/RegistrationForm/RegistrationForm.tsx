@@ -85,7 +85,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({
               <StyledCheckIcon />
             </InputWrapper>
 
-            <Button rootCSS={{ width: "100%" }}>Sign Up</Button>
+            <Button>Sign Up</Button>
           </form>
         )}
       />

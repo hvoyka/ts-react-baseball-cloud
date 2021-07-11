@@ -23,9 +23,9 @@ const ProfilePage: FC = () => {
     setUploadedImageUrl(imageUrl);
   };
 
-  const onEditFormSubmit = ({ first_name }: ProfileFormValues) => {
-    if (first_name) {
-      console.log(first_name);
+  const onEditFormSubmit = (values: ProfileFormValues) => {
+    if (values) {
+      console.log(values);
       setIsFormEdit(false);
     }
   };

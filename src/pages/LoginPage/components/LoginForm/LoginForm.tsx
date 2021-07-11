@@ -44,7 +44,7 @@ const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
             <StyledLockIcon />
           </InputWrapper>
 
-          <Button rootCSS={{ width: "100%" }}>Sign In</Button>
+          <Button>Sign In</Button>
         </form>
       )}
     />

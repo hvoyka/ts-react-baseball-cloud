@@ -7,6 +7,7 @@ type LabelFormInputProps = FieldRenderProps<string, any>;
 const LabelFormInput: React.FC<LabelFormInputProps> = ({
   label,
   input,
+
   meta,
   ...rest
 }) => {
@@ -28,12 +29,11 @@ const Root = styled.div`
 
 const Label = styled.label`
   position: absolute;
-  top: 0;
+  top: 2px;
   left: 0;
   cursor: text;
   max-width: 70%;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   transform-origin: left bottom;
 
@@ -42,10 +42,10 @@ const Label = styled.label`
 
   transition: 0.2s;
   touch-action: manipulation;
+  pointer-events: none;
 
-  margin-bottom: 0;
   font-size: 14px;
-  line-height: 1;
+  line-height: 14px;
   font-weight: 400;
   color: var(--gray2);
 `;
@@ -64,7 +64,7 @@ const StyledInput = styled.input`
   font-size: 16px;
   line-height: 1.13;
   font-weight: 400;
-  color: var(-gray4);
+  color: var(--gray4);
   border: 1px solid transparent;
 
   &:focus,

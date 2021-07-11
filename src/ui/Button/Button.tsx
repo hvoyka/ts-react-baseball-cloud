@@ -46,6 +46,7 @@ export default Button;
 
 const StyledButton = styled.button<{ variant?: Variant; $CSS?: CSSProp }>`
   display: block;
+  width: 100%;
   border-radius: 4px;
   font-size: 16px;
   line-height: 19px;

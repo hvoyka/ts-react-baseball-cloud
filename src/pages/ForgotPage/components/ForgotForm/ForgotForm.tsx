@@ -35,7 +35,7 @@ const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {
           </InputWrapper>
 
           <ButtonWrapper>
-            <Button rootCSS={{ width: "100%" }}>Submit</Button>
+            <Button>Submit</Button>
           </ButtonWrapper>
         </form>
       )}
