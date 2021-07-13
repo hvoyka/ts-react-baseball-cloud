@@ -9,6 +9,8 @@ import { Button } from "ui";
 import { ProfileFormValues } from "types";
 
 import { FormApi } from "final-form";
+import { useQuery } from "@apollo/client";
+import { GET_FACILITIES, GET_SCHOOLS, GET_TEAMS } from "apollo/queries";
 
 const schoolYearOptions = [
   { label: "Freshman", value: "freshman" },
@@ -38,6 +40,34 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
+  const {
+    loading: isSchoolsLoading,
+    data: SchoolsData,
+    error: SchoolsError,
+  } = useQuery(GET_SCHOOLS, {
+    variables: { search: "" },
+  });
+
+  const {
+    loading: isTeamsLoading,
+    data: TeamsData,
+    error: TeamsError,
+  } = useQuery(GET_TEAMS, {
+    variables: { search: "" },
+  });
+
+  const {
+    loading: isFacilitiesLoading,
+    data: FacilitiesData,
+    error: FacilitiesError,
+  } = useQuery(GET_FACILITIES, {
+    variables: { search: "" },
+  });
+
+  console.log("SchoolsData", SchoolsData);
+  console.log("TeamsData", TeamsData);
+  console.log("FacilitiesData", FacilitiesData);
+
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
     form.restart();
