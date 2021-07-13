@@ -7,15 +7,12 @@ import ContentWrapper from "components/ContentWrapper/ContentWrapper";
 import { ForgotForm, ForgotFormValues } from "./components/ForgotForm";
 import { forgotPasswordRequest } from "services/AuthApi";
 
-const LoginPage: FC = () => {
+const ForgotPage: FC = () => {
   const onSubmit = ({ email }: ForgotFormValues) => {
-    const redirect_url =
-      "https://baseballcloud-front.herokuapp.com/resetpassword";
-    forgotPasswordRequest({ email, redirect_url })
-      .then((data) => {})
-      .catch((error) => {
-        console.error(error);
-      });
+    const redirect_url = process.env.REACT_APP_FORGOT_REDIRECT_URL;
+    forgotPasswordRequest({ email, redirect_url }).catch((error) => {
+      console.error(error);
+    });
   };
 
   return (
@@ -75,4 +72,4 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export default LoginPage;
+export default ForgotPage;

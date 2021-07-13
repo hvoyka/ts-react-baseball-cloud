@@ -11,7 +11,7 @@ export interface LoginFormValues {
 }
 
 interface LoginFormProps {
-  onSubmit: ({ email, password }: LoginFormValues) => void;
+  onSubmit: (values: LoginFormValues) => void;
 }
 
 const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
