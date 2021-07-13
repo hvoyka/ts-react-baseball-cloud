@@ -4,6 +4,7 @@ import { ForgotPage, LoginPage, RegistrationPage } from "pages";
 import { ROUTES } from "utils/routes";
 
 const UnAuthorizeRoute: FC = () => {
+  console.log("UnAuthorizeRoute");
   return (
     <Switch>
       <Route path={ROUTES.LOGIN} component={LoginPage} />

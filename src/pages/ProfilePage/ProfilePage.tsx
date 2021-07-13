@@ -11,11 +11,7 @@ import { AvatarForm } from "./components/AvatarForm";
 const ProfilePage: FC = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
-  const {
-    loading: isProfileLoading,
-    data: profileData,
-    error: profileError,
-  } = useQuery(GET_CURRENT_PROFILE);
+  const { loading: isProfileLoading } = useQuery(GET_CURRENT_PROFILE);
 
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
