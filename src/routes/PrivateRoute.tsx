@@ -1,9 +1,14 @@
 import React, { FC } from "react";
-import { Route, Redirect, RouteProps } from "react-router-dom";
+import {
+  Route,
+  Redirect,
+  RouteProps,
+  RouteComponentProps,
+} from "react-router-dom";
 import StorageService from "services/StorageService";
 
 interface PrivateRouteProps extends RouteProps {
-  component: any;
+  component: React.ComponentType<RouteComponentProps<any>>;
 }
 
 const PrivateRoute: FC<PrivateRouteProps> = ({
