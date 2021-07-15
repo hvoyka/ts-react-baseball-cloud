@@ -19,7 +19,7 @@ const LoginPage: FC = () => {
         const uid = data.headers.uid;
 
         StorageService.setUserData({ token, client, uid });
-        history.go(0);
+        history.push("/profile");
       })
       .catch((error) => {
         console.error(error);

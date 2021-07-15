@@ -15,7 +15,6 @@ const PrivateRoute: FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  console.log("private", StorageService.isLogin);
   return (
     <Route
       {...rest}
