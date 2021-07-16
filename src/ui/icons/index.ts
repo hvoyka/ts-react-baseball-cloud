@@ -1,0 +1,12 @@
+export { AgeIcon } from "./AgeIcon";
+export { BatsIcon } from "./BatsIcon";
+export { CheckedIcon } from "./CheckedIcon";
+export { CheckIcon } from "./CheckIcon";
+export { HeightIcon } from "./HeightIcon";
+export { LockIcon } from "./LockIcon";
+export { LogoIcon } from "./LogoIcon";
+export { PencilIcon } from "./PencilIcon";
+export { ThrowsIcon } from "./ThrowsIcon";
+export { UserIcon } from "./UserIcon";
+export { WeightIcon } from "./WeightIcon";
+export { ReturnArrow } from "./ReturnArrow";

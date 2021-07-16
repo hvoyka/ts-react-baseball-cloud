@@ -1,26 +1,26 @@
-import React, { FC, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { FC } from "react";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-
-import { signInRequest } from "services/api";
-import StorageService from "services/StorageService";
-import TokenContext from "context/tokenContext";
+import { signInRequest } from "services/AuthApi";
 
 import { AuthLayout } from "layouts";
 import { ContentWrapper } from "components";
 import { LoginForm, LoginFormValues } from "./components/LoginForm";
 
-const LoginPage: FC = () => {
-  const context = useContext(TokenContext);
+import StorageService from "services/StorageService";
+import { ROUTES } from "utils/routes";
 
+const LoginPage: FC = () => {
+  const history = useHistory();
   const onSubmit = ({ email, password }: LoginFormValues) => {
     signInRequest({ email, password })
       .then((data) => {
         const token = data.headers["access-token"];
         const client = data.headers.client;
         const uid = data.headers.uid;
+
         StorageService.setUserData({ token, client, uid });
-        context.setToken(token);
+        history.push(ROUTES.PROFILE);
       })
       .catch((error) => {
         console.error(error);
