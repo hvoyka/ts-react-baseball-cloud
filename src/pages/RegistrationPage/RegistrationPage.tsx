@@ -7,7 +7,7 @@ import { ContentWrapper } from "components";
 import { RegistrationForm, RegistrationTabs } from "./components/";
 import { RegistrationFormValues } from "./components/RegistrationForm";
 import { ROLES } from "types";
-import { signUpRequest } from "services/api";
+import { signUpRequest } from "services/AuthApi";
 import { FetchStatus } from "types";
 
 const RegistrationPage: FC = () => {

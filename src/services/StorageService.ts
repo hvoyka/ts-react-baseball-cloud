@@ -1,11 +1,11 @@
-interface StorageData {
-  token: string;
-  client: string;
-  uid: string;
-}
+import { UserData } from "./../types";
 
 class StorageService {
-  setUserData({ token, client, uid }: StorageData) {
+  hasAuthToken = () => {
+    return !!localStorage.getItem("access-token");
+  };
+
+  setUserData({ token, client, uid }: UserData) {
     localStorage.setItem("access-token", token);
     localStorage.setItem("client", client);
     localStorage.setItem("uid", uid);
@@ -15,6 +15,7 @@ class StorageService {
     const token = localStorage.getItem("access-token");
     const client = localStorage.getItem("client");
     const uid = localStorage.getItem("uid");
+
     if (token && client && uid) {
       return { token, client, uid };
     }
