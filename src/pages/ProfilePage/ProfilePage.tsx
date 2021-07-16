@@ -13,11 +13,7 @@ const ProfilePage: FC = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
 
-  const {
-    loading: isProfileLoading,
-    data: profileData,
-    error: profileError,
-  } = useQuery(GET_CURRENT_PROFILE);
+  const { loading: isProfileLoading } = useQuery(GET_CURRENT_PROFILE);
 
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);

@@ -8,6 +8,7 @@ import { ContentWrapper } from "components";
 import { LoginForm, LoginFormValues } from "./components/LoginForm";
 
 import StorageService from "services/StorageService";
+import { ROUTES } from "utils/routes";
 
 const LoginPage: FC = () => {
   const history = useHistory();
@@ -19,7 +20,7 @@ const LoginPage: FC = () => {
         const uid = data.headers.uid;
 
         StorageService.setUserData({ token, client, uid });
-        history.go(0);
+        history.push(ROUTES.PROFILE);
       })
       .catch((error) => {
         console.error(error);
