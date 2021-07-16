@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
@@ -40,6 +40,8 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
+  let schoolOptions: [] = [];
+
   const {
     loading: isSchoolsLoading,
     data: SchoolsData,
@@ -64,9 +66,15 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
     variables: { search: "" },
   });
 
-  console.log("SchoolsData", SchoolsData);
-  console.log("TeamsData", TeamsData);
-  console.log("FacilitiesData", FacilitiesData);
+  if (!isSchoolsLoading) {
+    const schoolsArr = SchoolsData?.schools?.schools;
+    schoolOptions = schoolsArr.map((item: { id: number; name: string }) => {
+      return {
+        label: item.name,
+        value: item.name,
+      };
+    });
+  }
 
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
@@ -186,6 +194,16 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
           <Divider>
             <DividerText>School</DividerText>
           </Divider>
+
+          <FormRow>
+            <Field
+              name="school"
+              placeholder="School"
+              validate={required()}
+              component={FormSelect}
+              options={schoolOptions}
+            />
+          </FormRow>
 
           <FormRow>
             <Button

@@ -38,7 +38,6 @@ const AvatarForm: FC<AvatarFormProps> = ({ onAvatarUpload }) => {
       })
         .then((response) => {
           const signedUrl = response.data.signedUrl;
-          console.log(signedUrl);
           return ApiService.put(signedUrl, file, {
             headers: {
               "Content-type": "image/png",

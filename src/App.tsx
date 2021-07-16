@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles/core.scss";
 import RootRoute from "./routes/RootRoute";
-import { client } from "apollo/api";
+import { client } from "apollo/client";
 import { ApolloProvider } from "@apollo/client";
 
 function App() {

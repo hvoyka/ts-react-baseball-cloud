@@ -36,6 +36,9 @@ const StyledSelect = styled(Select)`
       border: solid 1px var(--blue1);
     }
   }
+  .select__placeholder {
+    color: var(--gray4);
+  }
 `;
 
 const ErrorText = styled.p`

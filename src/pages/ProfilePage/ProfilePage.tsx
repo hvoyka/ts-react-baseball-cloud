@@ -25,7 +25,6 @@ const ProfilePage: FC = () => {
 
   const onEditFormSubmit = (values: ProfileFormValues) => {
     if (values) {
-      console.log(values);
       setIsFormEdit(false);
     }
   };
