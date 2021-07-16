@@ -1,7 +1,7 @@
 import { UserData } from "./../types";
 
 class StorageService {
-  isLogin = () => {
+  hasAuthToken = () => {
     return !!localStorage.getItem("access-token");
   };
 

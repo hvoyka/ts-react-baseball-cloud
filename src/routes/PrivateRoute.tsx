@@ -6,6 +6,7 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import StorageService from "services/StorageService";
+import { ROUTES } from "utils/routes";
 
 interface PrivateRouteProps extends RouteProps {
   component: React.ComponentType<RouteComponentProps<any>>;
@@ -19,10 +20,10 @@ const PrivateRoute: FC<PrivateRouteProps> = ({
     <Route
       {...rest}
       render={(props) =>
-        StorageService.isLogin() ? (
+        StorageService.hasAuthToken() ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect to={ROUTES.LOGIN} />
         )
       }
     />

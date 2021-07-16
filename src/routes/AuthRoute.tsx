@@ -6,23 +6,19 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import StorageService from "services/StorageService";
+import { ROUTES } from "utils/routes";
 
 interface PublicRouteProps extends RouteProps {
   component: React.ComponentType<RouteComponentProps<any>>;
-  restricted: boolean;
 }
 
-const PublicRoute: FC<PublicRouteProps> = ({
-  component: Component,
-  restricted,
-  ...rest
-}) => {
+const AuthRoute: FC<PublicRouteProps> = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) =>
-        StorageService.isLogin() && restricted ? (
-          <Redirect to="/profile" />
+        StorageService.hasAuthToken() ? (
+          <Redirect to={ROUTES.PROFILE} />
         ) : (
           <Component {...props} />
         )
@@ -31,4 +27,4 @@ const PublicRoute: FC<PublicRouteProps> = ({
   );
 };
 
-export default PublicRoute;
+export default AuthRoute;

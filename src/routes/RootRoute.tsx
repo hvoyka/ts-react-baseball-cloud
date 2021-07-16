@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Redirect, Switch } from "react-router-dom";
-import PublicRoute from "./PublicRoute";
+import AuthRoute from "./AuthRoute";
 import PrivateRoute from "./PrivateRoute";
 import { ROUTES } from "utils/routes";
 import { ForgotPage, LoginPage, ProfilePage, RegistrationPage } from "pages";
@@ -9,26 +9,11 @@ import { ForgotPage, LoginPage, ProfilePage, RegistrationPage } from "pages";
 const RootRoute = () => {
   return (
     <Switch>
-      <PublicRoute
-        restricted={true}
-        component={LoginPage}
-        path={ROUTES.LOGIN}
-        exact
-      />
-      <PublicRoute
-        restricted={true}
-        component={ForgotPage}
-        path={ROUTES.FORGOT_PASSWORD}
-        exact
-      />
-      <PublicRoute
-        restricted={true}
-        component={RegistrationPage}
-        path={ROUTES.REGISTRATION}
-        exact
-      />
+      <AuthRoute component={LoginPage} path={ROUTES.LOGIN} />
+      <AuthRoute component={ForgotPage} path={ROUTES.FORGOT_PASSWORD} />
+      <AuthRoute component={RegistrationPage} path={ROUTES.REGISTRATION} />
       <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE} exact />
-      <Redirect from="*" to="/login" />
+      <Redirect from="*" to={ROUTES.LOGIN} />
     </Switch>
   );
 };
