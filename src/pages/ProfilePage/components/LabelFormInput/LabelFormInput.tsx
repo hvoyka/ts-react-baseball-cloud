@@ -13,7 +13,7 @@ const LabelFormInput: React.FC<LabelFormInputProps> = ({
 }) => {
   return (
     <Root>
-      <StyledInput type="text" {...input} {...rest} />
+      <StyledInput {...input} {...rest} />
       <Label>{label}</Label>
       {meta && meta.touched && meta.error && (
         <ErrorText>{meta.error}</ErrorText>

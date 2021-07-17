@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
@@ -11,29 +11,7 @@ import { ProfileFormValues } from "types";
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
 import { GET_FACILITIES, GET_SCHOOLS, GET_TEAMS } from "apollo/queries";
-
-const schoolYearOptions = [
-  { label: "Freshman", value: "freshman" },
-  { label: "Sophomore", value: "sophomore" },
-  { label: "Junior", value: "junior" },
-  { label: "Senior", value: "senior" },
-  { label: "None", value: "none" },
-];
-
-const positionOptions = [
-  { label: "Catcher", value: "catcher" },
-  { label: "First Base", value: "first_base" },
-  { label: "Second Base", value: "second_base" },
-  { label: "Shortstop", value: "shortstop" },
-  { label: "Third Base", value: "third_base" },
-  { label: "Outfield", value: "outfield" },
-  { label: "Pitcher", value: "pitcher" },
-];
-
-const throwsAndBatsOptions = [
-  { label: "R", value: "r" },
-  { label: "L", value: "l" },
-];
+import { POSITIONS_OPTIONS, THROW_AND_BATS_OPTIONS } from "utils/constants";
 
 interface EditFormProps {
   onEditFormSubmit: (values: ProfileFormValues) => void;
@@ -44,30 +22,30 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
 
   const {
     loading: isSchoolsLoading,
-    data: SchoolsData,
-    error: SchoolsError,
+    data: schoolsData,
+    error: schoolsError,
   } = useQuery(GET_SCHOOLS, {
     variables: { search: "" },
   });
 
   const {
     loading: isTeamsLoading,
-    data: TeamsData,
-    error: TeamsError,
+    data: teamsData,
+    error: teamsError,
   } = useQuery(GET_TEAMS, {
     variables: { search: "" },
   });
 
   const {
     loading: isFacilitiesLoading,
-    data: FacilitiesData,
-    error: FacilitiesError,
+    data: facilitiesData,
+    error: facilitiesError,
   } = useQuery(GET_FACILITIES, {
     variables: { search: "" },
   });
 
   if (!isSchoolsLoading) {
-    const schoolsArr = SchoolsData?.schools?.schools;
+    const schoolsArr = schoolsData?.schools?.schools;
     schoolOptions = schoolsArr.map((item: { id: number; name: string }) => {
       return {
         label: item.name,
@@ -120,13 +98,13 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
             placeholder="Position in Game *"
             validate={required()}
             component={FormSelect}
-            options={positionOptions}
+            options={POSITIONS_OPTIONS}
           />
           <Field
             name="position2"
             placeholder="Secondary Position in Game"
             component={FormSelect}
-            options={positionOptions}
+            options={POSITIONS_OPTIONS}
           />
 
           <Divider>
@@ -180,14 +158,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               placeholder="Throws *"
               validate={required()}
               component={FormSelect}
-              options={throwsAndBatsOptions}
+              options={THROW_AND_BATS_OPTIONS}
             />
             <Field
               name="bats_hand"
               placeholder="Bats *"
               validate={required()}
               component={FormSelect}
-              options={throwsAndBatsOptions}
+              options={THROW_AND_BATS_OPTIONS}
             />
           </FormRow>
 
@@ -248,7 +226,7 @@ const DividerText = styled.div`
   text-align: center;
   font-size: 18px;
   font-weight: 900;
-  color: #414f5a;
+  color: var(--gray7);
   text-align: left;
   display: inline-block;
   position: relative;

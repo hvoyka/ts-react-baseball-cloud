@@ -6,7 +6,7 @@ type TextInputProps = FieldRenderProps<string, any>;
 
 const TextInput: React.FC<TextInputProps> = ({ input, meta, ...rest }) => (
   <Root>
-    <StyledInput type="text" {...input} {...rest} />
+    <StyledInput {...input} {...rest} />
     {meta && meta.touched && meta.error && <ErrorText>{meta.error}</ErrorText>}
   </Root>
 );
