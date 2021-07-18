@@ -3,15 +3,17 @@ import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
 
-import { LabelFormInput } from "../LabelFormInput";
 import { FormSelect } from "../FormSelect";
-import { Button } from "ui";
-import { ProfileFormValues } from "types";
+import { Button, TextInput } from "ui";
 
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
 import { GET_FACILITIES, GET_SCHOOLS, GET_TEAMS } from "apollo/queries";
 import { POSITIONS_OPTIONS, THROW_AND_BATS_OPTIONS } from "utils/constants";
+
+export interface ProfileFormValues {
+  first_name?: string;
+}
 
 interface EditFormProps {
   onEditFormSubmit: (values: ProfileFormValues) => void;
@@ -70,11 +72,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               validate={required()}
               render={(props) => {
                 return (
-                  <LabelFormInput
-                    label="First Name *"
-                    placeholder=" "
-                    {...props}
-                  />
+                  <TextInput label="First Name *" placeholder=" " {...props} />
                 );
               }}
             />
@@ -83,11 +81,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               validate={required()}
               render={(props) => {
                 return (
-                  <LabelFormInput
-                    label="Last Name *"
-                    placeholder=" "
-                    {...props}
-                  />
+                  <TextInput label="Last Name *" placeholder=" " {...props} />
                 );
               }}
             />
@@ -116,9 +110,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="age"
               validate={required()}
               render={(props) => {
-                return (
-                  <LabelFormInput label="Age *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Age *" placeholder=" " {...props} />;
               }}
             />
             <Field<string>
@@ -126,7 +118,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               validate={required()}
               render={(props) => {
                 return (
-                  <LabelFormInput label="Weight *" placeholder=" " {...props} />
+                  <TextInput label="Weight *" placeholder=" " {...props} />
                 );
               }}
             />
@@ -137,17 +129,13 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="feet"
               validate={required()}
               render={(props) => {
-                return (
-                  <LabelFormInput label="Feet *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Feet *" placeholder=" " {...props} />;
               }}
             />
             <Field<string>
               name="inches"
               render={(props) => {
-                return (
-                  <LabelFormInput label="Inches" placeholder=" " {...props} />
-                );
+                return <TextInput label="Inches" placeholder=" " {...props} />;
               }}
             />
           </FormRow>
@@ -184,15 +172,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
           </FormRow>
 
           <FormRow>
-            <Button
+            <StyledButton
               variant="secondary"
               type="button"
               onClick={() => form.reset()}
-              rootCSS={{ padding: "9px 18px" }}
             >
               Reset
-            </Button>
-            <Button rootCSS={{ padding: "9px 18px" }}>Submit</Button>
+            </StyledButton>
+            <StyledButton>Submit</StyledButton>
           </FormRow>
         </form>
       )}
@@ -204,6 +191,7 @@ const FormRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
+  margin-bottom: 15px;
 `;
 
 const Divider = styled.div`
@@ -221,6 +209,7 @@ const Divider = styled.div`
     z-index: 0;
   }
 `;
+
 const DividerText = styled.div`
   line-height: 1.25;
   text-align: center;
@@ -232,6 +221,10 @@ const DividerText = styled.div`
   position: relative;
   background-color: var(--white);
   padding-right: 12px;
+`;
+
+const StyledButton = styled(Button)`
+  padding: 9px 18px;
 `;
 
 export default EditForm;

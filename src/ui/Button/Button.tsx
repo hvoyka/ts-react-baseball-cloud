@@ -1,10 +1,10 @@
 import React from "react";
-import styled, { css, CSSProp } from "styled-components";
+import styled, { css } from "styled-components";
 
 interface ButtonProps {
   type?: "button" | "submit";
   variant?: Variant;
-  rootCSS?: CSSProp;
+  className?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
@@ -33,18 +33,18 @@ const variantButtonOptions = {
 const Button: React.FC<ButtonProps> = ({
   type = "button",
   variant = "primary",
-  rootCSS,
+  className,
   children,
   ...rest
 }) => (
-  <StyledButton variant={variant} $CSS={rootCSS} {...rest}>
+  <StyledButton className={className} variant={variant} {...rest}>
     {children}
   </StyledButton>
 );
 
 export default Button;
 
-const StyledButton = styled.button<{ variant?: Variant; $CSS?: CSSProp }>`
+const StyledButton = styled.button<{ variant?: Variant }>`
   display: block;
   width: 100%;
   border-radius: 4px;
@@ -63,5 +63,4 @@ const StyledButton = styled.button<{ variant?: Variant; $CSS?: CSSProp }>`
     css`
       ${variantButtonOptions[variant]}
     `}
-  ${({ $CSS }) => $CSS};
 `;
