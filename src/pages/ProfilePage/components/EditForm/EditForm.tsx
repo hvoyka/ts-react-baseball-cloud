@@ -14,6 +14,7 @@ import {
   SCHOOL_YEAR_OPTIONS,
   THROW_AND_BATS_OPTIONS,
 } from "utils/constants";
+import { TextAreaInput } from "../TextAreaInput";
 
 export interface ProfileFormValues {
   first_name?: string;
@@ -103,18 +104,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="first_name"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="First Name *" placeholder=" " {...props} />
-                );
+                return <TextInput label="First Name *" {...props} />;
               }}
             />
             <Field<string>
               name="last_name"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="Last Name *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Last Name *" {...props} />;
               }}
             />
           </FormRow>
@@ -142,16 +139,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="age"
               validate={required()}
               render={(props) => {
-                return <TextInput label="Age *" placeholder=" " {...props} />;
+                return <TextInput label="Age *" {...props} />;
               }}
             />
             <Field<string>
               name="weight"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="Weight *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Weight *" {...props} />;
               }}
             />
           </FormRow>
@@ -161,13 +156,13 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="feet"
               validate={required()}
               render={(props) => {
-                return <TextInput label="Feet *" placeholder=" " {...props} />;
+                return <TextInput label="Feet *" {...props} />;
               }}
             />
             <Field<string>
               name="inches"
               render={(props) => {
-                return <TextInput label="Inches" placeholder=" " {...props} />;
+                return <TextInput label="Inches" {...props} />;
               }}
             />
           </FormRow>
@@ -230,6 +225,12 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
           <Divider>
             <DividerText>About</DividerText>
           </Divider>
+
+          <Field
+            name="biography"
+            label="Describe yourself in a few words"
+            component={TextAreaInput}
+          />
 
           <FormRow>
             <StyledButton

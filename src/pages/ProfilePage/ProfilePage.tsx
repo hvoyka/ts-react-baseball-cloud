@@ -16,6 +16,7 @@ const ProfilePage: FC = () => {
 
   const { loading: isProfileLoading, data: profileData } =
     useQuery(GET_CURRENT_PROFILE);
+
   console.log("profileData", profileData);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
@@ -42,14 +43,18 @@ const ProfilePage: FC = () => {
         weight,
       } = values;
 
+      const facilitiesData = facilities?.map((item) => {
+        return { id: item.value, u_name: item.value };
+      });
+      const teamsData = teams?.map((item) => {
+        return { id: item.id, name: item.value };
+      });
+
       const formData = {
         age: age && parseInt(age),
         avatar: uploadedImageUrl,
-
         biography,
-        facilities: facilities?.map((item) => {
-          return { id: item.value, u_name: item.value };
-        }),
+        facilities: facilitiesData,
         feet: feet && parseInt(feet),
         first_name,
         id: profileData.current_profile.id,
@@ -59,14 +64,14 @@ const ProfilePage: FC = () => {
         position2: position2?.value,
         school: { id: school?.id, name: school?.value },
         school_year: school_year?.value,
-        teams: teams?.map((item) => {
-          return { id: item.id, name: item.value };
-        }),
+        teams: teamsData,
         bats_hand: bats_hand?.value,
         throws_hand: throws_hand?.value,
         weight: weight && parseInt(weight),
       };
+
       console.log("formData", formData);
+
       updateProfile({
         variables: {
           form: formData,
