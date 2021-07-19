@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
@@ -7,9 +7,13 @@ import { FormSelect } from "../FormSelect";
 import { Button, TextInput } from "ui";
 
 import { FormApi } from "final-form";
-import { useQuery } from "@apollo/client";
-import { GET_FACILITIES, GET_SCHOOLS, GET_TEAMS } from "apollo/queries";
-import { POSITIONS_OPTIONS, THROW_AND_BATS_OPTIONS } from "utils/constants";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_FORM_OPTIONS, UPDATE_PROFILE } from "apollo/queries";
+import {
+  POSITIONS_OPTIONS,
+  SCHOOL_YEAR_OPTIONS,
+  THROW_AND_BATS_OPTIONS,
+} from "utils/constants";
 
 export interface ProfileFormValues {
   first_name?: string;
@@ -20,44 +24,59 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
-  let schoolOptions: [] = [];
-
+  const [updateProfile, { data }] = useMutation(UPDATE_PROFILE);
   const {
-    loading: isSchoolsLoading,
-    data: schoolsData,
-    error: schoolsError,
-  } = useQuery(GET_SCHOOLS, {
+    data: optionsData = {
+      facilities: { facilities: [] },
+      schools: { schools: [] },
+      teams: { teams: [] },
+    },
+  } = useQuery(GET_FORM_OPTIONS, {
     variables: { search: "" },
   });
 
-  const {
-    loading: isTeamsLoading,
-    data: teamsData,
-    error: teamsError,
-  } = useQuery(GET_TEAMS, {
-    variables: { search: "" },
-  });
+  const facilitiesArr = optionsData?.facilities?.facilities;
+  const schoolsArr = optionsData?.schools?.schools;
+  const teamsArr = optionsData?.teams?.teams;
 
-  const {
-    loading: isFacilitiesLoading,
-    data: facilitiesData,
-    error: facilitiesError,
-  } = useQuery(GET_FACILITIES, {
-    variables: { search: "" },
-  });
+  const schoolOptions = useMemo(
+    () =>
+      schoolsArr.map((item: { id: number; name: string }) => {
+        return {
+          label: item.name,
+          value: item.name,
+          id: item.id,
+        };
+      }),
+    [schoolsArr]
+  );
 
-  if (!isSchoolsLoading) {
-    const schoolsArr = schoolsData?.schools?.schools;
-    schoolOptions = schoolsArr.map((item: { id: number; name: string }) => {
-      return {
-        label: item.name,
-        value: item.name,
-      };
-    });
-  }
+  const facilitiesOptions = useMemo(
+    () =>
+      facilitiesArr.map((item: { id: number; u_name: string }) => {
+        return {
+          label: item.u_name,
+          value: item.id,
+        };
+      }),
+    [facilitiesArr]
+  );
+
+  const teamsOptions = useMemo(
+    () =>
+      teamsArr.map((item: { id: number; name: string }) => {
+        return {
+          label: item.name,
+          value: item.name,
+          id: item.id,
+        };
+      }),
+    [teamsArr]
+  );
 
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
+    console.log(values);
     form.restart();
   };
 
@@ -161,15 +180,43 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
             <DividerText>School</DividerText>
           </Divider>
 
-          <FormRow>
-            <Field
-              name="school"
-              placeholder="School"
-              validate={required()}
-              component={FormSelect}
-              options={schoolOptions}
-            />
-          </FormRow>
+          <Field
+            name="school"
+            placeholder="School"
+            component={FormSelect}
+            options={schoolOptions}
+          />
+
+          <Field
+            name="school_year"
+            placeholder="School Year"
+            component={FormSelect}
+            options={SCHOOL_YEAR_OPTIONS}
+          />
+
+          <Field
+            name="teams"
+            placeholder="Team"
+            isMulti
+            component={FormSelect}
+            options={teamsOptions}
+          />
+
+          <Divider>
+            <DividerText>Facility</DividerText>
+          </Divider>
+
+          <Field
+            name="facilities"
+            placeholder="Facility"
+            isMulti
+            component={FormSelect}
+            options={facilitiesOptions}
+          />
+
+          <Divider>
+            <DividerText>About</DividerText>
+          </Divider>
 
           <FormRow>
             <StyledButton

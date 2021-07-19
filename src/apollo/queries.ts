@@ -81,6 +81,54 @@ export const GET_PROFILE = gql`
   }
 `;
 
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($form: UpdateProfileInput!) {
+    update_profile(input: $form) {
+      profile {
+        id
+        first_name
+        last_name
+        position
+        position2
+        avatar
+        throws_hand
+        bats_hand
+        biography
+        school_year
+        feet
+        inches
+        weight
+        age
+        recent_events {
+          id
+          event_type
+          event_name
+          date
+          recent_avatars {
+            id
+            first_name
+            last_name
+            avatar
+          }
+        }
+        school {
+          id
+          name
+        }
+        teams {
+          id
+          name
+        }
+        facilities {
+          id
+          email
+          u_name
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CURRENT_PROFILE = gql`
   query currentProfile {
     current_profile {
@@ -115,35 +163,25 @@ export const GET_CURRENT_PROFILE = gql`
   }
 `;
 
-export const GET_SCHOOLS = gql`
-  query Schools($search: String!) {
-    schools(search: $search) {
-      schools {
+export const GET_FORM_OPTIONS = gql`
+  query Options($search: String!) {
+    facilities(search: $search) {
+      facilities {
         id
-        name
+        email
+        u_name
       }
     }
-  }
-`;
-
-export const GET_TEAMS = gql`
-  query Teams($search: String!) {
     teams(search: $search) {
       teams {
         id
         name
       }
     }
-  }
-`;
-
-export const GET_FACILITIES = gql`
-  query Facilities($search: String!) {
-    facilities(search: $search) {
-      facilities {
+    schools(search: $search) {
+      schools {
         id
-        email
-        u_name
+        name
       }
     }
   }
