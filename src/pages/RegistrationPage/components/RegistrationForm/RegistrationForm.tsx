@@ -79,10 +79,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({
 
             <StyledCheckIcon />
           </InputWrapper>
-
-          <div className="buttons">
-            <Button>Sign Up</Button>
-          </div>
+           <Button>Sign Up</Button>
           <p>{errors[registrationStatus]}</p>
         </form>
       )}
