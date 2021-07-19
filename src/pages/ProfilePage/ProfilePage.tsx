@@ -1,20 +1,28 @@
 import { FC, useState } from "react";
+import styled from "styled-components";
 
 import { AuthLayout } from "layouts";
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_PROFILE } from "apollo/queries";
-import styled from "styled-components";
-import { ReturnArrow, Loader } from "ui";
-
-import { AvatarForm } from "./components/AvatarForm";
+import { ReturnArrow, Loader, Button } from "ui";
+import { AvatarForm } from "./components";
+import { EditForm } from "./components/EditForm";
+import { ProfileFormValues } from "./components/EditForm/EditForm";
 
 const ProfilePage: FC = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [isFormEdit, setIsFormEdit] = useState(false);
 
   const { loading: isProfileLoading } = useQuery(GET_CURRENT_PROFILE);
 
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
+  };
+
+  const onEditFormSubmit = (values: ProfileFormValues) => {
+    if (values) {
+      setIsFormEdit(false);
+    }
   };
 
   return (
@@ -24,7 +32,14 @@ const ProfilePage: FC = () => {
       ) : (
         <FlexContainer>
           <Aside>
-            <AvatarForm onAvatarUpload={onAvatarUpload} />
+            {isFormEdit ? (
+              <>
+                <AvatarForm onAvatarUpload={onAvatarUpload} />
+                <EditForm onEditFormSubmit={onEditFormSubmit} />
+              </>
+            ) : (
+              <Button onClick={() => setIsFormEdit(true)}>Edit Form</Button>
+            )}
           </Aside>
           <PageContentWrapper>
             <PageContent>
@@ -67,6 +82,12 @@ const Aside = styled.aside`
   z-index: 1;
   transition: 0.1s;
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.1);
+
+  overflow-y: auto;
+  height: calc(100vh - 98px);
+  @media (max-width: 620px) {
+    height: calc(100vh - 118px);
+  }
 `;
 
 const PageContentWrapper = styled.div`

@@ -80,6 +80,7 @@ export const GET_PROFILE = gql`
     }
   }
 `;
+
 export const GET_CURRENT_PROFILE = gql`
   query currentProfile {
     current_profile {
@@ -105,6 +106,40 @@ export const GET_CURRENT_PROFILE = gql`
         id
         name
       }
+      facilities {
+        id
+        email
+        u_name
+      }
+    }
+  }
+`;
+
+export const GET_SCHOOLS = gql`
+  query Schools($search: String!) {
+    schools(search: $search) {
+      schools {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GET_TEAMS = gql`
+  query Teams($search: String!) {
+    teams(search: $search) {
+      teams {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GET_FACILITIES = gql`
+  query Facilities($search: String!) {
+    facilities(search: $search) {
       facilities {
         id
         email
