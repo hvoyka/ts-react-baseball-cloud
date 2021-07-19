@@ -2,25 +2,76 @@ import { FC, useState } from "react";
 import styled from "styled-components";
 
 import { AuthLayout } from "layouts";
-import { useQuery } from "@apollo/client";
-import { GET_CURRENT_PROFILE } from "apollo/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_CURRENT_PROFILE, UPDATE_PROFILE } from "apollo/queries";
 import { ReturnArrow, Loader, Button } from "ui";
 import { AvatarForm } from "./components";
 import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
 
 const ProfilePage: FC = () => {
+  const [updateProfile, { data }] = useMutation(UPDATE_PROFILE);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
 
-  const { loading: isProfileLoading } = useQuery(GET_CURRENT_PROFILE);
-
+  const { loading: isProfileLoading, data: profileData } =
+    useQuery(GET_CURRENT_PROFILE);
+  console.log("profileData", profileData);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };
+  console.log(isProfileLoading);
 
   const onEditFormSubmit = (values: ProfileFormValues) => {
-    if (values) {
+    if (values && !isProfileLoading) {
+      const {
+        age,
+        bats_hand,
+        biography,
+        facilities,
+        teams,
+        feet,
+        first_name,
+        last_name,
+        inches,
+        position,
+        position2,
+        school,
+        school_year,
+        throws_hand,
+        weight,
+      } = values;
+
+      const formData = {
+        age: age && parseInt(age),
+        avatar: uploadedImageUrl,
+
+        biography,
+        facilities: facilities?.map((item) => {
+          return { id: item.value, u_name: item.value };
+        }),
+        feet: feet && parseInt(feet),
+        first_name,
+        id: profileData.current_profile.id,
+        inches: inches && parseInt(inches),
+        last_name,
+        position: position?.value,
+        position2: position2?.value,
+        school: { id: school?.id, name: school?.value },
+        school_year: school_year?.value,
+        teams: teams?.map((item) => {
+          return { id: item.id, name: item.value };
+        }),
+        bats_hand: bats_hand?.value,
+        throws_hand: throws_hand?.value,
+        weight: weight && parseInt(weight),
+      };
+      console.log("formData", formData);
+      updateProfile({
+        variables: {
+          form: formData,
+        },
+      });
       setIsFormEdit(false);
     }
   };

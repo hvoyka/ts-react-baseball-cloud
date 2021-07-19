@@ -7,8 +7,8 @@ import { FormSelect } from "../FormSelect";
 import { Button, TextInput } from "ui";
 
 import { FormApi } from "final-form";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_FORM_OPTIONS, UPDATE_PROFILE } from "apollo/queries";
+import { useQuery } from "@apollo/client";
+import { GET_FORM_OPTIONS } from "apollo/queries";
 import {
   POSITIONS_OPTIONS,
   SCHOOL_YEAR_OPTIONS,
@@ -17,6 +17,20 @@ import {
 
 export interface ProfileFormValues {
   first_name?: string;
+  last_name?: string;
+  biography?: string;
+  feet?: string;
+  inches?: string;
+  weight?: string;
+  age?: string;
+  school_year?: { label: string; value: string };
+  position?: { label: string; value: string };
+  position2?: { label: string; value: string };
+  throws_hand?: { label: string; value: string };
+  bats_hand?: { label: string; value: string };
+  school?: { label: string; value: string; id: string };
+  teams?: [{ label: string; value: string; id: string }];
+  facilities?: [{ label: string; value: string }];
 }
 
 interface EditFormProps {
@@ -24,7 +38,6 @@ interface EditFormProps {
 }
 
 const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
-  const [updateProfile, { data }] = useMutation(UPDATE_PROFILE);
   const {
     data: optionsData = {
       facilities: { facilities: [] },
@@ -76,7 +89,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
 
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
-    console.log(values);
+
     form.restart();
   };
 
