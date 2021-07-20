@@ -15,6 +15,117 @@ interface UserInfoProps {
   profileData: any;
 }
 
+const renderTop = (
+  avatar: string,
+  setIsFormEdit: (isFormEdit: boolean) => void,
+  first_name: string,
+  last_name: string,
+  position: string,
+  position2: string
+) => (
+  <TopWrapper>
+    <AvatarWrapper>
+      <Avatar $photoUrl={avatar}></Avatar>
+    </AvatarWrapper>
+    <IconButton onClick={() => setIsFormEdit(true)}>
+      <PencilIcon />
+    </IconButton>
+    <TopInfoWrapper>
+      <TopInfoName>{`${first_name} ${last_name}`}</TopInfoName>
+      <TopInfoPosition>{position}</TopInfoPosition>
+      <TopInfoPosition>{position2}</TopInfoPosition>
+    </TopInfoWrapper>
+  </TopWrapper>
+);
+
+const renderMiddle = (
+  age: string,
+  feet: string,
+  inches: string,
+  weight: string,
+  throws_hand: string,
+  bats_hand: string
+) => (
+  <ul>
+    <StatsItem>
+      <StatsIconWrapper>
+        <AgeIcon />
+      </StatsIconWrapper>
+      <div>Age</div>
+      <StatsValue>{age}</StatsValue>
+    </StatsItem>
+    <StatsItem>
+      <StatsIconWrapper>
+        <HeightIcon />
+      </StatsIconWrapper>
+      <div>Height</div>
+      <StatsValue>{`${feet} ft ${inches} in`}</StatsValue>
+    </StatsItem>
+    <StatsItem>
+      <StatsIconWrapper>
+        <WeightIcon />
+      </StatsIconWrapper>
+      <div>Weight</div>
+      <StatsValue>{`${weight} lbs`}</StatsValue>
+    </StatsItem>
+    <StatsItem>
+      <StatsIconWrapper>
+        <ThrowsIcon />
+      </StatsIconWrapper>
+      <div>Throws</div>
+      <StatsValue>{throws_hand?.toUpperCase()}</StatsValue>
+    </StatsItem>
+    <StatsItem>
+      <StatsIconWrapper>
+        <BatsIcon />
+      </StatsIconWrapper>
+      <div>Bats</div>
+      <StatsValue>{bats_hand?.toUpperCase()}</StatsValue>
+    </StatsItem>
+  </ul>
+);
+
+const renderBottom = (
+  school: { name: string },
+  school_year: string,
+  teams: { name: string }[],
+  facilities: { u_name: string }[],
+  biography: string
+) => (
+  <ul>
+    <li>
+      <BottomStatsTitle>School</BottomStatsTitle>
+      <BottomStatsValue>{school?.name}</BottomStatsValue>
+    </li>
+    <li>
+      <BottomStatsTitle>School Year</BottomStatsTitle>
+      <BottomStatsValue>{capitalize(school_year)}</BottomStatsValue>
+    </li>
+    <li>
+      <BottomStatsTitle>Team</BottomStatsTitle>
+      <BottomStatsValue>
+        {teams?.map((item: { name: string }, index: number) => {
+          return index === teams.length - 1 ? item.name : `${item.name}, `;
+        })}
+      </BottomStatsValue>
+    </li>
+    <li>
+      <BottomStatsTitle>Facility</BottomStatsTitle>
+      <BottomStatsValue>
+        {facilities.map((item: { u_name: string }, index: number) => {
+          return index === facilities.length - 1
+            ? item.u_name
+            : `${item.u_name}, `;
+        })}
+      </BottomStatsValue>
+    </li>
+    <Divider>
+      <DividerText>About</DividerText>
+    </Divider>
+    <Biography>{biography}</Biography>
+  </ul>
+);
+
 const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
   const {
     avatar,
@@ -34,92 +145,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
     facilities,
     biography,
   } = profileData;
+
   return (
     <Root>
-      <TopWrapper>
-        <AvatarWrapper>
-          <Avatar $photoUrl={avatar}></Avatar>
-        </AvatarWrapper>
-        <IconButton onClick={() => setIsFormEdit(true)}>
-          <PencilIcon />
-        </IconButton>
-        <TopInfoWrapper>
-          <TopInfoName>{`${first_name} ${last_name}`}</TopInfoName>
-          <TopInfoPosition>{position}</TopInfoPosition>
-          <TopInfoPosition>{position2}</TopInfoPosition>
-        </TopInfoWrapper>
-        <ul>
-          <StatsItem>
-            <StatsIconWrapper>
-              <AgeIcon />
-            </StatsIconWrapper>
-            <div>Age</div>
-            <StatsValue>{age}</StatsValue>
-          </StatsItem>
-          <StatsItem>
-            <StatsIconWrapper>
-              <HeightIcon />
-            </StatsIconWrapper>
-            <div>Height</div>
-            <StatsValue>{`${feet} ft ${inches} in`}</StatsValue>
-          </StatsItem>
-          <StatsItem>
-            <StatsIconWrapper>
-              <WeightIcon />
-            </StatsIconWrapper>
-            <div>Weight</div>
-            <StatsValue>{`${weight} lbs`}</StatsValue>
-          </StatsItem>
-          <StatsItem>
-            <StatsIconWrapper>
-              <ThrowsIcon />
-            </StatsIconWrapper>
-            <div>Throws</div>
-            <StatsValue>{throws_hand?.toUpperCase()}</StatsValue>
-          </StatsItem>
-          <StatsItem>
-            <StatsIconWrapper>
-              <BatsIcon />
-            </StatsIconWrapper>
-            <div>Bats</div>
-            <StatsValue>{bats_hand?.toUpperCase()}</StatsValue>
-          </StatsItem>
-        </ul>
-        <ul>
-          <li>
-            <BottomStatsTitle>School</BottomStatsTitle>
-            <BottomStatsValue>{school?.name}</BottomStatsValue>
-          </li>
-          <li>
-            <BottomStatsTitle>School Year</BottomStatsTitle>
-            <BottomStatsValue>{capitalize(school_year)}</BottomStatsValue>
-          </li>
-          <li>
-            <BottomStatsTitle>Team</BottomStatsTitle>
-            <BottomStatsValue>
-              {teams?.map((item: { name: string }, index: number) => {
-                return index === teams.length - 1
-                  ? item.name
-                  : `${item.name}, `;
-              })}
-            </BottomStatsValue>
-          </li>
-          <li>
-            <BottomStatsTitle>Facility</BottomStatsTitle>
-            <BottomStatsValue>
-              {facilities.map((item: { u_name: string }, index: number) => {
-                return index === facilities.length - 1
-                  ? item.u_name
-                  : `${item.u_name}, `;
-              })}
-            </BottomStatsValue>
-          </li>
-          <Divider>
-            <DividerText>About</DividerText>
-          </Divider>
-          <Biography>{biography}</Biography>
-        </ul>
-      </TopWrapper>
+      {renderTop(
+        avatar,
+        setIsFormEdit,
+        first_name,
+        last_name,
+        position,
+        position2
+      )}
+      {renderMiddle(age, feet, inches, weight, throws_hand, bats_hand)}
+      {renderBottom(school, school_year, teams, facilities, biography)}
     </Root>
   );
 };

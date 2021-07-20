@@ -56,43 +56,43 @@ const EditForm: React.FC<EditFormProps> = ({
     variables: { search: "" },
   });
 
-  const facilitiesArr = optionsData?.facilities?.facilities;
-  const schoolsArr = optionsData?.schools?.schools;
-  const teamsArr = optionsData?.teams?.teams;
+  const facilities = optionsData.facilities.facilities;
+  const schools = optionsData.schools.schools;
+  const teams = optionsData.teams.teams;
 
   const schoolOptions = useMemo(
     () =>
-      schoolsArr.map((item: { id: number; name: string }) => {
+      schools.map((item: { id: number; name: string }) => {
         return {
           label: item.name,
           value: item.name,
           id: item.id,
         };
       }),
-    [schoolsArr]
+    [schools]
   );
 
   const facilitiesOptions = useMemo(
     () =>
-      facilitiesArr.map((item: { id: number; u_name: string }) => {
+      facilities.map((item: { id: number; u_name: string }) => {
         return {
           label: item.u_name,
           value: item.id,
         };
       }),
-    [facilitiesArr]
+    [facilities]
   );
 
   const teamsOptions = useMemo(
     () =>
-      teamsArr.map((item: { id: number; name: string }) => {
+      teams.map((item: { id: number; name: string }) => {
         return {
           label: item.name,
           value: item.name,
           id: item.id,
         };
       }),
-    [teamsArr]
+    [teams]
   );
 
   const currentProfile = currentProfileData.current_profile;
