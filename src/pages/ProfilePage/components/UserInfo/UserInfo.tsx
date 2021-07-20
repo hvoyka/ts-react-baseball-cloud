@@ -17,6 +17,7 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
   const {
+    avatar,
     first_name,
     last_name,
     position,
@@ -37,7 +38,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
     <Root>
       <TopWrapper>
         <AvatarWrapper>
-          <Avatar $photoUrl={""}></Avatar>
+          <Avatar $photoUrl={avatar}></Avatar>
         </AvatarWrapper>
         <IconButton onClick={() => setIsFormEdit(true)}>
           <PencilIcon />

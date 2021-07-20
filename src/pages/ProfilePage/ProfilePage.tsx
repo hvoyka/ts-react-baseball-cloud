@@ -17,6 +17,7 @@ const ProfilePage: FC = () => {
   const { loading: isProfileLoading, data: currentProfileData } =
     useQuery(GET_CURRENT_PROFILE);
 
+  console.log(currentProfileData);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };
@@ -88,7 +89,7 @@ const ProfilePage: FC = () => {
               <>
                 <AvatarForm
                   onAvatarUpload={onAvatarUpload}
-                  uploadedImageUrl={uploadedImageUrl}
+                  avatarUrl={currentProfileData?.current_profile?.avatar}
                 />
                 <EditForm
                   onEditFormSubmit={onEditFormSubmit}
