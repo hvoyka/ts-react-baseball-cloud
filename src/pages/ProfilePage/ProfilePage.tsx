@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { AuthLayout } from "layouts";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CURRENT_PROFILE, UPDATE_PROFILE } from "apollo/queries";
-import { ReturnArrow, Loader, Button } from "ui";
-import { AvatarForm } from "./components";
+import { ReturnArrow, Loader } from "ui";
+import { AvatarForm, UserInfo } from "./components";
 import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
 
@@ -42,10 +42,10 @@ const ProfilePage: FC = () => {
       } = values;
 
       const facilitiesData = facilities?.map((item) => {
-        return { id: item.value, u_name: item.value };
+        return { id: item.value, u_name: item.label };
       });
       const teamsData = teams?.map((item) => {
-        return { id: item.id, name: item.value };
+        return { id: item.id, name: item.label };
       });
 
       const formData = {
@@ -60,7 +60,7 @@ const ProfilePage: FC = () => {
         last_name,
         position: position?.value,
         position2: position2?.value,
-        school: { id: school?.id, name: school?.value },
+        school: { id: school?.value, name: school?.label },
         school_year: school_year?.value,
         teams: teamsData,
         bats_hand: bats_hand?.value,
@@ -97,7 +97,10 @@ const ProfilePage: FC = () => {
                 />
               </>
             ) : (
-              <Button onClick={() => setIsFormEdit(true)}>Edit Form</Button>
+              <UserInfo
+                setIsFormEdit={setIsFormEdit}
+                profileData={currentProfileData.current_profile}
+              />
             )}
           </Aside>
           <PageContentWrapper>

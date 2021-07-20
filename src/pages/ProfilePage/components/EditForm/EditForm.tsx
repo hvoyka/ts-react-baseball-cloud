@@ -2,10 +2,8 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
-
 import { FormSelect } from "../FormSelect";
 import { Button, TextInput } from "ui";
-
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
 import { GET_FORM_OPTIONS } from "apollo/queries";
@@ -15,7 +13,6 @@ import {
   THROW_AND_BATS_OPTIONS,
 } from "utils/constants";
 import { TextAreaInput } from "../TextAreaInput";
-
 import { findOneOption } from "utils";
 
 export interface ProfileFormValues {
@@ -38,7 +35,9 @@ export interface ProfileFormValues {
 
 interface EditFormProps {
   onEditFormSubmit: (values: ProfileFormValues) => void;
-  currentProfileData: any;
+  currentProfileData: {
+    current_profile: any;
+  };
   setIsFormEdit: (isFormEdit: boolean) => void;
 }
 
@@ -123,7 +122,6 @@ const EditForm: React.FC<EditFormProps> = ({
     weight: currentProfile?.weight,
     school: currentProfile?.school && {
       value: currentProfile?.school?.id,
-      id: currentProfile?.school?.id,
       label: currentProfile?.school?.name,
     },
     teams: currentProfile?.teams?.map((item: { id: string; name: string }) => {
