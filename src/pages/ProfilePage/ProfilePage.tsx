@@ -10,18 +10,16 @@ import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
 
 const ProfilePage: FC = () => {
-  const [updateProfile, { data }] = useMutation(UPDATE_PROFILE);
+  const [updateProfile] = useMutation(UPDATE_PROFILE);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
 
-  const { loading: isProfileLoading, data: profileData } =
+  const { loading: isProfileLoading, data: currentProfileData } =
     useQuery(GET_CURRENT_PROFILE);
 
-  console.log("profileData", profileData);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };
-  console.log(isProfileLoading);
 
   const onEditFormSubmit = (values: ProfileFormValues) => {
     if (values && !isProfileLoading) {
@@ -57,7 +55,7 @@ const ProfilePage: FC = () => {
         facilities: facilitiesData,
         feet: feet && parseInt(feet),
         first_name,
-        id: profileData.current_profile.id,
+        id: currentProfileData.current_profile.id,
         inches: inches && parseInt(inches),
         last_name,
         position: position?.value,
@@ -69,8 +67,6 @@ const ProfilePage: FC = () => {
         throws_hand: throws_hand?.value,
         weight: weight && parseInt(weight),
       };
-
-      console.log("formData", formData);
 
       updateProfile({
         variables: {
@@ -90,8 +86,15 @@ const ProfilePage: FC = () => {
           <Aside>
             {isFormEdit ? (
               <>
-                <AvatarForm onAvatarUpload={onAvatarUpload} />
-                <EditForm onEditFormSubmit={onEditFormSubmit} />
+                <AvatarForm
+                  onAvatarUpload={onAvatarUpload}
+                  uploadedImageUrl={uploadedImageUrl}
+                />
+                <EditForm
+                  onEditFormSubmit={onEditFormSubmit}
+                  currentProfileData={currentProfileData}
+                  setIsFormEdit={setIsFormEdit}
+                />
               </>
             ) : (
               <Button onClick={() => setIsFormEdit(true)}>Edit Form</Button>

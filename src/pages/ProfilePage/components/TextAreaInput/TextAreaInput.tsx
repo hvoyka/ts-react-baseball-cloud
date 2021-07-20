@@ -56,12 +56,12 @@ const StyledTextArea = styled.textarea<{ $hasLabel: boolean }>`
   min-height: 110px;
   resize: none;
   border-radius: 4px;
-  background-color: #eff1f3;
+  background-color: var(--gray5);
   padding: 16px;
   font-size: 16px;
   line-height: 1.13;
   font-weight: 400;
-  color: #667784;
+  color: var(--gray4);
   border: 1px solid transparent;
 
   &::placeholder {

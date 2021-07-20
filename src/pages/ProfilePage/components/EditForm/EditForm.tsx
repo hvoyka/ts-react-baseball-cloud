@@ -16,6 +16,8 @@ import {
 } from "utils/constants";
 import { TextAreaInput } from "../TextAreaInput";
 
+import { findOneOption } from "utils";
+
 export interface ProfileFormValues {
   first_name?: string;
   last_name?: string;
@@ -36,9 +38,15 @@ export interface ProfileFormValues {
 
 interface EditFormProps {
   onEditFormSubmit: (values: ProfileFormValues) => void;
+  currentProfileData: any;
+  setIsFormEdit: (isFormEdit: boolean) => void;
 }
 
-const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
+const EditForm: React.FC<EditFormProps> = ({
+  onEditFormSubmit,
+  currentProfileData,
+  setIsFormEdit,
+}) => {
   const {
     data: optionsData = {
       facilities: { facilities: [] },
@@ -88,15 +96,55 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
     [teamsArr]
   );
 
+  const currentProfile = currentProfileData.current_profile;
+
+  const initialValues: ProfileFormValues = {
+    age: currentProfile?.age,
+    biography: currentProfile?.biography,
+    feet: currentProfile?.feet,
+    first_name: currentProfile?.first_name,
+    inches: currentProfile?.inches,
+    last_name: currentProfile?.last_name,
+    position:
+      currentProfile?.position &&
+      findOneOption(POSITIONS_OPTIONS, currentProfile.position),
+    position2:
+      currentProfile?.position2 &&
+      findOneOption(POSITIONS_OPTIONS, currentProfile.position2),
+    school_year:
+      currentProfile?.school_year &&
+      findOneOption(SCHOOL_YEAR_OPTIONS, currentProfile.school_year),
+    bats_hand:
+      currentProfile?.bats_hand &&
+      findOneOption(THROW_AND_BATS_OPTIONS, currentProfile.bats_hand),
+    throws_hand:
+      currentProfile?.throws_hand &&
+      findOneOption(THROW_AND_BATS_OPTIONS, currentProfile.throws_hand),
+    weight: currentProfile?.weight,
+    school: currentProfile?.school && {
+      value: currentProfile?.school?.id,
+      id: currentProfile?.school?.id,
+      label: currentProfile?.school?.name,
+    },
+    teams: currentProfile?.teams?.map((item: { id: string; name: string }) => {
+      return { id: item.id, value: item.id, label: item.name };
+    }),
+    facilities: currentProfile?.facilities?.map(
+      (item: { id: string; u_name: string }) => {
+        return { value: item.id, label: item.u_name };
+      }
+    ),
+  };
+
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
-
     form.restart();
   };
 
   return (
     <Form
       onSubmit={onSubmit}
+      initialValues={initialValues}
       render={({ handleSubmit, form }) => (
         <form onSubmit={handleSubmit}>
           <FormRow>
@@ -235,12 +283,13 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
           <FormRow>
             <StyledButton
               variant="secondary"
-              type="button"
-              onClick={() => form.reset()}
+              onClick={() => {
+                setIsFormEdit(false);
+              }}
             >
-              Reset
+              Cancel
             </StyledButton>
-            <StyledButton>Submit</StyledButton>
+            <StyledButton type="submit">Submit</StyledButton>
           </FormRow>
         </form>
       )}
