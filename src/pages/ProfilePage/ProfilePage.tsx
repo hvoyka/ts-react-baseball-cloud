@@ -3,9 +3,13 @@ import styled from "styled-components";
 
 import { AuthLayout } from "layouts";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_CURRENT_PROFILE, UPDATE_PROFILE } from "apollo/queries";
+import {
+  GET_CURRENT_PROFILE,
+  GET_PROFILE,
+  UPDATE_PROFILE,
+} from "apollo/queries";
 import { ReturnArrow, Loader } from "ui";
-import { AvatarForm, UserInfo } from "./components";
+import { AvatarForm, TopValues, UserInfo } from "./components";
 import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
 
@@ -14,16 +18,25 @@ const ProfilePage: FC = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
 
-  const { loading: isProfileLoading, data: currentProfileData } =
+  const { loading: isCurrentProfileLoading, data: currentProfileData } =
     useQuery(GET_CURRENT_PROFILE);
 
-  console.log(currentProfileData);
+  const { loading: isProfileLoading, data: profileData } = useQuery(
+    GET_PROFILE,
+    {
+      /* variables: { id: currentProfileData?.current_profile?.id }, */
+      /*   variables: { id: "415" }, */
+      variables: { id: "413" },
+    }
+  );
+
+  console.log(profileData?.profile?.batter_summary);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };
 
   const onEditFormSubmit = (values: ProfileFormValues) => {
-    if (values && !isProfileLoading) {
+    if (values && !isCurrentProfileLoading) {
       const {
         age,
         bats_hand,
@@ -80,7 +93,7 @@ const ProfilePage: FC = () => {
 
   return (
     <AuthLayout>
-      {isProfileLoading ? (
+      {isCurrentProfileLoading ? (
         <Loader />
       ) : (
         <FlexContainer>
@@ -104,20 +117,28 @@ const ProfilePage: FC = () => {
               />
             )}
           </Aside>
+
           <PageContentWrapper>
-            <PageContent>
-              <AccountInfoContainer>
-                <ImageBox>
-                  <ReturnArrow />
-                </ImageBox>
-                <HeadingBox>Your Account</HeadingBox>
-                <TextBox>
-                  Changing your profile options lets you control how others see
-                  you and your profile. These settings include things like your
-                  name, personal info and school.
-                </TextBox>
-              </AccountInfoContainer>
-            </PageContent>
+            {isProfileLoading ? (
+              <PageContent>
+                <AccountInfoContainer>
+                  <ImageBox>
+                    <ReturnArrow />
+                  </ImageBox>
+                  <HeadingBox>Your Account</HeadingBox>
+                  <TextBox>
+                    Changing your profile options lets you control how others
+                    see you and your profile. These settings include things like
+                    your name, personal info and school.
+                  </TextBox>
+                </AccountInfoContainer>
+              </PageContent>
+            ) : (
+              <TopValues
+                batting={profileData?.profile?.batter_summary[0]}
+                pitching={profileData?.profile?.pitcher_summary[0]}
+              />
+            )}
           </PageContentWrapper>
         </FlexContainer>
       )}
