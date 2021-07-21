@@ -104,7 +104,7 @@ const TopValues: React.FC<TopValuesProps> = ({ batting, pitching }) => {
 };
 
 const SummaryBlockWrapper = styled.div`
-  background: #fff;
+  background: var(--white);
   margin: 16px;
   padding: 16px;
   border-radius: 8px;
@@ -113,7 +113,7 @@ const SummaryBlockWrapper = styled.div`
 const ContentTopTitle = styled.div`
   font-size: 18px;
   font-weight: 900;
-  color: #414f5a;
+  color: var(--gray7);
   line-height: 1.25;
 `;
 
@@ -137,12 +137,12 @@ const SummaryStatsItemTop = styled.div`
 
 const SummaryStatsTitle = styled.div`
   font-size: 16px;
-  color: #667784;
+  color: var(--gray4);
 `;
 
 const SummaryStatsValue = styled.div`
   font-size: 16px;
-  color: #667784;
+  color: var(--gray4);
   font-weight: 700;
 `;
 
