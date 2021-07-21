@@ -97,11 +97,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
           <li>
             <BottomStatsTitle>Team</BottomStatsTitle>
             <BottomStatsValue>
-              {teams?.map((item: { name: string }, index: number) => {
-                return index === teams.length - 1
-                  ? item.name
-                  : `${item.name}, `;
-              })}
+              {teams
+                ?.map((item: { name: string }, index: number) => item.name)
+                .join(", ")}
             </BottomStatsValue>
           </li>
           <li>

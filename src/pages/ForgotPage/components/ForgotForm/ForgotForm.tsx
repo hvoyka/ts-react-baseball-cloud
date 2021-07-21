@@ -35,7 +35,7 @@ const ForgotForm: FC<ForgotFormProps> = ({ onSubmit }) => {
           </InputWrapper>
 
           <ButtonWrapper>
-            <Button>Submit</Button>
+            <Button type="submit">Submit</Button>
           </ButtonWrapper>
         </form>
       )}

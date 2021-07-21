@@ -30,7 +30,6 @@ const ProfilePage: FC = () => {
     }
   );
 
-  console.log(profileData?.profile?.batter_summary);
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };

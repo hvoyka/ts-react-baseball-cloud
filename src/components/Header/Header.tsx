@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import StorageService from "services/StorageService";
 import styled from "styled-components";
 import { LogoIcon } from "ui";
@@ -8,9 +8,9 @@ import { ROUTES } from "utils/routes";
 const Header: FC = () => {
   return (
     <Root>
-      <NavLink to="/">
+      <Link to="/">
         <LogoIcon />
-      </NavLink>
+      </Link>
       {StorageService.hasAuthToken() && (
         <Nav>
           <StyledLink to={ROUTES.LEADERBOARD} activeClassName="selected">
@@ -18,6 +18,9 @@ const Header: FC = () => {
           </StyledLink>
           <StyledLink to={ROUTES.NETWORK} activeClassName="selected">
             Network
+          </StyledLink>
+          <StyledLink to={ROUTES.PROFILE} activeClassName="selected">
+            Profile
           </StyledLink>
         </Nav>
       )}
