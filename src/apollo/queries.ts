@@ -236,6 +236,7 @@ export const GET_LEADERBOARD_PITCHING = gql`
     }
   }
 `;
+
 export const UPDATE_FAVORITE_PROFILE = gql`
   mutation UpdateFavoriteProfile($form: UpdateFavoriteProfileInput!) {
     update_favorite_profile(input: $form) {

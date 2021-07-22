@@ -41,7 +41,7 @@ const StyledSelect = styled(Select)`
   }
   .select__multi-value {
     border: 1px solid rgba(0, 126, 255, 0.24);
-    background-color: #ebf5ff;
+    background-color: var(--blue5);
     background-color: rgba(0, 126, 255, 0.08);
   }
 `;

@@ -78,7 +78,7 @@ const TableHeader = styled.div`
   font-size: 14px;
   line-height: 1;
   font-weight: 300;
-  color: #667784;
+  color: var(--gray4);
   padding: 15px 6px;
   margin-bottom: 6px;
 `;
@@ -86,25 +86,25 @@ const TableBody = styled.ul`
   font-size: 14px;
   line-height: 1.13;
   font-weight: 400;
-  color: #414f5a;
+  color: var(--gray7);
   border-radius: 4px;
 `;
 
 const TableRow = styled.li`
   display: flex;
-  background-color: #f7f8f9;
+  background-color: var(--blue6);
   border-radius: 4px;
   padding: 15px 6px;
   margin-bottom: 4px;
 
   a {
-    color: #414f5a;
+    color: var(--gray7);
     :hover {
-      color: #48bbff;
+      color: var(--blue1);
     }
   }
   &:hover {
-    background-color: #ecf8ff;
+    background-color: var(--blue7);
   }
 `;
 const Rank = styled.div`
