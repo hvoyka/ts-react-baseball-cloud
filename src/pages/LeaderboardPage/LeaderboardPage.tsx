@@ -12,68 +12,67 @@ import { Loader } from "ui";
 import { BattingTable } from "./components/BattingTable";
 import { POSITIONS_OPTIONS } from "utils/constants";
 import useDebounce from "utils/useDebounce";
+import { PitchingTable } from "./components/PitchingTable";
 
 const POSITIONS_SELECT_OPTIONS = [
-  { label: "All", value: "all" },
+  { label: "All", value: "" },
   ...POSITIONS_OPTIONS,
 ];
 
 const DATE_SELECT_OPTIONS = [
-  { label: "All", value: "all" },
+  { label: "All", value: "" },
   { label: "Last Week", value: "last_week" },
   { label: "Last Month", value: "last_month" },
 ];
 
 const LeaderboardPage: FC = () => {
   const [searchSchoolValue, setSearchSchoolValue] = useState("");
+  const [dateValue, setDateValue] = useState("");
+  const [positionValue, setPositionValue] = useState("");
   const debouncedSearchSchoolValue = useDebounce(searchSchoolValue, 500);
 
-  const [getBatting, { loading: isBattingLoading, data: battingData }] =
-    useLazyQuery(GET_LEADERBOARD_BATTING);
+  const [
+    getBatting,
+    { loading: isBattingLoading, data: battingData, refetch: refetchBatting },
+  ] = useLazyQuery(GET_LEADERBOARD_BATTING, {
+    variables: {
+      input: {
+        type: "exit_velocity",
+        date: dateValue,
+        school: debouncedSearchSchoolValue,
+        position: positionValue,
+      },
+    },
+  });
 
-  const [getPitching, { loading: isPitchingLoading, data: pitchingData }] =
-    useLazyQuery(GET_LEADERBOARD_PITCHING, {
-      variables: { input: { type: "pitch_velocity" } },
-    });
+  const [
+    getPitching,
+    {
+      loading: isPitchingLoading,
+      data: pitchingData,
+      refetch: refetchPitching,
+    },
+  ] = useLazyQuery(GET_LEADERBOARD_PITCHING, {
+    variables: {
+      input: {
+        type: "pitch_velocity",
+        date: dateValue,
+        school: debouncedSearchSchoolValue,
+        position: positionValue,
+      },
+    },
+  });
 
   useEffect(() => {
-    getBatting({
-      variables: { input: { type: "exit_velocity" } },
-    });
+    getBatting();
   }, [getBatting]);
-
-  useEffect(() => {
-    if (debouncedSearchSchoolValue) {
-      getBatting({
-        variables: {
-          input: { type: "exit_velocity", school: debouncedSearchSchoolValue },
-        },
-      });
-    }
-  }, [debouncedSearchSchoolValue, getBatting]);
 
   const handleTabSelect = (index: number) => {
     index === 1 ? getPitching() : getBatting();
-    console.log(index);
-  };
-
-  const handlePositionChange = (option: { value: string; label: string }) => {
-    getBatting({
-      variables: { input: { type: "exit_velocity", position: option.value } },
-    });
-  };
-
-  const handleDateChange = (option: { value: string; label: string }) => {
-    getBatting({
-      variables: { input: { type: "exit_velocity", date: option.value } },
-    });
   };
 
   const battings = battingData?.leaderboard_batting?.leaderboard_batting;
   const pitchings = pitchingData?.leaderboard_pitching?.leaderboard_pitching;
-
-  console.log("battingData", battings);
-  console.log("pitchingData", pitchings);
 
   return (
     <AuthLayout>
@@ -85,7 +84,9 @@ const LeaderboardPage: FC = () => {
               options={DATE_SELECT_OPTIONS}
               classNamePrefix={"select"}
               placeholder="Date"
-              onChange={handleDateChange}
+              onChange={(option: { value: string }) =>
+                setDateValue(option.value)
+              }
             />
             <StyledInput
               name="school"
@@ -96,7 +97,9 @@ const LeaderboardPage: FC = () => {
               options={POSITIONS_SELECT_OPTIONS}
               classNamePrefix={"select"}
               placeholder="Position"
-              onChange={handlePositionChange}
+              onChange={(option: { value: string }) =>
+                setPositionValue(option.value)
+              }
             />
           </Filters>
         </TopInner>
@@ -112,7 +115,12 @@ const LeaderboardPage: FC = () => {
               <Loader />
             ) : (
               battings && (
-                <BattingTable battings={battings} getBatting={getBatting} />
+                <BattingTable
+                  battings={battings}
+                  onFavoriteClick={() => {
+                    if (refetchBatting) refetchBatting();
+                  }}
+                />
               )
             )}
           </StyledTabPanel>
@@ -120,10 +128,14 @@ const LeaderboardPage: FC = () => {
             {isPitchingLoading ? (
               <Loader />
             ) : (
-              pitchings &&
-              pitchings.map((item: any) => {
-                return JSON.stringify(item);
-              })
+              pitchings && (
+                <PitchingTable
+                  pitchings={pitchings}
+                  onFavoriteClick={() => {
+                    if (refetchPitching) refetchPitching();
+                  }}
+                />
+              )
             )}
           </StyledTabPanel>
         </StyledTabs>
@@ -213,7 +225,7 @@ const StyledSelect = styled(Select)`
   }
   .select__placeholder,
   .select__single-value {
-    color: #48bbff;
+    color: var(--blue1);
   }
   .select__multi-value {
     border: 1px solid rgba(0, 126, 255, 0.24);
@@ -224,20 +236,20 @@ const StyledSelect = styled(Select)`
     display: none;
   }
   .select__dropdown-indicator {
-    color: #48bbff;
+    color: var(--blue1);
   }
 `;
 
 const StyledInput = styled.input`
+  color: var(--gray2);
   &::placeholder {
-    color: #48bbff;
+    color: var(--blue1);
   }
   &:focus,
   &:active {
-    border-bottom: 1px solid #48bbff;
+    border-bottom: 1px solid var(--blue1);
     outline: none;
-    color: #788b99;
-    padding-bottom: 6px;
+    color: var(--gray2);
   }
 `;
 

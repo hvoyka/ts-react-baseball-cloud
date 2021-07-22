@@ -5,12 +5,15 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
 
-interface BattingTableProps {
-  battings: any;
+interface PitchingTableProps {
+  pitchings: any;
   onFavoriteClick: () => void;
 }
 
-const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
+const PitchingTable: FC<PitchingTableProps> = ({
+  pitchings,
+  onFavoriteClick,
+}) => {
   const [updateFavorite] = useMutation(UPDATE_FAVORITE_PROFILE, {
     onCompleted: () => {
       onFavoriteClick();
@@ -29,23 +32,24 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
     <>
       <TableHeader>
         <Rank>Rank</Rank>
-        <Name>Batter Name</Name>
+        <Name>Pitcher Name</Name>
         <Age>Age</Age>
         <School>School</School>
         <Teams>Teams</Teams>
-        <Velocity>Exit Velocity</Velocity>
-        <Angle>Launch Angle</Angle>
-        <Distance>Distance</Distance>
+        <Type>Launch Angle</Type>
+        <Velocity> Velocity</Velocity>
+
+        <Rate>Spin Rate</Rate>
         <Favorite>Favorite</Favorite>
       </TableHeader>
       <TableBody>
-        {battings &&
-          battings.map((item: any, index: number) => (
+        {pitchings &&
+          pitchings.map((item: any, index: number) => (
             <TableRow key={index}>
               <Rank>{index + 1}</Rank>
               <Name>
-                <NavLink to={`/profile/${item.batter_datraks_id}`}>
-                  {item.batter_name}
+                <NavLink to={`/profile/${item.pitcher_datraks_id}`}>
+                  {item.pitcher_name}
                 </NavLink>
               </Name>
               <Age>{item.age}</Age>
@@ -53,13 +57,14 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
               <Teams>
                 {item.teams.map((team: any) => team.name).join(", ")}
               </Teams>
-              <Velocity>{item.exit_velocity}</Velocity>
-              <Angle>{item.launch_angle}</Angle>
-              <Distance>{item.distance}</Distance>
+              <Type>{item.pitch_type}</Type>
+              <Velocity>{item.velocity}</Velocity>
+
+              <Rate>{item.spin_rate}</Rate>
               <Favorite>
                 <button
                   onClick={() =>
-                    handleFavoriteClick(item.batter_datraks_id, item.favorite)
+                    handleFavoriteClick(item.pitcher_datraks_id, item.favorite)
                   }
                 >
                   {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
@@ -121,17 +126,17 @@ const School = styled.div`
 const Teams = styled.div`
   flex: 1 0 14.5%;
 `;
-const Velocity = styled.div`
-  flex: 1 0 14%;
-`;
-const Angle = styled.div`
+const Type = styled.div`
   flex: 1 0 14.5%;
 `;
-const Distance = styled.div`
+const Velocity = styled.div`
+  flex: 1 0 14.5%;
+`;
+const Rate = styled.div`
   flex: 1 0 10%;
 `;
 const Favorite = styled.div`
   flex: 1 0 5%;
 `;
 
-export default BattingTable;
+export default PitchingTable;
