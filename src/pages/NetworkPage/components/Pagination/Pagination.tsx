@@ -25,7 +25,7 @@ const Pagination = ({
     pageSize,
   });
 
-  if (currentPage === 0 || (paginationRange && paginationRange.length < 2)) {
+  if (!paginationRange || currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
 
@@ -36,7 +36,7 @@ const Pagination = ({
           <ItemButton onClick={() => onPaginationClick(1)}>{`<<`}</ItemButton>
         )}
 
-        {paginationRange?.map((item, index) => {
+        {paginationRange.map((item, index) => {
           if (typeof item === "string") {
             return <li key={index}>...</li>;
           }
@@ -77,25 +77,25 @@ const ItemButton = styled.button<{ $isActive?: boolean }>`
   position: relative;
   padding: 6px 12px;
   line-height: 1.42857143;
-  color: #414f5a;
+  color: var(--gray7);
   border: none;
   text-decoration: none;
   border-radius: 4px;
   margin: 0 2px;
-  background-color: #f7f8f9;
+  background-color: var(--blue6);
   cursor: pointer;
   &:hover {
-    color: #23527c;
-    background-color: #eee;
-    border-color: #ddd;
+    color: var(--blue4);
+    background-color: var(--gray8);
+    border-color: var(--gray9);
   }
   ${({ $isActive }) =>
     $isActive &&
     css`
       pointer-events: none;
-      color: #fff;
+      color: var(--white);
       cursor: default;
-      background-color: #48bbff;
+      background-color: var(--blue1);
       border: none;
     `}
 `;

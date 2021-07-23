@@ -7,7 +7,6 @@ import { Button, TextInput } from "ui";
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
 import { GET_FORM_OPTIONS } from "apollo/queries";
-
 import { TextAreaInput } from "../TextAreaInput";
 import {
   findOneOption,
