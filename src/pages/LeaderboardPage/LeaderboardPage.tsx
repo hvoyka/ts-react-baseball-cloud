@@ -10,8 +10,8 @@ import {
 } from "apollo/queries";
 import { Loader } from "ui";
 import { BattingTable } from "./components/BattingTable";
-import { POSITIONS_OPTIONS } from "utils/constants";
-import useDebounce from "utils/useDebounce";
+
+import { useDebounce, POSITIONS_OPTIONS } from "utils";
 import { PitchingTable } from "./components/PitchingTable";
 
 const POSITIONS_SELECT_OPTIONS = [

@@ -1,60 +1,64 @@
 import styled, { css } from "styled-components";
-
-import { FC } from "react";
+import { usePagination } from "utils";
 
 interface PaginationProps {
   totalCount: number;
   pageSize: number;
   currentPage: number;
+  siblingCount?: number;
   onPaginationClick: (index: number) => void;
-  setCurrentPage: (index: number) => void;
 }
 
-const Pagination: FC<PaginationProps> = ({
+const Pagination = ({
   totalCount,
   pageSize,
   currentPage,
+  siblingCount = 1,
   onPaginationClick,
-  setCurrentPage,
-}) => {
+}: PaginationProps) => {
   const totalPageCount = Math.ceil(totalCount / pageSize);
-  const handleClick = (pageIndex: number) => {
-    setCurrentPage(pageIndex);
-    onPaginationClick((pageIndex - 1) * pageSize);
-  };
 
-  const items = [];
-  for (let index = 1; index <= totalPageCount; index++) {
-    items.push(
-      <PaginationItem
-        key={index}
-        index={index}
-        currentPage={currentPage}
-        onClick={() => handleClick(index)}
-      />
-    );
+  const paginationRange = usePagination({
+    currentPage,
+    totalCount,
+    siblingCount,
+    pageSize,
+  });
+
+  if (currentPage === 0 || (paginationRange && paginationRange.length < 2)) {
+    return null;
   }
 
   return (
     <Root>
       <List>
-        <ItemButton onClick={() => handleClick(1)}>{`<<`}</ItemButton>
-        {items}
-        <ItemButton
-          onClick={() => handleClick(totalPageCount)}
-        >{`>>`}</ItemButton>
+        {currentPage !== 1 && (
+          <ItemButton onClick={() => onPaginationClick(1)}>{`<<`}</ItemButton>
+        )}
+
+        {paginationRange?.map((item, index) => {
+          if (typeof item === "string") {
+            return <li key={index}>...</li>;
+          }
+          return (
+            <li key={index}>
+              <ItemButton
+                $isActive={item === currentPage}
+                onClick={() => onPaginationClick(item)}
+              >
+                {item}
+              </ItemButton>
+            </li>
+          );
+        })}
+
+        {currentPage !== totalPageCount && (
+          <ItemButton
+            onClick={() => onPaginationClick(totalPageCount)}
+          >{`>>`}</ItemButton>
+        )}
       </List>
     </Root>
-  );
-};
-
-const PaginationItem = ({ index, onClick, currentPage }: any) => {
-  return (
-    <li key={index}>
-      <ItemButton $isActive={index === currentPage} onClick={onClick}>
-        {index}
-      </ItemButton>
-    </li>
   );
 };
 
@@ -63,9 +67,11 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 const List = styled.ul`
   display: flex;
 `;
+
 const ItemButton = styled.button<{ $isActive?: boolean }>`
   margin-right: 10px;
   position: relative;

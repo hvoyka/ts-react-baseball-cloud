@@ -5,7 +5,7 @@ import { AuthLayout } from "layouts";
 import { useLazyQuery } from "@apollo/client";
 
 import { Loader } from "ui";
-import { POSITIONS_OPTIONS } from "utils/constants";
+import { POSITIONS_OPTIONS } from "utils";
 import { GET_PROFILES } from "apollo/queries";
 import { ProfilesTable } from "./components/ProfilesTable";
 import { Pagination } from "./components/Pagination";
@@ -41,7 +41,6 @@ const LeaderboardPage: FC = () => {
   const profilesTotal = useMemo(() => {
     return profilesData?.profiles?.total_count;
   }, [profilesData]);
-  console.log(profilesTotal);
 
   useEffect(() => {
     getProfiles();
@@ -49,13 +48,17 @@ const LeaderboardPage: FC = () => {
 
   const profiles = profilesData?.profiles?.profiles;
 
+  const handlePaginationClick = (index: number) => {
+    setCurrentPage(index);
+    setPagesOffset((index - 1) * profilesPerPage);
+  };
+
   return (
     <AuthLayout>
       <Wrapper>
         <TopInner>
           <PageTitle>Network</PageTitle>
           <Filters>
-            <StyledInput name="school" placeholder="School" />
             <StyledSelect
               options={POSITIONS_SELECT_OPTIONS}
               classNamePrefix={"select"}
@@ -72,9 +75,10 @@ const LeaderboardPage: FC = () => {
               ]}
               classNamePrefix={"select"}
               placeholder="Show"
-              onChange={(option: { value: number }) =>
-                setProfilesPerPage(option.value)
-              }
+              onChange={(option: { value: number }) => {
+                setProfilesPerPage(option.value);
+                handlePaginationClick(1);
+              }}
             />
           </Filters>
         </TopInner>
@@ -93,8 +97,9 @@ const LeaderboardPage: FC = () => {
                 totalCount={profilesTotal}
                 pageSize={profilesPerPage}
                 currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                onPaginationClick={setPagesOffset}
+                onPaginationClick={(index: number) =>
+                  handlePaginationClick(index)
+                }
               />
             </>
           )
@@ -161,19 +166,6 @@ const StyledSelect = styled(Select)`
   }
   .select__dropdown-indicator {
     color: var(--blue1);
-  }
-`;
-
-const StyledInput = styled.input`
-  color: var(--gray2);
-  &::placeholder {
-    color: var(--blue1);
-  }
-  &:focus,
-  &:active {
-    border-bottom: 1px solid var(--blue1);
-    outline: none;
-    color: var(--gray2);
   }
 `;
 

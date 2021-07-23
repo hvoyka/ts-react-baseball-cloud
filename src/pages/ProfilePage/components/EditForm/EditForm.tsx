@@ -7,13 +7,14 @@ import { Button, TextInput } from "ui";
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
 import { GET_FORM_OPTIONS } from "apollo/queries";
+
+import { TextAreaInput } from "../TextAreaInput";
 import {
+  findOneOption,
+  THROW_AND_BATS_OPTIONS,
   POSITIONS_OPTIONS,
   SCHOOL_YEAR_OPTIONS,
-  THROW_AND_BATS_OPTIONS,
-} from "utils/constants";
-import { TextAreaInput } from "../TextAreaInput";
-import { findOneOption } from "utils";
+} from "utils";
 
 export interface ProfileFormValues {
   first_name?: string;
