@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import Select from "react-select";
 import { AuthLayout } from "layouts";
@@ -6,7 +6,6 @@ import { useLazyQuery } from "@apollo/client";
 
 import { Loader } from "ui";
 import { POSITIONS_OPTIONS } from "utils/constants";
-/* import useDebounce from "utils/useDebounce"; */
 import { GET_PROFILES } from "apollo/queries";
 import { ProfilesTable } from "./components/ProfilesTable";
 import { Pagination } from "./components/Pagination";
@@ -19,13 +18,16 @@ const POSITIONS_SELECT_OPTIONS = [
 const LeaderboardPage: FC = () => {
   const [positionValue, setPositionValue] = useState("");
   const [profilesPerPage, setProfilesPerPage] = useState(10);
-  const [profilesTotal, setProfilesTotal] = useState(0);
   const [pagesOffset, setPagesOffset] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [
     getProfiles,
-    { loading: isProfilesLoading, data: priflesData, refetch: refetchProfiles },
+    {
+      loading: isProfilesLoading,
+      data: profilesData,
+      refetch: refetchProfiles,
+    },
   ] = useLazyQuery(GET_PROFILES, {
     variables: {
       input: {
@@ -34,16 +36,18 @@ const LeaderboardPage: FC = () => {
         position: positionValue,
       },
     },
-    onCompleted: () => {
-      setProfilesTotal(priflesData?.profiles?.total_count);
-    },
   });
+
+  const profilesTotal = useMemo(() => {
+    return profilesData?.profiles?.total_count;
+  }, [profilesData]);
+  console.log(profilesTotal);
 
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
 
-  const profiles = priflesData?.profiles?.profiles;
+  const profiles = profilesData?.profiles?.profiles;
 
   return (
     <AuthLayout>

@@ -18,6 +18,10 @@ const Pagination: FC<PaginationProps> = ({
   setCurrentPage,
 }) => {
   const totalPageCount = Math.ceil(totalCount / pageSize);
+  const handleClick = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+    onPaginationClick((pageIndex - 1) * pageSize);
+  };
 
   const items = [];
   for (let index = 1; index <= totalPageCount; index++) {
@@ -26,10 +30,7 @@ const Pagination: FC<PaginationProps> = ({
         key={index}
         index={index}
         currentPage={currentPage}
-        onClick={() => {
-          setCurrentPage(index);
-          onPaginationClick(index * pageSize);
-        }}
+        onClick={() => handleClick(index)}
       />
     );
   }
@@ -37,8 +38,11 @@ const Pagination: FC<PaginationProps> = ({
   return (
     <Root>
       <List>
-        <ItemButton onClick={() => onPaginationClick(1)}>{`<<`}</ItemButton>
+        <ItemButton onClick={() => handleClick(1)}>{`<<`}</ItemButton>
         {items}
+        <ItemButton
+          onClick={() => handleClick(totalPageCount)}
+        >{`>>`}</ItemButton>
       </List>
     </Root>
   );

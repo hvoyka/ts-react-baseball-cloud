@@ -12,8 +12,14 @@ import { ReturnArrow, Loader } from "ui";
 import { AvatarForm, TopValues, UserInfo } from "./components";
 import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
+import { useParams } from "react-router-dom";
+
+interface ProfileRouteParams {
+  id: string;
+}
 
 const ProfilePage: FC = () => {
+  let { id: pageId } = useParams<ProfileRouteParams>();
   const [updateProfile] = useMutation(UPDATE_PROFILE);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
@@ -21,14 +27,15 @@ const ProfilePage: FC = () => {
   const { loading: isCurrentProfileLoading, data: currentProfileData } =
     useQuery(GET_CURRENT_PROFILE);
 
-  const { loading: isProfileLoading, data: profileData } = useQuery(
-    GET_PROFILE,
-    {
-      /* variables: { id: currentProfileData?.current_profile?.id }, */
-      /*   variables: { id: "415" }, */
-      variables: { id: "413" },
-    }
-  );
+  const {
+    loading: isIdProfileLoading,
+    data: idProfileData,
+    refetch: refetchIdProfile,
+  } = useQuery(GET_PROFILE, {
+    variables: {
+      id: pageId ? pageId : currentProfileData?.current_profile?.id,
+    },
+  });
 
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
@@ -92,7 +99,7 @@ const ProfilePage: FC = () => {
 
   return (
     <AuthLayout>
-      {isCurrentProfileLoading ? (
+      {isCurrentProfileLoading || isIdProfileLoading ? (
         <Loader />
       ) : (
         <FlexContainer>
@@ -110,15 +117,24 @@ const ProfilePage: FC = () => {
                 />
               </>
             ) : (
-              <UserInfo
-                setIsFormEdit={setIsFormEdit}
-                profileData={currentProfileData.current_profile}
-              />
+              idProfileData && (
+                <UserInfo
+                  pageId={pageId}
+                  onFavoriteClick={() => refetchIdProfile()}
+                  onEditClick={() => setIsFormEdit(true)}
+                  profileData={idProfileData.profile}
+                />
+              )
             )}
           </Aside>
 
           <PageContentWrapper>
-            {isProfileLoading ? (
+            {idProfileData?.profile?.first_name ? (
+              <TopValues
+                batting={idProfileData?.profile?.batter_summary[0]}
+                pitching={idProfileData?.profile?.pitcher_summary[0]}
+              />
+            ) : (
               <PageContent>
                 <AccountInfoContainer>
                   <ImageBox>
@@ -132,11 +148,6 @@ const ProfilePage: FC = () => {
                   </TextBox>
                 </AccountInfoContainer>
               </PageContent>
-            ) : (
-              <TopValues
-                batting={profileData?.profile?.batter_summary[0]}
-                pitching={profileData?.profile?.pitcher_summary[0]}
-              />
             )}
           </PageContentWrapper>
         </FlexContainer>

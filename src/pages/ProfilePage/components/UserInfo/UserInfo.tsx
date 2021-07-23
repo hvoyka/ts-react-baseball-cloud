@@ -1,8 +1,12 @@
+import { useMutation } from "@apollo/client";
+import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import React from "react";
 import styled from "styled-components";
 import {
   AgeIcon,
   BatsIcon,
+  HeartFillIcon,
+  HeartIcon,
   HeightIcon,
   PencilIcon,
   ThrowsIcon,
@@ -11,11 +15,18 @@ import {
 import { capitalize } from "utils";
 
 interface UserInfoProps {
-  setIsFormEdit: (isFormEdit: boolean) => void;
+  onEditClick: () => void;
+  onFavoriteClick: () => void;
   profileData: any;
+  pageId: string | undefined;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
+const UserInfo: React.FC<UserInfoProps> = ({
+  onEditClick,
+  onFavoriteClick,
+  pageId,
+  profileData,
+}) => {
   const {
     avatar,
     first_name,
@@ -33,16 +44,39 @@ const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
     teams,
     facilities,
     biography,
+    favorite,
   } = profileData;
+
+  const [updateFavorite] = useMutation(UPDATE_FAVORITE_PROFILE, {
+    onCompleted: () => {
+      onFavoriteClick();
+    },
+  });
+
+  const handleFavoriteClick = () => {
+    updateFavorite({
+      variables: {
+        form: { profile_id: pageId, favorite: !favorite },
+      },
+    });
+  };
+
   return (
     <Root>
       <TopWrapper>
         <AvatarWrapper>
           <Avatar $photoUrl={avatar}></Avatar>
         </AvatarWrapper>
-        <IconButton onClick={() => setIsFormEdit(true)}>
-          <PencilIcon />
-        </IconButton>
+        {pageId ? (
+          <Favorite onClick={handleFavoriteClick}>
+            {favorite ? <HeartFillIcon /> : <HeartIcon />}
+          </Favorite>
+        ) : (
+          <IconButton onClick={onEditClick}>
+            <PencilIcon />
+          </IconButton>
+        )}
+
         <TopInfoWrapper>
           <TopInfoName>{`${first_name} ${last_name}`}</TopInfoName>
           <TopInfoPosition>{position}</TopInfoPosition>
@@ -92,24 +126,28 @@ const UserInfo: React.FC<UserInfoProps> = ({ setIsFormEdit, profileData }) => {
           </li>
           <li>
             <BottomStatsTitle>School Year</BottomStatsTitle>
-            <BottomStatsValue>{capitalize(school_year)}</BottomStatsValue>
+            <BottomStatsValue>
+              {school_year ? capitalize(school_year) : "-"}
+            </BottomStatsValue>
           </li>
           <li>
             <BottomStatsTitle>Team</BottomStatsTitle>
             <BottomStatsValue>
-              {teams
-                ?.map((item: { name: string }, index: number) => item.name)
-                .join(", ")}
+              {teams &&
+                teams
+                  ?.map((item: { name: string }, index: number) => item.name)
+                  .join(", ")}
             </BottomStatsValue>
           </li>
           <li>
             <BottomStatsTitle>Facility</BottomStatsTitle>
             <BottomStatsValue>
-              {facilities.map((item: { u_name: string }, index: number) => {
-                return index === facilities.length - 1
-                  ? item.u_name
-                  : `${item.u_name}, `;
-              })}
+              {facilities &&
+                facilities.map((item: { u_name: string }, index: number) => {
+                  return index === facilities.length - 1
+                    ? item.u_name
+                    : `${item.u_name}, `;
+                })}
             </BottomStatsValue>
           </li>
           <Divider>
@@ -247,6 +285,20 @@ const Biography = styled.p`
   color: var(--gray2);
   line-height: 1.75;
   word-wrap: break-word;
+`;
+
+const Favorite = styled.button`
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  transition: 0.2s;
+  &:hover {
+    transform: scale(1.1);
+  }
+  svg {
+    width: 30px;
+    height: 30px;
+  }
 `;
 
 export default UserInfo;
