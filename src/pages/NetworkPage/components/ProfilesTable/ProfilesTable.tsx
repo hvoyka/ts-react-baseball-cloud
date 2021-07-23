@@ -60,7 +60,9 @@ const ProfilesTable: FC<ProfilesTableProps> = ({
                   {`${item.first_name} ${item.last_name}`}
                 </NavLink>
               </Name>
-              <Sessions>{item?.events?.length}</Sessions>
+              <Sessions>
+                {item?.events?.length > 0 ? item?.events?.length : "-"}
+              </Sessions>
 
               <School>{item?.school?.name}</School>
               <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>

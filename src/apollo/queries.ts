@@ -244,6 +244,7 @@ export const UPDATE_FAVORITE_PROFILE = gql`
     }
   }
 `;
+
 export const GET_PROFILES = gql`
   query Profiles($input: FilterProfilesInput!) {
     profiles(input: $input) {

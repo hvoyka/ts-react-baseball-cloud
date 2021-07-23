@@ -37,10 +37,9 @@ const Pagination = ({
         )}
 
         {paginationRange.map((item, index) => {
-          if (typeof item === "string") {
-            return <li key={index}>...</li>;
-          }
-          return (
+          return typeof item === "string" ? (
+            <li key={index}>{item}</li>
+          ) : (
             <li key={index}>
               <ItemButton
                 $isActive={item === currentPage}

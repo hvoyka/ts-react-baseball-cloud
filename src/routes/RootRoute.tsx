@@ -19,15 +19,16 @@ const RootRoute = () => {
       <AuthRoute component={LoginPage} path={ROUTES.LOGIN} />
       <AuthRoute component={ForgotPage} path={ROUTES.FORGOT_PASSWORD} />
       <AuthRoute component={RegistrationPage} path={ROUTES.REGISTRATION} />
+
       <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE_ID} exact />
       <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE} exact />
-
       <PrivateRoute
         component={LeaderboardPage}
         path={ROUTES.LEADERBOARD}
         exact
       />
       <PrivateRoute component={NetworkPage} path={ROUTES.NETWORK} exact />
+
       <Redirect from="*" to={ROUTES.LOGIN} />
     </Switch>
   );
