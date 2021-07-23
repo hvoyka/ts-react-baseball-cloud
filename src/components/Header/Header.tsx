@@ -1,11 +1,12 @@
 import React, { FC } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import StorageService from "services/StorageService";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { LogoIcon } from "ui";
 import { ROUTES } from "utils/routes";
 
 const Header: FC = () => {
+  const history = useHistory();
   return (
     <Root>
       <Link to="/">
@@ -22,6 +23,14 @@ const Header: FC = () => {
           <StyledLink to={ROUTES.PROFILE} activeClassName="selected">
             Profile
           </StyledLink>
+          <StyledButton
+            onClick={() => {
+              StorageService.removeUserData();
+              history.push("/");
+            }}
+          >
+            Logout
+          </StyledButton>
         </Nav>
       )}
     </Root>
@@ -43,7 +52,7 @@ const Nav = styled.nav`
   display: flex;
 `;
 
-const StyledLink = styled(NavLink)`
+const navStyles = css`
   padding: 0 8px;
   color: var(--gray2);
   text-decoration: none;
@@ -60,17 +69,23 @@ const StyledLink = styled(NavLink)`
     bottom: -10px;
     border-bottom: 4px solid transparent;
   }
-  &.selected {
-    &:after {
-      border-color: var(--gray2);
-    }
-  }
-
   &:hover {
     text-decoration: none;
     &:after {
       border-color: rgba(120, 139, 153, 0.4);
     }
   }
+`;
+
+const StyledLink = styled(NavLink)`
+  ${navStyles}
+  &.selected {
+    &:after {
+      border-color: var(--gray2);
+    }
+  }
+`;
+const StyledButton = styled.button`
+  ${navStyles}
 `;
 export default Header;

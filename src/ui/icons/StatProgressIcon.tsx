@@ -1,7 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-export const StatProgressIcon = ({ value = 0, maximumValue = 100 }) => {
+interface StatProgressIconProps {
+  value?: number;
+  maximumValue?: number;
+}
+
+export const StatProgressIcon = ({
+  value = 0,
+  maximumValue = 100,
+}: StatProgressIconProps) => {
   const pathWidth = (100 * value) / maximumValue;
 
   return (

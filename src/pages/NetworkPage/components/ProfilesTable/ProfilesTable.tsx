@@ -5,8 +5,21 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
 
+interface ProfileItem {
+  first_name: string;
+  last_name: string;
+  age: string;
+  id: string;
+  favorite: boolean;
+  events: [];
+  teams: { name: string }[];
+  school: {
+    name: string;
+  };
+}
+
 interface ProfilesTableProps {
-  profiles: any;
+  profiles: ProfileItem[];
   onFavoriteClick: () => void;
 }
 
@@ -40,19 +53,17 @@ const ProfilesTable: FC<ProfilesTableProps> = ({
       </TableHeader>
       <TableBody>
         {profiles &&
-          profiles.map((item: any, index: number) => (
+          profiles.map((item: ProfileItem, index: number) => (
             <TableRow key={index}>
               <Name>
                 <NavLink to={`/profile/${item.id}`}>
                   {`${item.first_name} ${item.last_name}`}
                 </NavLink>
               </Name>
-              <Sessions>{item?.events?.lenght}</Sessions>
+              <Sessions>{item?.events?.length}</Sessions>
 
               <School>{item?.school?.name}</School>
-              <Teams>
-                {item.teams.map((team: any) => team.name).join(", ")}
-              </Teams>
+              <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
 
               <Age>{item.age}</Age>
               <Favorite>

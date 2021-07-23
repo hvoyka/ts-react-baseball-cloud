@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { StatProgressIcon } from "ui";
 
 interface TopValuesProps {
-  batting: any;
-  pitching: any;
+  batting: { exit_velocity: number; distance: number; launch_angle: number };
+  pitching: { velocity: number; spin_rate: number; horizontal_break: number };
 }
 
 const TopValues: React.FC<TopValuesProps> = ({ batting, pitching }) => {

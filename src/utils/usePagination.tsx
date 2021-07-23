@@ -8,8 +8,6 @@ interface usePaginationProps {
   currentPage: number;
 }
 
-const DOTS = "...";
-
 const usePagination = ({
   totalCount,
   pageSize,
@@ -19,6 +17,7 @@ const usePagination = ({
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
     const totalPageNumbers = siblingCount + 5;
+    const DOTS = "...";
 
     if (totalPageNumbers >= totalPageCount) {
       return range(1, totalPageCount);

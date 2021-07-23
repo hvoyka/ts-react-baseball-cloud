@@ -5,8 +5,24 @@ import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
 
+interface BattingItem {
+  batter_datraks_id: string;
+  batter_name: string;
+  exit_velocity: string;
+  launch_angle: string;
+  distance: string;
+  age: string;
+  favorite: boolean;
+  events: [];
+  teams: { name: string }[];
+  school: {
+    name: string;
+  };
+}
+
 interface BattingTableProps {
-  battings: any;
+  battings: BattingItem[];
+
   onFavoriteClick: () => void;
 }
 
@@ -40,7 +56,7 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
       </TableHeader>
       <TableBody>
         {battings &&
-          battings.map((item: any, index: number) => (
+          battings.map((item: BattingItem, index: number) => (
             <TableRow key={index}>
               <Rank>{index + 1}</Rank>
               <Name>
@@ -50,20 +66,17 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
               </Name>
               <Age>{item.age}</Age>
               <School>{item.school.name}</School>
-              <Teams>
-                {item.teams.map((team: any) => team.name).join(", ")}
-              </Teams>
+              <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
               <Velocity>{item.exit_velocity}</Velocity>
               <Angle>{item.launch_angle}</Angle>
               <Distance>{item.distance}</Distance>
-              <Favorite>
-                <button
-                  onClick={() =>
-                    handleFavoriteClick(item.batter_datraks_id, item.favorite)
-                  }
-                >
-                  {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
-                </button>
+
+              <Favorite
+                onClick={() =>
+                  handleFavoriteClick(item.batter_datraks_id, item.favorite)
+                }
+              >
+                {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
               </Favorite>
             </TableRow>
           ))}
@@ -130,7 +143,7 @@ const Angle = styled.div`
 const Distance = styled.div`
   flex: 1 0 10%;
 `;
-const Favorite = styled.div`
+const Favorite = styled.button`
   flex: 1 0 5%;
 `;
 

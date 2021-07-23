@@ -4,9 +4,24 @@ import { HeartIcon, HeartFillIcon } from "ui";
 import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
-
+interface PitchingItem {
+  pitcher_datraks_id: string;
+  pitcher_name: string;
+  velocity: string;
+  launch_angle: string;
+  pitch_type: string;
+  spin_rate: string;
+  age: string;
+  favorite: boolean;
+  events: [];
+  teams: { name: string }[];
+  school: {
+    name: string;
+  };
+}
 interface PitchingTableProps {
-  pitchings: any;
+  pitchings: PitchingItem[];
+
   onFavoriteClick: () => void;
 }
 
@@ -44,7 +59,7 @@ const PitchingTable: FC<PitchingTableProps> = ({
       </TableHeader>
       <TableBody>
         {pitchings &&
-          pitchings.map((item: any, index: number) => (
+          pitchings.map((item: PitchingItem, index: number) => (
             <TableRow key={index}>
               <Rank>{index + 1}</Rank>
               <Name>
@@ -54,21 +69,16 @@ const PitchingTable: FC<PitchingTableProps> = ({
               </Name>
               <Age>{item.age}</Age>
               <School>{item.school.name}</School>
-              <Teams>
-                {item.teams.map((team: any) => team.name).join(", ")}
-              </Teams>
+              <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
               <Type>{item.pitch_type}</Type>
               <Velocity>{item.velocity}</Velocity>
-
               <Rate>{item.spin_rate}</Rate>
-              <Favorite>
-                <button
-                  onClick={() =>
-                    handleFavoriteClick(item.pitcher_datraks_id, item.favorite)
-                  }
-                >
-                  {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
-                </button>
+              <Favorite
+                onClick={() =>
+                  handleFavoriteClick(item.pitcher_datraks_id, item.favorite)
+                }
+              >
+                {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
               </Favorite>
             </TableRow>
           ))}
@@ -135,7 +145,7 @@ const Velocity = styled.div`
 const Rate = styled.div`
   flex: 1 0 10%;
 `;
-const Favorite = styled.div`
+const Favorite = styled.button`
   flex: 1 0 5%;
 `;
 
