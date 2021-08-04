@@ -58,30 +58,29 @@ const PitchingTable: FC<PitchingTableProps> = ({
         <Favorite>Favorite</Favorite>
       </TableHeader>
       <TableBody>
-        {pitchings &&
-          pitchings.map((item: PitchingItem, index: number) => (
-            <TableRow key={index}>
-              <Rank>{index + 1}</Rank>
-              <Name>
-                <NavLink to={`/profile/${item.pitcher_datraks_id}`}>
-                  {item.pitcher_name}
-                </NavLink>
-              </Name>
-              <Age>{item.age}</Age>
-              <School>{item.school.name}</School>
-              <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
-              <Type>{item.pitch_type}</Type>
-              <Velocity>{item.velocity}</Velocity>
-              <Rate>{item.spin_rate}</Rate>
-              <Favorite
-                onClick={() =>
-                  handleFavoriteClick(item.pitcher_datraks_id, item.favorite)
-                }
-              >
-                {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
-              </Favorite>
-            </TableRow>
-          ))}
+        {pitchings.map((item: PitchingItem, index: number) => (
+          <TableRow key={item.pitcher_datraks_id}>
+            <Rank>{index + 1}</Rank>
+            <Name>
+              <NavLink to={`/profile/${item.pitcher_datraks_id}`}>
+                {item.pitcher_name}
+              </NavLink>
+            </Name>
+            <Age>{item.age}</Age>
+            <School>{item.school.name}</School>
+            <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
+            <Type>{item.pitch_type}</Type>
+            <Velocity>{item.velocity}</Velocity>
+            <Rate>{item.spin_rate}</Rate>
+            <Favorite
+              onClick={() =>
+                handleFavoriteClick(item.pitcher_datraks_id, item.favorite)
+              }
+            >
+              {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
+            </Favorite>
+          </TableRow>
+        ))}
       </TableBody>
     </>
   );

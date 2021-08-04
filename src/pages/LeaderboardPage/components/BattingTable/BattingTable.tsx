@@ -55,31 +55,30 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
         <Favorite>Favorite</Favorite>
       </TableHeader>
       <TableBody>
-        {battings &&
-          battings.map((item: BattingItem, index: number) => (
-            <TableRow key={index}>
-              <Rank>{index + 1}</Rank>
-              <Name>
-                <NavLink to={`/profile/${item.batter_datraks_id}`}>
-                  {item.batter_name}
-                </NavLink>
-              </Name>
-              <Age>{item.age}</Age>
-              <School>{item.school.name}</School>
-              <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
-              <Velocity>{item.exit_velocity}</Velocity>
-              <Angle>{item.launch_angle}</Angle>
-              <Distance>{item.distance}</Distance>
+        {battings.map((item: BattingItem, index: number) => (
+          <TableRow key={item.batter_datraks_id}>
+            <Rank>{index + 1}</Rank>
+            <Name>
+              <NavLink to={`/profile/${item.batter_datraks_id}`}>
+                {item.batter_name}
+              </NavLink>
+            </Name>
+            <Age>{item.age}</Age>
+            <School>{item.school.name}</School>
+            <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>
+            <Velocity>{item.exit_velocity}</Velocity>
+            <Angle>{item.launch_angle}</Angle>
+            <Distance>{item.distance}</Distance>
 
-              <Favorite
-                onClick={() =>
-                  handleFavoriteClick(item.batter_datraks_id, item.favorite)
-                }
-              >
-                {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
-              </Favorite>
-            </TableRow>
-          ))}
+            <Favorite
+              onClick={() =>
+                handleFavoriteClick(item.batter_datraks_id, item.favorite)
+              }
+            >
+              {item.favorite ? <HeartFillIcon /> : <HeartIcon />}
+            </Favorite>
+          </TableRow>
+        ))}
       </TableBody>
     </>
   );

@@ -17,6 +17,8 @@ const Pagination = ({
   onPaginationClick,
 }: PaginationProps) => {
   const totalPageCount = Math.ceil(totalCount / pageSize);
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPageCount;
 
   const paginationRange = usePagination({
     currentPage,
@@ -32,7 +34,7 @@ const Pagination = ({
   return (
     <Root>
       <List>
-        {currentPage !== 1 && (
+        {!isFirstPage && (
           <ItemButton onClick={() => onPaginationClick(1)}>{`<<`}</ItemButton>
         )}
 
@@ -51,7 +53,7 @@ const Pagination = ({
           );
         })}
 
-        {currentPage !== totalPageCount && (
+        {!isLastPage && (
           <ItemButton
             onClick={() => onPaginationClick(totalPageCount)}
           >{`>>`}</ItemButton>

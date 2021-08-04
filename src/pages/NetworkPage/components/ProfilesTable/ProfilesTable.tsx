@@ -54,15 +54,13 @@ const ProfilesTable: FC<ProfilesTableProps> = ({
       <TableBody>
         {profiles &&
           profiles.map((item: ProfileItem, index: number) => (
-            <TableRow key={index}>
+            <TableRow key={item.id}>
               <Name>
                 <NavLink to={`/profile/${item.id}`}>
                   {`${item.first_name} ${item.last_name}`}
                 </NavLink>
               </Name>
-              <Sessions>
-                {item?.events?.length > 0 ? item?.events?.length : "-"}
-              </Sessions>
+              <Sessions>{item.events?.length || "-"}</Sessions>
 
               <School>{item?.school?.name}</School>
               <Teams>{item.teams.map((team) => team.name).join(", ")}</Teams>

@@ -71,8 +71,9 @@ const LeaderboardPage: FC = () => {
     index === 1 ? getPitching() : getBatting();
   };
 
-  const battings = battingData?.leaderboard_batting?.leaderboard_batting;
-  const pitchings = pitchingData?.leaderboard_pitching?.leaderboard_pitching;
+  const battings = battingData?.leaderboard_batting?.leaderboard_batting || [];
+  const pitchings =
+    pitchingData?.leaderboard_pitching?.leaderboard_pitching || [];
 
   return (
     <AuthLayout>
@@ -114,28 +115,24 @@ const LeaderboardPage: FC = () => {
             {isBattingLoading ? (
               <Loader />
             ) : (
-              battings && (
-                <BattingTable
-                  battings={battings}
-                  onFavoriteClick={() => {
-                    if (refetchBatting) refetchBatting();
-                  }}
-                />
-              )
+              <BattingTable
+                battings={battings}
+                onFavoriteClick={() => {
+                  if (refetchBatting) refetchBatting();
+                }}
+              />
             )}
           </StyledTabPanel>
           <StyledTabPanel>
             {isPitchingLoading ? (
               <Loader />
             ) : (
-              pitchings && (
-                <PitchingTable
-                  pitchings={pitchings}
-                  onFavoriteClick={() => {
-                    if (refetchPitching) refetchPitching();
-                  }}
-                />
-              )
+              <PitchingTable
+                pitchings={pitchings}
+                onFavoriteClick={() => {
+                  if (refetchPitching) refetchPitching();
+                }}
+              />
             )}
           </StyledTabPanel>
         </StyledTabs>
