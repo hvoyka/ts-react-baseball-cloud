@@ -4,6 +4,7 @@ import { HeartIcon, HeartFillIcon } from "ui";
 import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
+import { ROUTES } from "utils/routes";
 
 interface ProfileItem {
   first_name: string;
@@ -56,7 +57,7 @@ const ProfilesTable: FC<ProfilesTableProps> = ({
           profiles.map((item: ProfileItem, index: number) => (
             <TableRow key={item.id}>
               <Name>
-                <NavLink to={`/profile/${item.id}`}>
+                <NavLink to={ROUTES.PROFILE_ID(item.id)}>
                   {`${item.first_name} ${item.last_name}`}
                 </NavLink>
               </Name>

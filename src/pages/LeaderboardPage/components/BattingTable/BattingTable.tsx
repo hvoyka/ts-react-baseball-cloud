@@ -4,6 +4,7 @@ import { HeartIcon, HeartFillIcon } from "ui";
 import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
+import { ROUTES } from "utils/routes";
 
 interface BattingItem {
   batter_datraks_id: string;
@@ -59,7 +60,7 @@ const BattingTable: FC<BattingTableProps> = ({ battings, onFavoriteClick }) => {
           <TableRow key={item.batter_datraks_id}>
             <Rank>{index + 1}</Rank>
             <Name>
-              <NavLink to={`/profile/${item.batter_datraks_id}`}>
+              <NavLink to={ROUTES.PROFILE_ID(item.batter_datraks_id)}>
                 {item.batter_name}
               </NavLink>
             </Name>

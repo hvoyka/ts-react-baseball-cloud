@@ -4,6 +4,7 @@ import { HeartIcon, HeartFillIcon } from "ui";
 import { useMutation } from "@apollo/client";
 import { UPDATE_FAVORITE_PROFILE } from "apollo/queries";
 import { FC } from "react";
+import { ROUTES } from "utils/routes";
 interface PitchingItem {
   pitcher_datraks_id: string;
   pitcher_name: string;
@@ -62,7 +63,7 @@ const PitchingTable: FC<PitchingTableProps> = ({
           <TableRow key={item.pitcher_datraks_id}>
             <Rank>{index + 1}</Rank>
             <Name>
-              <NavLink to={`/profile/${item.pitcher_datraks_id}`}>
+              <NavLink to={ROUTES.PROFILE_ID(item.pitcher_datraks_id)}>
                 {item.pitcher_name}
               </NavLink>
             </Name>
