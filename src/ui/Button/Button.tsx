@@ -37,7 +37,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   ...rest
 }) => (
-  <StyledButton className={className} variant={variant} {...rest}>
+  <StyledButton className={className} variant={variant} type={type} {...rest}>
     {children}
   </StyledButton>
 );

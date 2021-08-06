@@ -1,20 +1,20 @@
 import React from "react";
 import { FieldRenderProps } from "react-final-form";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-type TextInputProps = FieldRenderProps<string, any>;
+type Props = FieldRenderProps<string, any>;
 
-const TextInput: React.FC<TextInputProps> = ({
-  label,
+const TextAreaInput: React.FC<Props> = ({
   input,
-  placeholder = " ",
   meta,
+  label,
+  placeholder = " ",
   ...rest
-}) => (
+}: Props) => (
   <Root>
-    <StyledInput
-      placeholder={placeholder}
+    <StyledTextArea
       $hasLabel={!!label}
+      placeholder={placeholder}
       {...input}
       {...rest}
     />
@@ -25,6 +25,7 @@ const TextInput: React.FC<TextInputProps> = ({
 
 const Root = styled.div`
   position: relative;
+  padding-bottom: 15px;
 `;
 
 const Label = styled.label`
@@ -33,8 +34,7 @@ const Label = styled.label`
   left: 0;
   cursor: text;
   max-width: 70%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+
   transform-origin: left bottom;
 
   transform: translate(17px, 10px) scale(1.15);
@@ -50,14 +50,14 @@ const Label = styled.label`
   color: var(--gray2);
 `;
 
-const StyledInput = styled.input<{ $hasLabel: boolean }>`
+const StyledTextArea = styled.textarea<{ $hasLabel: boolean }>`
   display: block;
   width: 100%;
-  height: 50px;
+  min-height: 110px;
+  resize: none;
   border-radius: 4px;
   background-color: var(--gray5);
-  padding: 7px 12px 10px 37px;
-
+  padding: 16px;
   font-size: 16px;
   line-height: 1.13;
   font-weight: 400;
@@ -89,6 +89,9 @@ const StyledInput = styled.input<{ $hasLabel: boolean }>`
       visibility: visible;
       background: transparent;
       border-radius: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   &:placeholder-shown {
@@ -96,15 +99,6 @@ const StyledInput = styled.input<{ $hasLabel: boolean }>`
       visibility: visible;
     }
   }
-
-  ${({ $hasLabel }) =>
-    $hasLabel &&
-    css`
-      height: 40px;
-      padding: 0 16px;
-      transition: all 0.2s;
-      touch-action: manipulation;
-    `}
 `;
 
 const ErrorText = styled.p`
@@ -114,4 +108,4 @@ const ErrorText = styled.p`
   color: var(--red1);
 `;
 
-export default TextInput;
+export default TextAreaInput;

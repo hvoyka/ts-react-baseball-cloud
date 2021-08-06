@@ -1,60 +1,138 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Form, Field } from "react-final-form";
 import { required } from "redux-form-validators";
-
 import { FormSelect } from "../FormSelect";
 import { Button, TextInput } from "ui";
-
 import { FormApi } from "final-form";
 import { useQuery } from "@apollo/client";
-import { GET_FACILITIES, GET_SCHOOLS, GET_TEAMS } from "apollo/queries";
-import { POSITIONS_OPTIONS, THROW_AND_BATS_OPTIONS } from "utils/constants";
+import { GET_FORM_OPTIONS } from "apollo/queries";
+import { TextAreaInput } from "../TextAreaInput";
+import {
+  findOneOption,
+  THROW_AND_BATS_OPTIONS,
+  POSITIONS_OPTIONS,
+  SCHOOL_YEAR_OPTIONS,
+} from "utils";
 
 export interface ProfileFormValues {
   first_name?: string;
+  last_name?: string;
+  biography?: string;
+  feet?: string;
+  inches?: string;
+  weight?: string;
+  age?: string;
+  school_year?: { label: string; value: string };
+  position?: { label: string; value: string };
+  position2?: { label: string; value: string };
+  throws_hand?: { label: string; value: string };
+  bats_hand?: { label: string; value: string };
+  school?: { label: string; value: string; id: string };
+  teams?: [{ label: string; value: string; id: string }];
+  facilities?: [{ label: string; value: string }];
 }
 
 interface EditFormProps {
   onEditFormSubmit: (values: ProfileFormValues) => void;
+  currentProfileData: {
+    current_profile: any;
+  };
+  setIsFormEdit: (isFormEdit: boolean) => void;
 }
 
-const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
-  let schoolOptions: [] = [];
-
+const EditForm: React.FC<EditFormProps> = ({
+  onEditFormSubmit,
+  currentProfileData,
+  setIsFormEdit,
+}) => {
   const {
-    loading: isSchoolsLoading,
-    data: schoolsData,
-    error: schoolsError,
-  } = useQuery(GET_SCHOOLS, {
+    data: optionsData = {
+      facilities: { facilities: [] },
+      schools: { schools: [] },
+      teams: { teams: [] },
+    },
+  } = useQuery(GET_FORM_OPTIONS, {
     variables: { search: "" },
   });
 
-  const {
-    loading: isTeamsLoading,
-    data: teamsData,
-    error: teamsError,
-  } = useQuery(GET_TEAMS, {
-    variables: { search: "" },
-  });
+  const facilitiesArr = optionsData?.facilities?.facilities;
+  const schoolsArr = optionsData?.schools?.schools;
+  const teamsArr = optionsData?.teams?.teams;
 
-  const {
-    loading: isFacilitiesLoading,
-    data: facilitiesData,
-    error: facilitiesError,
-  } = useQuery(GET_FACILITIES, {
-    variables: { search: "" },
-  });
+  const schoolOptions = useMemo(
+    () =>
+      schoolsArr.map((item: { id: number; name: string }) => {
+        return {
+          label: item.name,
+          value: item.name,
+          id: item.id,
+        };
+      }),
+    [schoolsArr]
+  );
 
-  if (!isSchoolsLoading) {
-    const schoolsArr = schoolsData?.schools?.schools;
-    schoolOptions = schoolsArr.map((item: { id: number; name: string }) => {
-      return {
-        label: item.name,
-        value: item.name,
-      };
-    });
-  }
+  const facilitiesOptions = useMemo(
+    () =>
+      facilitiesArr.map((item: { id: number; u_name: string }) => {
+        return {
+          label: item.u_name,
+          value: item.id,
+        };
+      }),
+    [facilitiesArr]
+  );
+
+  const teamsOptions = useMemo(
+    () =>
+      teamsArr.map((item: { id: number; name: string }) => {
+        return {
+          label: item.name,
+          value: item.name,
+          id: item.id,
+        };
+      }),
+    [teamsArr]
+  );
+
+  const currentProfile = currentProfileData.current_profile;
+
+  const initialValues: ProfileFormValues = {
+    age: currentProfile?.age,
+    biography: currentProfile?.biography,
+    feet: currentProfile?.feet,
+    first_name: currentProfile?.first_name,
+    inches: currentProfile?.inches,
+    last_name: currentProfile?.last_name,
+    position:
+      currentProfile?.position &&
+      findOneOption(POSITIONS_OPTIONS, currentProfile.position),
+    position2:
+      currentProfile?.position2 &&
+      findOneOption(POSITIONS_OPTIONS, currentProfile.position2),
+    school_year:
+      currentProfile?.school_year &&
+      findOneOption(SCHOOL_YEAR_OPTIONS, currentProfile.school_year),
+    bats_hand:
+      currentProfile?.bats_hand &&
+      findOneOption(THROW_AND_BATS_OPTIONS, currentProfile.bats_hand),
+    throws_hand:
+      currentProfile?.throws_hand &&
+      findOneOption(THROW_AND_BATS_OPTIONS, currentProfile.throws_hand),
+    weight: currentProfile?.weight,
+    school: currentProfile?.school && {
+      value: currentProfile?.school?.id,
+      label: currentProfile?.school?.name,
+    },
+    teams: currentProfile?.teams?.map((item: { id: string; name: string }) => {
+      return { id: item.id, value: item.id, label: item.name };
+    }),
+    facilities: currentProfile?.facilities?.map(
+      (item: { id: string; u_name: string }) => {
+        return { value: item.id, label: item.u_name };
+      }
+    ),
+  };
 
   const onSubmit = (values: ProfileFormValues, form: FormApi) => {
     onEditFormSubmit(values);
@@ -64,6 +142,7 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
   return (
     <Form
       onSubmit={onSubmit}
+      initialValues={initialValues}
       render={({ handleSubmit, form }) => (
         <form onSubmit={handleSubmit}>
           <FormRow>
@@ -71,18 +150,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="first_name"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="First Name *" placeholder=" " {...props} />
-                );
+                return <TextInput label="First Name *" {...props} />;
               }}
             />
             <Field<string>
               name="last_name"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="Last Name *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Last Name *" {...props} />;
               }}
             />
           </FormRow>
@@ -110,16 +185,14 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="age"
               validate={required()}
               render={(props) => {
-                return <TextInput label="Age *" placeholder=" " {...props} />;
+                return <TextInput label="Age *" {...props} />;
               }}
             />
             <Field<string>
               name="weight"
               validate={required()}
               render={(props) => {
-                return (
-                  <TextInput label="Weight *" placeholder=" " {...props} />
-                );
+                return <TextInput label="Weight *" {...props} />;
               }}
             />
           </FormRow>
@@ -129,13 +202,13 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
               name="feet"
               validate={required()}
               render={(props) => {
-                return <TextInput label="Feet *" placeholder=" " {...props} />;
+                return <TextInput label="Feet *" {...props} />;
               }}
             />
             <Field<string>
               name="inches"
               render={(props) => {
-                return <TextInput label="Inches" placeholder=" " {...props} />;
+                return <TextInput label="Inches" {...props} />;
               }}
             />
           </FormRow>
@@ -161,25 +234,60 @@ const EditForm: React.FC<EditFormProps> = ({ onEditFormSubmit }) => {
             <DividerText>School</DividerText>
           </Divider>
 
-          <FormRow>
-            <Field
-              name="school"
-              placeholder="School"
-              validate={required()}
-              component={FormSelect}
-              options={schoolOptions}
-            />
-          </FormRow>
+          <Field
+            name="school"
+            placeholder="School"
+            component={FormSelect}
+            options={schoolOptions}
+          />
+
+          <Field
+            name="school_year"
+            placeholder="School Year"
+            component={FormSelect}
+            options={SCHOOL_YEAR_OPTIONS}
+          />
+
+          <Field
+            name="teams"
+            placeholder="Team"
+            isMulti
+            component={FormSelect}
+            options={teamsOptions}
+          />
+
+          <Divider>
+            <DividerText>Facility</DividerText>
+          </Divider>
+
+          <Field
+            name="facilities"
+            placeholder="Facility"
+            isMulti
+            component={FormSelect}
+            options={facilitiesOptions}
+          />
+
+          <Divider>
+            <DividerText>About</DividerText>
+          </Divider>
+
+          <Field
+            name="biography"
+            label="Describe yourself in a few words"
+            component={TextAreaInput}
+          />
 
           <FormRow>
             <StyledButton
               variant="secondary"
-              type="button"
-              onClick={() => form.reset()}
+              onClick={() => {
+                setIsFormEdit(false);
+              }}
             >
-              Reset
+              Cancel
             </StyledButton>
-            <StyledButton>Submit</StyledButton>
+            <StyledButton type="submit">Submit</StyledButton>
           </FormRow>
         </form>
       )}

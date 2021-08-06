@@ -10,3 +10,6 @@ export { ThrowsIcon } from "./ThrowsIcon";
 export { UserIcon } from "./UserIcon";
 export { WeightIcon } from "./WeightIcon";
 export { ReturnArrow } from "./ReturnArrow";
+export { StatProgressIcon } from "./StatProgressIcon";
+export { HeartIcon } from "./HeartIcon";
+export { HeartFillIcon } from "./HeartFillIcon";
