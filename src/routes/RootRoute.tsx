@@ -20,7 +20,7 @@ const RootRoute = () => {
       <AuthRoute component={ForgotPage} path={ROUTES.FORGOT_PASSWORD} />
       <AuthRoute component={RegistrationPage} path={ROUTES.REGISTRATION} />
 
-      <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE_ID} exact />
+      <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE_ID()} exact />
       <PrivateRoute component={ProfilePage} path={ROUTES.PROFILE} exact />
       <PrivateRoute
         component={LeaderboardPage}
