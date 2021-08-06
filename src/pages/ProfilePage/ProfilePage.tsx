@@ -2,59 +2,153 @@ import { FC, useState } from "react";
 import styled from "styled-components";
 
 import { AuthLayout } from "layouts";
-import { useQuery } from "@apollo/client";
-import { GET_CURRENT_PROFILE } from "apollo/queries";
-import { ReturnArrow, Loader, Button } from "ui";
-import { AvatarForm } from "./components";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  GET_CURRENT_PROFILE,
+  GET_PROFILE,
+  UPDATE_PROFILE,
+} from "apollo/queries";
+import { ReturnArrow, Loader } from "ui";
+import { AvatarForm, TopValues, UserInfo } from "./components";
 import { EditForm } from "./components/EditForm";
 import { ProfileFormValues } from "./components/EditForm/EditForm";
+import { useParams } from "react-router-dom";
+
+interface ProfileRouteParams {
+  id: string;
+}
 
 const ProfilePage: FC = () => {
+  let { id: pageId } = useParams<ProfileRouteParams>();
+  const [updateProfile] = useMutation(UPDATE_PROFILE);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [isFormEdit, setIsFormEdit] = useState(false);
 
-  const { loading: isProfileLoading } = useQuery(GET_CURRENT_PROFILE);
+  const { loading: isCurrentProfileLoading, data: currentProfileData } =
+    useQuery(GET_CURRENT_PROFILE);
+
+  const {
+    loading: isIdProfileLoading,
+    data: idProfileData,
+    refetch: refetchIdProfile,
+  } = useQuery(GET_PROFILE, {
+    variables: {
+      id: pageId ? pageId : currentProfileData?.current_profile?.id,
+    },
+  });
 
   const onAvatarUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
   };
 
   const onEditFormSubmit = (values: ProfileFormValues) => {
-    if (values) {
+    if (values && !isCurrentProfileLoading) {
+      const {
+        age,
+        bats_hand,
+        biography,
+        facilities,
+        teams,
+        feet,
+        first_name,
+        last_name,
+        inches,
+        position,
+        position2,
+        school,
+        school_year,
+        throws_hand,
+        weight,
+      } = values;
+
+      const facilitiesData = facilities?.map((item) => {
+        return { id: item.value, u_name: item.label };
+      });
+      const teamsData = teams?.map((item) => {
+        return { id: item.id, name: item.label };
+      });
+
+      const formData = {
+        age: age && parseInt(age),
+        avatar: uploadedImageUrl,
+        biography,
+        facilities: facilitiesData,
+        feet: feet && parseInt(feet),
+        first_name,
+        id: currentProfileData.current_profile.id,
+        inches: inches && parseInt(inches),
+        last_name,
+        position: position?.value,
+        position2: position2?.value,
+        school: { id: school?.value, name: school?.label },
+        school_year: school_year?.value,
+        teams: teamsData,
+        bats_hand: bats_hand?.value,
+        throws_hand: throws_hand?.value,
+        weight: weight && parseInt(weight),
+      };
+
+      updateProfile({
+        variables: {
+          form: formData,
+        },
+      });
       setIsFormEdit(false);
     }
   };
 
   return (
     <AuthLayout>
-      {isProfileLoading ? (
+      {isCurrentProfileLoading || isIdProfileLoading ? (
         <Loader />
       ) : (
         <FlexContainer>
           <Aside>
             {isFormEdit ? (
               <>
-                <AvatarForm onAvatarUpload={onAvatarUpload} />
-                <EditForm onEditFormSubmit={onEditFormSubmit} />
+                <AvatarForm
+                  onAvatarUpload={onAvatarUpload}
+                  avatarUrl={currentProfileData?.current_profile?.avatar}
+                />
+                <EditForm
+                  onEditFormSubmit={onEditFormSubmit}
+                  currentProfileData={currentProfileData}
+                  setIsFormEdit={setIsFormEdit}
+                />
               </>
             ) : (
-              <Button onClick={() => setIsFormEdit(true)}>Edit Form</Button>
+              idProfileData && (
+                <UserInfo
+                  pageId={pageId}
+                  onFavoriteClick={() => refetchIdProfile()}
+                  onEditClick={() => setIsFormEdit(true)}
+                  profileData={idProfileData.profile}
+                />
+              )
             )}
           </Aside>
+
           <PageContentWrapper>
-            <PageContent>
-              <AccountInfoContainer>
-                <ImageBox>
-                  <ReturnArrow />
-                </ImageBox>
-                <HeadingBox>Your Account</HeadingBox>
-                <TextBox>
-                  Changing your profile options lets you control how others see
-                  you and your profile. These settings include things like your
-                  name, personal info and school.
-                </TextBox>
-              </AccountInfoContainer>
-            </PageContent>
+            {idProfileData?.profile?.first_name ? (
+              <TopValues
+                batting={idProfileData?.profile?.batter_summary[0]}
+                pitching={idProfileData?.profile?.pitcher_summary[0]}
+              />
+            ) : (
+              <PageContent>
+                <AccountInfoContainer>
+                  <ImageBox>
+                    <ReturnArrow />
+                  </ImageBox>
+                  <HeadingBox>Your Account</HeadingBox>
+                  <TextBox>
+                    Changing your profile options lets you control how others
+                    see you and your profile. These settings include things like
+                    your name, personal info and school.
+                  </TextBox>
+                </AccountInfoContainer>
+              </PageContent>
+            )}
           </PageContentWrapper>
         </FlexContainer>
       )}

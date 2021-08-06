@@ -4,11 +4,12 @@ import styled, { css } from "styled-components";
 
 interface AvatarFormProps {
   onAvatarUpload: (imageUrl: string) => void;
+  avatarUrl: string;
 }
 
-const AvatarForm: FC<AvatarFormProps> = ({ onAvatarUpload }) => {
+const AvatarForm: FC<AvatarFormProps> = ({ onAvatarUpload, avatarUrl }) => {
   const [imageName, setImageName] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoUrl, setPhotoUrl] = useState(avatarUrl);
 
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);

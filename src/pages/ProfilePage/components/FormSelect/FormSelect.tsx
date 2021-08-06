@@ -1,5 +1,4 @@
 import React from "react";
-
 import styled from "styled-components";
 import Select from "react-select";
 
@@ -22,7 +21,7 @@ const Root = styled.div`
 const StyledSelect = styled(Select)`
   .select__control {
     max-width: 100%;
-    height: 38px;
+    min-height: 38px;
     background-color: var(--gray5);
     border-color: transparent;
   }
@@ -38,6 +37,11 @@ const StyledSelect = styled(Select)`
   }
   .select__placeholder {
     color: var(--gray4);
+  }
+  .select__multi-value {
+    border: 1px solid rgba(0, 126, 255, 0.24);
+    background-color: var(--blue5);
+    background-color: rgba(0, 126, 255, 0.08);
   }
 `;
 
